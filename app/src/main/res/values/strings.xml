@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">WineScore</string>
     <string name="title_wine_detail">Wine Detail</string>
+    <string name="information">Information</string>
+    <string name="vintage">Vintage</string>
+    <string name="appellation">Appellation</string>
+    <string name="color">Color</string>
+    <string name="location">Location</string>
+    <string name="regions">Regions</string>
+    <string name="country">Country</string>
+    <string name="wines">Wines</string>
+    <string name="my_favorites">My Favorites</string>
+    <string name="my_ratings">My Ratings</string>
+    <string name="rating">Rating</string>
 </resources>

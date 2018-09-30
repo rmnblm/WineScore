@@ -38,16 +38,7 @@ public class DummyContent {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
-    }
-
-    private static String makeDetails(int position) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Details about Item: ").append(position);
-        for (int i = 0; i < position; i++) {
-            builder.append("\nMore details information here.");
-        }
-        return builder.toString();
+        return new DummyItem(String.valueOf(position), "Title " + position, "Subtitle " + position, (position * 10) % 100, ((char) (65 + position % 3)) + "+");
     }
 
     /**
@@ -55,18 +46,28 @@ public class DummyContent {
      */
     public static class DummyItem {
         public final String id;
-        public final String content;
-        public final String details;
+        public final String title;
+        public final String subtitle;
+        public final double score;
+        public final String index;
+        public final int vintage = 1994;
+        public final String color = "red";
+        public final String appellation = "Pomerol";
+        public final String regions = "Bordeaux";
+        public final String country = "France";
 
-        public DummyItem(String id, String content, String details) {
+
+        public DummyItem(String id, String title, String subtitle, int score, String index) {
+            this.title = title;
+            this.subtitle = subtitle;
+            this.score = score;
+            this.index = index;
             this.id = id;
-            this.content = content;
-            this.details = details;
         }
 
         @Override
         public String toString() {
-            return content;
+            return title;
         }
     }
 }

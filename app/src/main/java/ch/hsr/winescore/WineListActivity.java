@@ -114,8 +114,10 @@ public class WineListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            DummyContent.DummyItem item = mValues.get(position);
+            holder.mTitleView.setText(item.title);
+            holder.mSubtitleView.setText(item.subtitle);
+            holder.mIndexView.setText(item.index);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
@@ -127,13 +129,15 @@ public class WineListActivity extends AppCompatActivity {
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            final TextView mIdView;
-            final TextView mContentView;
+            final TextView mTitleView;
+            final TextView mSubtitleView;
+            final TextView mIndexView;
 
             ViewHolder(View view) {
                 super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mTitleView = (TextView) view.findViewById(R.id.title);
+                mSubtitleView = (TextView) view.findViewById(R.id.subtitle);
+                mIndexView = (TextView) view.findViewById(R.id.index);
             }
         }
     }
