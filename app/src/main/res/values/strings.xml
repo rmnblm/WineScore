@@ -12,4 +12,6 @@
     <string name="my_favorites">My Favorites</string>
     <string name="my_ratings">My Ratings</string>
     <string name="rating">Rating</string>
+    <string name="filter">Filter</string>
+    <string name="filter_wines">Filter wines</string>
 </resources>

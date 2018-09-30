@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -52,6 +55,24 @@ public class WineListActivity extends AppCompatActivity {
         View recyclerView = findViewById(R.id.wine_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            View view = getLayoutInflater().inflate(R.layout.fragment_filter_sheet, null);
+            BottomSheetDialog dialog = new BottomSheetDialog(this);
+            dialog.setContentView(view);
+            dialog.show();
+            return true;
+        }
+        return false;
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
