@@ -1,4 +1,4 @@
-package ch.hsr.winescore;
+package ch.hsr.winescore.ui.fragments;
 
 
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.ui.activities.WineOverviewActivity;
 
 
 /**
@@ -32,7 +34,7 @@ public class BottomNavigationFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_bottom_navigation, container, false);
 
         bottomNavigationView = rootView.findViewById(R.id.bottomNavigationView);
-        if (getActivity() instanceof  WineListActivity) {
+        if (getActivity() instanceof WineOverviewActivity) {
             bottomNavigationView.setSelectedItemId(R.id.wines);
         } else { // TODO: add other activities
             bottomNavigationView.setSelectedItemId(R.id.my_favorites);
@@ -50,13 +52,13 @@ public class BottomNavigationFragment extends Fragment {
             }
             switch (menuItem.getItemId()) {
                 case R.id.wines:
-                    getActivity().startActivity(new Intent(getContext(), WineListActivity.class));
+                    getActivity().startActivity(new Intent(getContext(), WineOverviewActivity.class));
                     break;
                 case R.id.my_favorites:
-                    getActivity().startActivity(new Intent(getContext(), WineListActivity.class)); // TODO: replace by correct activity
+                    getActivity().startActivity(new Intent(getContext(), WineOverviewActivity.class)); // TODO: replace by correct activity
                     break;
                 case R.id.my_ratings:
-                    getActivity().startActivity(new Intent(getContext(), WineListActivity.class)); // TODO: replace by correct activity
+                    getActivity().startActivity(new Intent(getContext(), WineOverviewActivity.class)); // TODO: replace by correct activity
                     break;
             }
             return false;

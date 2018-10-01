@@ -1,35 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.hsr.winescore" >
+          package="ch.hsr.winescore">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".WineListActivity"
+            android:name=".WineScoreApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".ui.activities.WineOverviewActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".WineDetailActivity"
-            android:label="@string/title_wine_detail"
-            android:parentActivityName=".WineListActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
+                android:name=".ui.activities.WineDetailActivity"
+                android:label="@string/title_wine_detail"
+                android:parentActivityName=".ui.activities.WineOverviewActivity"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait">
             <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ch.hsr.winescore.WineListActivity" />
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="ch.hsr.winescore.ui.activities.WineOverviewActivity"/>
+        </activity>
+        <activity android:name=".ui.activities.MainActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
