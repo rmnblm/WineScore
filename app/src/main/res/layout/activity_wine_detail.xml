@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".WineDetailActivity"
+    tools:context=".ui.activities.WineDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.AppBarLayout
@@ -39,7 +39,229 @@
         android:id="@+id/wine_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:app="http://schemas.android.com/apk/res-auto"
+                      xmlns:tools="http://schemas.android.com/tools"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/fab_margin"
+                      android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                    android:id="@+id/infoConstraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/list_item_padding">
+
+                <ImageView
+                        android:id="@+id/infoIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/information"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_info_outline_black_24dp" />
+
+                <TextView
+                        android:id="@+id/vintage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/list_item_padding"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintBottom_toBottomOf="@+id/infoIcon"
+                        app:layout_constraintStart_toEndOf="@+id/infoIcon"
+                        app:layout_constraintTop_toTopOf="@+id/infoIcon"
+                        tools:text="2000" />
+
+                <TextView
+                        android:id="@+id/vintageLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/vintage"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/vintage"
+                        app:layout_constraintTop_toBottomOf="@+id/vintage" />
+
+                <TextView
+                        android:id="@+id/color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/list_item_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintStart_toStartOf="@+id/vintage"
+                        app:layout_constraintTop_toBottomOf="@+id/vintageLabel"
+                        tools:text="red" />
+
+                <TextView
+                        android:id="@+id/colorLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/color"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/color"
+                        app:layout_constraintTop_toBottomOf="@+id/color" />
+
+                <TextView
+                        android:id="@+id/appellation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/list_item_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintStart_toStartOf="@+id/vintage"
+                        app:layout_constraintTop_toBottomOf="@+id/colorLabel"
+                        tools:text="Pomerol" />
+
+                <TextView
+                        android:id="@+id/appellationLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appellation"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/appellation"
+                        app:layout_constraintTop_toBottomOf="@+id/appellation" />
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+            <android.support.constraint.ConstraintLayout
+                    android:id="@+id/locationConstraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/list_item_padding">
+
+                <ImageView
+                        android:id="@+id/locationIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/location"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+                <TextView
+                        android:id="@+id/regions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/list_item_padding"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
+                        app:layout_constraintStart_toEndOf="@+id/locationIcon"
+                        app:layout_constraintTop_toTopOf="@+id/locationIcon"
+                        tools:text="Bordeaux" />
+
+                <TextView
+                        android:id="@+id/regionsLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/regions"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/regions"
+                        app:layout_constraintTop_toBottomOf="@+id/regions" />
+
+                <TextView
+                        android:id="@+id/country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/list_item_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintStart_toStartOf="@+id/regions"
+                        app:layout_constraintTop_toBottomOf="@+id/regionsLabel"
+                        tools:text="France" />
+
+                <TextView
+                        android:id="@+id/countryLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/country"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/country"
+                        app:layout_constraintTop_toBottomOf="@+id/country" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+            <android.support.constraint.ConstraintLayout
+                    android:id="@+id/scoreConstraintLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/list_item_padding">
+
+                <ImageView
+                        android:id="@+id/ratingIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/rating"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_star_black_24dp" />
+
+                <TextView
+                        android:id="@+id/ratingLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/list_item_padding"
+                        android:text="@string/rating"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        app:layout_constraintBottom_toBottomOf="@+id/ratingIcon"
+                        app:layout_constraintStart_toEndOf="@+id/ratingIcon"
+                        app:layout_constraintTop_toTopOf="@+id/ratingIcon" />
+
+                <ProgressBar
+                        android:id="@+id/scoreCircle"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:background="@drawable/circle_background"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:progressDrawable="@drawable/circle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                        android:id="@+id/confidence_index"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+                        app:layout_constraintBottom_toBottomOf="@+id/scoreCircle"
+                        app:layout_constraintEnd_toEndOf="@+id/scoreCircle"
+                        app:layout_constraintStart_toStartOf="@+id/scoreCircle"
+                        app:layout_constraintTop_toTopOf="@+id/scoreCircle"
+                        app:layout_constraintVertical_bias="0.3"
+                        tools:text="A+" />
+
+                <TextView
+                        android:id="@+id/score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="@+id/scoreCircle"
+                        app:layout_constraintEnd_toEndOf="@+id/scoreCircle"
+                        app:layout_constraintStart_toStartOf="@+id/scoreCircle"
+                        app:layout_constraintTop_toTopOf="@+id/scoreCircle"
+                        app:layout_constraintVertical_bias="0.7"
+                        tools:text="99.99" />
+            </android.support.constraint.ConstraintLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -47,8 +269,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/stat_notify_chat"
         app:layout_anchor="@+id/wine_detail_container"
-        app:layout_anchorGravity="top|end" />
+        app:layout_anchorGravity="top|end"
+        app:srcCompat="@drawable/ic_favorite_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
