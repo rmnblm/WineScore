@@ -54,6 +54,12 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.unsubscribe();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -124,7 +130,6 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
 
     @Override
     public void showError(String message) {
-        Log.d(TAG, "--> Error");
         Snackbar snackbar = Snackbar.make(cl_overview, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", new View.OnClickListener() {
                     @Override
