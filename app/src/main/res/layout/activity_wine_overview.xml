@@ -23,7 +23,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -32,12 +32,12 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/wine_list"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="56dp"
+            android:orientation="vertical"
             tools:context=".ui.activities.WineOverviewActivity"
             tools:listitem="@layout/content_wine_overview" />
     </LinearLayout>
@@ -47,6 +47,6 @@
         android:name="ch.hsr.winescore.ui.fragments.BottomNavigationFragment"
         android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:layout_height="@dimen/bottom_navigation_height" />
 
 </android.support.design.widget.CoordinatorLayout>

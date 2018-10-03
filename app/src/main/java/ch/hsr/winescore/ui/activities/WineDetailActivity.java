@@ -5,6 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -82,6 +83,13 @@ public class WineDetailActivity extends AppCompatActivity implements WineDetailV
     private void setupViewsWithExtras() {
         tbl_appbar.setTitle(wine.getName());
         tv_vintage.setText(wine.getVintage());
+        tv_color.setText(wine.getColor());
+        tv_appellation.setText(wine.getAppellation());
+        tv_regions.setText(TextUtils.join(",", wine.getRegions()));
+        tv_country.setText(wine.getCountry());
+        tv_confidenceIndex.setText(wine.getConfidenceIndex());
+        tv_score.setText(String.valueOf(wine.getScore()));
+        pb_score.setProgress((int) Math.round(wine.getScore()));
     }
 
     @Override

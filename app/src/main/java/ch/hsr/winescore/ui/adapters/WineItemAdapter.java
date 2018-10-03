@@ -1,11 +1,16 @@
 package ch.hsr.winescore.ui.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
@@ -47,8 +52,9 @@ public class WineItemAdapter extends RecyclerView.Adapter<WineItemAdapter.WineIt
     public void onBindViewHolder(final WineItemViewHolder holder, int position) {
         Wine wine = wines.get(position);
         holder.title.setText(wine.getName());
-        holder.subtitle.setText(wine.getCountry());
+        holder.subtitle.setText(wine.getCountry() + ", " + wine.getVintage());
         holder.index.setText(wine.getConfidenceIndex());
+        holder.icon.setImageDrawable(wine.getColor().toLowerCase().equals("white") ? holder.wine_white : holder.wine_red);
     }
 
     @Override
@@ -80,6 +86,9 @@ public class WineItemAdapter extends RecyclerView.Adapter<WineItemAdapter.WineIt
         @BindView(R.id.title) TextView title;
         @BindView(R.id.subtitle) TextView subtitle;
         @BindView(R.id.index) TextView index;
+        @BindView(R.id.icon) ImageView icon;
+        @BindDrawable(R.drawable.ic_wine_red) Drawable wine_red;
+        @BindDrawable(R.drawable.ic_wine_white) Drawable wine_white;
 
         public WineItemViewHolder(View itemView) {
             super(itemView);
