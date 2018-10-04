@@ -34,20 +34,17 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     }
 
     private void setupLoadStateObserver() {
-        dataSourceFactory.setDataLoadStateObserver(new DataLoadStateObserver() {
-            @Override
-            public void onDataLoadStateChanged(DataLoadState loadState) {
-                switch (loadState) {
-                    case INITIAL_LOADING:
-                        view.showInitialLoading();
-                        break;
-                    case INITIAL_LOADED:
-                        view.hideInitialLoading();
-                        break;
-                    case FAILED:
-                        view.showError("An error occured. Try to reload."); // TODO: Localize
-                        break;
-                }
+        dataSourceFactory.setDataLoadStateObserver(loadState -> {
+            switch (loadState) {
+                case INITIAL_LOADING:
+                    view.showInitialLoading();
+                    break;
+                case INITIAL_LOADED:
+                    view.hideInitialLoading();
+                    break;
+                case FAILED:
+                    view.showError("An error occured. Try to reload."); // TODO: Localize
+                    break;
             }
         });
     }

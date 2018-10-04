@@ -23,11 +23,8 @@ public class WineDataSource extends PositionalDataSource<Wine> {
     }
 
     public WineDataSource(GWSService apiService) {
-        this(apiService, new DataLoadStateObserver() {
-            @Override
-            public void onDataLoadStateChanged(DataLoadState loadState) {
-                // Null object, do nothing
-            }
+        this(apiService, loadState -> {
+            // Null object, do nothing
         });
     }
 

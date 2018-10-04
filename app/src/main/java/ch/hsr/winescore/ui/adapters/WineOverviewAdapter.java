@@ -31,12 +31,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
                 .inflate(R.layout.content_wine_overview, parent, false);
 
         final ViewHolder wineItemViewHolder = new ViewHolder(itemView);
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition());
-            }
-        });
+        itemView.setOnClickListener(v -> itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition()));
 
         return wineItemViewHolder;
     }

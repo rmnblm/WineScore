@@ -71,33 +71,23 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     private void setupAdapter() {
-        adapter = new WineOverviewAdapter(new ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                presenter.listItemClicked(view, position);
-            }
-        });
+        adapter = new WineOverviewAdapter(
+                (view, position) -> presenter.listItemClicked(view, position),
+                () -> srl_swipe_container.setRefreshing(true)
+        );
     }
 
     private void setupRecyclerView() {
         rv_wine_list.setAdapter(adapter);
-        srl_swipe_container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                presenter.refreshData();
-            }
-        });
+        srl_swipe_container.setOnRefreshListener(() -> presenter.refreshData());
     }
 
     private void setupPresenter() {
         presenter = new WineOverviewPresenter(createWineDataSourceFactory());
         presenter.attachView(this);
-        presenter.getWines().observe(this, new Observer<PagedList<Wine>>() {
-            @Override
-            public void onChanged(@Nullable PagedList<Wine> pagedList) {
-                adapter.submitList(pagedList);
-                srl_swipe_container.setRefreshing(false);
-            }
+        presenter.getWines().observe(this, wines -> {
+            adapter.submitList(wines);
+            srl_swipe_container.setRefreshing(false);
         });
     }
 
@@ -118,12 +108,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     @Override
     public void showError(String errorMessage) {
         Snackbar snackbar = Snackbar.make(cl_overview, errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        presenter.refreshData();
-                    }
-                });
+                .setAction("RETRY", v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
         snackbar.show();
