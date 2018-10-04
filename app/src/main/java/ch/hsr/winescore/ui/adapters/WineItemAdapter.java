@@ -2,6 +2,8 @@ package ch.hsr.winescore.ui.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,14 +22,26 @@ import ch.hsr.winescore.utils.ItemClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WineItemAdapter extends RecyclerView.Adapter<WineItemAdapter.WineItemViewHolder> {
+public class WineItemAdapter extends ListAdapter<Wine, WineItemAdapter.WineItemViewHolder> {
+
+    public static final DiffUtil.ItemCallback<Wine> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Wine>() {
+                @Override
+                public boolean areItemsTheSame(Wine oldItem, Wine newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+                @Override
+                public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
+                    return (oldItem.getName() == newItem.getName()
+                            && oldItem.getCountry() == newItem.getCountry());
+                }
+            };
 
     private ItemClickListener itemClickListener;
-    private Context context;
     private List<Wine> wines = new ArrayList<>();
 
-    public WineItemAdapter(Context context, ItemClickListener itemClickListener) {
-        this.context = context;
+    public WineItemAdapter(ItemClickListener itemClickListener) {
+        super(DIFF_CALLBACK);
         this.itemClickListener = itemClickListener;
     }
 
@@ -49,32 +63,16 @@ public class WineItemAdapter extends RecyclerView.Adapter<WineItemAdapter.WineIt
 
     @Override
     public void onBindViewHolder(final WineItemViewHolder holder, int position) {
-        Wine wine = wines.get(position);
+        Wine wine = getItem(position);
         holder.title.setText(wine.getName());
         holder.subtitle.setText(wine.getCountry() + ", " + wine.getVintage());
         holder.index.setText(wine.getConfidenceIndex());
         holder.icon.setImageDrawable(wine.getColor().toLowerCase().equals("white") ? holder.wine_white : holder.wine_red);
     }
 
-    @Override
-    public int getItemCount() {
-        return wines.size();
-    }
-
-    public void addWine(Wine wine) {
-        wines.add(wine);
-        notifyItemChanged(getItemCount() - 1);
-    }
-
     public void addWines(List<Wine> newWines) {
         wines.addAll(newWines);
-        notifyDataSetChanged();
-    }
-
-    public void replaceAllWines(List<Wine> newWines) {
-        wines.clear();
-        wines.addAll(newWines);
-        notifyDataSetChanged();
+        submitList(wines);
     }
 
     public List<Wine> getWines() {

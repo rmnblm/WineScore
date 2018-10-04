@@ -78,7 +78,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     private void setupAdapter() {
-        adapter = new WineItemAdapter(this, new ItemClickListener() {
+        adapter = new WineItemAdapter(new ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 presenter.listItemClicked(view, position);
