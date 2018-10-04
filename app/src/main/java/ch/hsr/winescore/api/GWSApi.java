@@ -2,7 +2,7 @@ package ch.hsr.winescore.api;
 
 import android.util.Log;
 import ch.hsr.winescore.WineScoreApplication;
-import ch.hsr.winescore.model.WineList;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GlobalWineScoreApi {
+public class GWSApi {
 
     private static final String ROOT_URL = "https://api.globalwinescore.com/globalwinescores/";
     private static final String API_KEY = "03a6a975ed86c26d1a3d791571ef9c8df080c5c6";
@@ -46,8 +46,8 @@ public class GlobalWineScoreApi {
      *
      * @return API Endpoint
      */
-    public static GlobalWineScoreService getService() {
-        return getRetrofitInstance().create(GlobalWineScoreService.class);
+    public static GWSService getService() {
+        return getRetrofitInstance().create(GWSService.class);
     }
 
     private static class AuthorizationHeaderInterceptor implements Interceptor {

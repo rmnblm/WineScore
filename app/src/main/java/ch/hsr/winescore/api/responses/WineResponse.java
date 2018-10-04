@@ -1,11 +1,12 @@
-package ch.hsr.winescore.model;
+package ch.hsr.winescore.api.responses;
 
+import ch.hsr.winescore.model.Wine;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class WineList {
+public class WineResponse {
 
     @SerializedName("results")
     @Expose
@@ -15,7 +16,7 @@ public class WineList {
     @Expose
     private Integer count;
 
-    public WineList() {
+    public WineResponse() {
         wines = new ArrayList<>();
     }
 
