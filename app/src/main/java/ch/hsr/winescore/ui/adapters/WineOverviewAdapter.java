@@ -45,10 +45,6 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
         if (wine != null) {
             holder.bindTo(wine);
         }
-
-        if (position == getItemCount() - 1) {
-            System.out.println("bottom reached");
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

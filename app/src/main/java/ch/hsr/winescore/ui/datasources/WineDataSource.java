@@ -42,7 +42,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
             callback.onResult(response.body().getWines(), params.requestedStartPosition);
-            observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADED);
+            observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
             e.printStackTrace();
             observer.onDataLoadStateChanged(DataLoadState.FAILED);

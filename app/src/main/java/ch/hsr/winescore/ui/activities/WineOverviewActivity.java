@@ -1,11 +1,9 @@
 package ch.hsr.winescore.ui.activities;
 
-import android.arch.lifecycle.Observer;
-import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -21,14 +19,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.api.GWSClient;
-import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
+import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
 import ch.hsr.winescore.ui.views.WineOverviewView;
-import ch.hsr.winescore.utils.BottomReachedListener;
-import ch.hsr.winescore.utils.ItemClickListener;
 
 public class WineOverviewActivity extends AppCompatActivity implements WineOverviewView {
 
@@ -86,16 +81,22 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         rv_wine_list.setLayoutManager(new LinearLayoutManager(this));
         rv_wine_list.setHasFixedSize(true);
         rv_wine_list.setAdapter(adapter);
+        rv_wine_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // Show loading indicator when bottom is reached before new data got loaded, e.g. slow API
+                if (!recyclerView.canScrollVertically(1)) { showLoading(); }
+            }
+        });
+
         srl_swipe_container.setOnRefreshListener(() -> presenter.refreshData());
     }
 
     private void setupPresenter() {
         presenter = new WineOverviewPresenter(createWineDataSourceFactory());
         presenter.attachView(this);
-        presenter.getWines().observe(this, wines -> {
-            adapter.submitList(wines);
-            srl_swipe_container.setRefreshing(false);
-        });
+        presenter.getWines().observe(this, wines -> adapter.submitList(wines));
     }
 
     protected WineDataSourceFactory createWineDataSourceFactory() {
@@ -103,12 +104,12 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     @Override
-    public void showInitialLoading() {
+    public void showLoading() {
         srl_swipe_container.setRefreshing(true);
     }
 
     @Override
-    public void hideInitialLoading() {
+    public void hideLoading() {
         srl_swipe_container.setRefreshing(false);
     }
 

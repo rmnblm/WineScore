@@ -15,7 +15,6 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     private LiveData<PagedList<Wine>> wines;
     private WineDataSourceFactory dataSourceFactory;
 
-
     public WineOverviewPresenter(WineDataSourceFactory dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
     }
@@ -41,10 +40,10 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
         dataSourceFactory.setDataLoadStateObserver(loadState -> {
             switch (loadState) {
                 case INITIAL_LOADING:
-                    view.showInitialLoading();
+                    view.showLoading();
                     break;
-                case INITIAL_LOADED:
-                    view.hideInitialLoading();
+                case LOADED:
+                    view.hideLoading();
                     break;
                 case FAILED:
                     view.showError("An error occured. Try to reload."); // TODO: Localize
