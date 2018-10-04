@@ -22,8 +22,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -31,6 +31,7 @@
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
             android:id="@+id/wine_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,7 +41,7 @@
             android:orientation="vertical"
             tools:context=".ui.activities.WineOverviewActivity"
             tools:listitem="@layout/content_wine_overview" />
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <fragment
         android:id="@+id/bottomNavigationFragment"

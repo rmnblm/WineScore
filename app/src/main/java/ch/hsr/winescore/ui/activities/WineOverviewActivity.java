@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,7 +18,10 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.api.GWSClient;
+import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
 import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
 import ch.hsr.winescore.ui.views.WineOverviewView;
@@ -27,11 +30,11 @@ import ch.hsr.winescore.utils.ItemClickListener;
 public class WineOverviewActivity extends AppCompatActivity implements WineOverviewView {
 
     @BindView(R.id.cl_overview) CoordinatorLayout cl_overview;
+    @BindView(R.id.swipe_container) SwipeRefreshLayout srl_swipe_container;
     @BindView(R.id.wine_list) RecyclerView rv_wine_list;
 
     private WineOverviewPresenter presenter;
     private WineOverviewAdapter adapter;
-    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +79,17 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     private void setupRecyclerView() {
-        linearLayoutManager = new LinearLayoutManager(this);
-        rv_wine_list.hasFixedSize();
-        rv_wine_list.setLayoutManager(linearLayoutManager);
         rv_wine_list.setAdapter(adapter);
+        srl_swipe_container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                presenter.onRefresh();
+            }
+        });
     }
 
     private void setupPresenter() {
-        presenter = new WineOverviewPresenter();
+        presenter = new WineOverviewPresenter(createWineDataSourceFactory());
         presenter.attachView(this);
         presenter.getWines().observe(this, new Observer<PagedList<Wine>>() {
             @Override
@@ -91,6 +97,17 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
                 adapter.submitList(pagedList);
             }
         });
+
+        presenter.getLoadState().observe(this, new Observer<DataLoadState>() {
+            @Override
+            public void onChanged(@Nullable DataLoadState dataLoadState) {
+                srl_swipe_container.setRefreshing(dataLoadState == DataLoadState.LOADING);
+            }
+        });
+    }
+
+    protected WineDataSourceFactory createWineDataSourceFactory() {
+        return new WineDataSourceFactory(GWSClient.getService());
     }
 
     @Override

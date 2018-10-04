@@ -14,7 +14,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GWSApi {
+public class GWSClient {
 
     private static final String ROOT_URL = "https://api.globalwinescore.com/globalwinescores/";
     private static final String API_KEY = "03a6a975ed86c26d1a3d791571ef9c8df080c5c6";
