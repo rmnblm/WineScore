@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
 import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
 import ch.hsr.winescore.ui.views.WineOverviewView;
+import ch.hsr.winescore.utils.BottomReachedListener;
 import ch.hsr.winescore.utils.ItemClickListener;
 
 public class WineOverviewActivity extends AppCompatActivity implements WineOverviewView {
@@ -43,10 +45,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         setContentView(R.layout.activity_wine_overview);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
+        setupToolbar();
         setupAdapter();
         setupRecyclerView();
         setupPresenter();
@@ -70,6 +69,12 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         return false;
     }
 
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+    }
+
     private void setupAdapter() {
         adapter = new WineOverviewAdapter(
                 (view, position) -> presenter.listItemClicked(view, position),
@@ -78,6 +83,8 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     private void setupRecyclerView() {
+        rv_wine_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_wine_list.setHasFixedSize(true);
         rv_wine_list.setAdapter(adapter);
         srl_swipe_container.setOnRefreshListener(() -> presenter.refreshData());
     }
@@ -120,10 +127,5 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         Intent intent = new Intent(context, WineDetailActivity.class);
         intent.putExtra("wine", wine);
         context.startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }

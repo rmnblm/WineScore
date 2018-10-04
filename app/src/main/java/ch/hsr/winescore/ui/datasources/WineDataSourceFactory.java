@@ -3,7 +3,7 @@ package ch.hsr.winescore.ui.datasources;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import ch.hsr.winescore.api.GWSService;
-import ch.hsr.winescore.model.DataLoadStateObserver;
+import ch.hsr.winescore.utils.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
 
 public class WineDataSourceFactory extends DataSource.Factory<Integer, Wine> {

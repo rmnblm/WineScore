@@ -14,15 +14,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.utils.BottomReachedListener;
 import ch.hsr.winescore.utils.ItemClickListener;
 
 public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdapter.ViewHolder> {
 
     private ItemClickListener itemClickListener;
+    private final BottomReachedListener bottomReachedListener;
 
-    public WineOverviewAdapter(ItemClickListener itemClickListener) {
-        super(DIFF_CALLBACK);
+    public WineOverviewAdapter(ItemClickListener itemClickListener, BottomReachedListener bottomReachedListener) {
+        super(Wine.DIFF_CALLBACK);
         this.itemClickListener = itemClickListener;
+        this.bottomReachedListener = bottomReachedListener;
     }
 
     @Override
@@ -41,6 +44,10 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
         Wine wine = getItem(position);
         if (wine != null) {
             holder.bindTo(wine);
+        }
+
+        if (position == getItemCount() - 1) {
+            System.out.println("bottom reached");
         }
     }
 
@@ -64,16 +71,4 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
             icon.setImageDrawable(wine.getColor().toLowerCase().equals("white") ? wine_white : wine_red);
         }
     }
-
-    private static final DiffUtil.ItemCallback<Wine> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Wine>() {
-                @Override
-                public boolean areItemsTheSame(Wine oldItem, Wine newItem) {
-                    return oldItem.getId() == newItem.getId();
-                }
-                @Override
-                public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
-                    return (oldItem.getName() == newItem.getName() && oldItem.getVintage() == newItem.getVintage());
-                }
-            };
 }

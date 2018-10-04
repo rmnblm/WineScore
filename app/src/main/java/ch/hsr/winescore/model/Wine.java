@@ -1,5 +1,6 @@
 package ch.hsr.winescore.model;
 
+import android.support.v7.util.DiffUtil;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -58,20 +59,12 @@ public class Wine implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getId() {
         return id;
     }
 
     public String getCountry() {
         return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 
     public ArrayList<String> getRegions() {
@@ -82,47 +75,44 @@ public class Wine implements Serializable {
         return appellation;
     }
 
-    public void setAppellation(String appellation) {
-        this.appellation = appellation;
-    }
-
     public String getVintage() {
         return vintage;
-    }
-
-    public void setVintage(String vintage) {
-        this.vintage = vintage;
     }
 
     public String getColor() {
         return color;
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public String getWineType() {
         return wineType;
-    }
-
-    public void setWineType(String wineType) {
-        this.wineType = wineType;
     }
 
     public Double getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
     public String getConfidenceIndex() {
         return confidenceIndex;
     }
 
-    public void setConfidenceIndex(String confidenceIndex) {
-        this.confidenceIndex = confidenceIndex;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this)
+            return true;
+
+        Wine wine = (Wine) obj;
+        return wine.id == this.id;
     }
+
+    public static final DiffUtil.ItemCallback<Wine> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Wine>() {
+                @Override
+                public boolean areItemsTheSame(Wine oldItem, Wine newItem) {
+                    return oldItem.getId() == newItem.getId();
+                }
+                @Override
+                public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
+                    return oldItem.equals(newItem);
+                }
+            };
 }
