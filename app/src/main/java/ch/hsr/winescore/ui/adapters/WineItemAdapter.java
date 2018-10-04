@@ -22,8 +22,7 @@ import java.util.List;
 
 public class WineItemAdapter extends RecyclerView.Adapter<WineItemAdapter.WineItemViewHolder> {
 
-    ItemClickListener itemClickListener;
-
+    private ItemClickListener itemClickListener;
     private Context context;
     private List<Wine> wines = new ArrayList<>();
 

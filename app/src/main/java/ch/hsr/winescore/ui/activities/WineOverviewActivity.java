@@ -90,7 +90,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         presenter = new WineOverviewPresenter();
         presenter.attachView(this);
         presenter.subscribe();
-        presenter.updateWines(0);
+        presenter.updateWines(1);
     }
 
     private void setupRecyclerView() {
