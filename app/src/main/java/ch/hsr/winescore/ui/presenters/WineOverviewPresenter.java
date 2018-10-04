@@ -1,11 +1,11 @@
 package ch.hsr.winescore.ui.presenters;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.view.View;
 import ch.hsr.winescore.model.DataLoadState;
+import ch.hsr.winescore.model.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.views.WineOverviewView;
@@ -13,7 +13,7 @@ import ch.hsr.winescore.ui.views.WineOverviewView;
 public class WineOverviewPresenter implements Presenter<WineOverviewView> {
 
     private WineOverviewView view;
-    private static final int PAGE_SIZE = 30;
+    private static final int PAGE_SIZE = 10;
     private LiveData<PagedList<Wine>> wines;
     private WineDataSourceFactory dataSourceFactory;
 
@@ -25,23 +25,38 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     @Override
     public void attachView(WineOverviewView view) {
         this.view = view;
-
-        setupWineLiveData();
+        setupLiveWineData();
+        setupLoadStateObserver();
     }
 
-    private void setupWineLiveData() {
+    private void setupLiveWineData() {
         wines = new LivePagedListBuilder(dataSourceFactory, PAGE_SIZE).build();
+    }
+
+    private void setupLoadStateObserver() {
+        dataSourceFactory.setDataLoadStateObserver(new DataLoadStateObserver() {
+            @Override
+            public void onDataLoadStateChanged(DataLoadState loadState) {
+                switch (loadState) {
+                    case INITIAL_LOADING:
+                        view.showInitialLoading();
+                        break;
+                    case INITIAL_LOADED:
+                        view.hideInitialLoading();
+                        break;
+                    case FAILED:
+                        view.showError("An error occured. Try to reload."); // TODO: Localize
+                        break;
+                }
+            }
+        });
     }
 
     public LiveData<PagedList<Wine>> getWines() {
         return wines;
     }
 
-    public MutableLiveData<DataLoadState> getLoadState() {
-        return dataSourceFactory.getLoadState();
-    }
-
-    public void onRefresh() {
+    public void refreshData() {
         dataSourceFactory.invalidateDataSource();
     }
 

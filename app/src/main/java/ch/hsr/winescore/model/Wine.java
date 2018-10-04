@@ -36,6 +36,10 @@ public class Wine implements Serializable {
     @Expose
     private String color;
 
+    @SerializedName("wine_type")
+    @Expose
+    private String wineType;
+
     @SerializedName("score")
     @Expose
     private Double score;
@@ -98,6 +102,14 @@ public class Wine implements Serializable {
         this.color = color;
     }
 
+    public String getWineType() {
+        return wineType;
+    }
+
+    public void setWineType(String wineType) {
+        this.wineType = wineType;
+    }
+
     public Double getScore() {
         return score;
     }
@@ -113,5 +125,4 @@ public class Wine implements Serializable {
     public void setConfidenceIndex(String confidenceIndex) {
         this.confidenceIndex = confidenceIndex;
     }
-
 }

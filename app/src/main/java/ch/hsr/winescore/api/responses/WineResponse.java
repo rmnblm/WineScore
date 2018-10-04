@@ -18,6 +18,7 @@ public class WineResponse {
 
     public WineResponse() {
         wines = new ArrayList<>();
+        count = 0;
     }
 
     /**

@@ -78,8 +78,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
                 }
                 @Override
                 public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
-                    return (oldItem.getName() == newItem.getName()
-                            && oldItem.getCountry() == newItem.getCountry());
+                    return (oldItem.getName() == newItem.getName() && oldItem.getVintage() == newItem.getVintage());
                 }
             };
 }

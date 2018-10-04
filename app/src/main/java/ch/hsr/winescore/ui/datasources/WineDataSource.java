@@ -3,10 +3,10 @@ package ch.hsr.winescore.ui.datasources;
 import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
 import ch.hsr.winescore.api.GWSService;
+import ch.hsr.winescore.api.responses.WineResponse;
 import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.api.responses.WineResponse;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -14,21 +14,26 @@ import java.io.IOException;
 
 public class WineDataSource extends PositionalDataSource<Wine> {
 
-    private GWSService apiService;
-    private DataLoadStateObserver observer;
+    private final GWSService apiService;
+    private final DataLoadStateObserver observer;
 
-
-    public WineDataSource(GWSService apiService) {
+    public WineDataSource(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
+        this.observer = observer;
     }
 
-    public void setDataLoadStateObserver(DataLoadStateObserver observer) {
-        this.observer = observer;
+    public WineDataSource(GWSService apiService) {
+        this(apiService, new DataLoadStateObserver() {
+            @Override
+            public void onDataLoadStateChanged(DataLoadState loadState) {
+                // Null object, do nothing
+            }
+        });
     }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Wine> callback) {
-        observer.onDataLoadStateChanged(DataLoadState.LOADING);
+        observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADING);
 
         System.out.println("[loadInitial] pageSize = " + params.pageSize +
                 ", requestedStartPosition = " + params.requestedStartPosition +
@@ -40,7 +45,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
             callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
-            observer.onDataLoadStateChanged(DataLoadState.LOADED);
+            observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADED);
         } catch (IOException e) {
             e.printStackTrace();
             observer.onDataLoadStateChanged(DataLoadState.FAILED);

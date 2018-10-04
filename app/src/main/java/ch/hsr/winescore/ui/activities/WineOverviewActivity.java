@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -83,7 +84,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         srl_swipe_container.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                presenter.onRefresh();
+                presenter.refreshData();
             }
         });
     }
@@ -95,19 +96,37 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
             @Override
             public void onChanged(@Nullable PagedList<Wine> pagedList) {
                 adapter.submitList(pagedList);
-            }
-        });
-
-        presenter.getLoadState().observe(this, new Observer<DataLoadState>() {
-            @Override
-            public void onChanged(@Nullable DataLoadState dataLoadState) {
-                // srl_swipe_container.setRefreshing(dataLoadState == DataLoadState.LOADING);
+                srl_swipe_container.setRefreshing(false);
             }
         });
     }
 
     protected WineDataSourceFactory createWineDataSourceFactory() {
         return new WineDataSourceFactory(GWSClient.getService());
+    }
+
+    @Override
+    public void showInitialLoading() {
+        srl_swipe_container.setRefreshing(true);
+    }
+
+    @Override
+    public void hideInitialLoading() {
+        srl_swipe_container.setRefreshing(false);
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+        Snackbar snackbar = Snackbar.make(cl_overview, errorMessage, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        presenter.refreshData();
+                    }
+                });
+        snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
+        snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
+        snackbar.show();
     }
 
     @Override
