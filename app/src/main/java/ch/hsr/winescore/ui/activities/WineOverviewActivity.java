@@ -101,7 +101,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         presenter.getLoadState().observe(this, new Observer<DataLoadState>() {
             @Override
             public void onChanged(@Nullable DataLoadState dataLoadState) {
-                srl_swipe_container.setRefreshing(dataLoadState == DataLoadState.LOADING);
+                // srl_swipe_container.setRefreshing(dataLoadState == DataLoadState.LOADING);
             }
         });
     }
