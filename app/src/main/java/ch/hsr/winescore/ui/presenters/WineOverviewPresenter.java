@@ -4,8 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.view.View;
-import ch.hsr.winescore.model.DataLoadState;
-import ch.hsr.winescore.model.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.views.WineOverviewView;
@@ -13,7 +11,7 @@ import ch.hsr.winescore.ui.views.WineOverviewView;
 public class WineOverviewPresenter implements Presenter<WineOverviewView> {
 
     private WineOverviewView view;
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 20;
     private LiveData<PagedList<Wine>> wines;
     private WineDataSourceFactory dataSourceFactory;
 
@@ -30,7 +28,13 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     }
 
     private void setupLiveWineData() {
-        wines = new LivePagedListBuilder(dataSourceFactory, PAGE_SIZE).build();
+        PagedList.Config config =
+                new PagedList.Config.Builder()
+                        .setEnablePlaceholders(false)
+                        .setPageSize(PAGE_SIZE)
+                        .build();
+
+        wines = new LivePagedListBuilder(dataSourceFactory, config).build();
     }
 
     private void setupLoadStateObserver() {

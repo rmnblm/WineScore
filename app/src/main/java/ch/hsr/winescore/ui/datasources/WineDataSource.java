@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import ch.hsr.winescore.api.GWSService;
 import ch.hsr.winescore.api.responses.WineResponse;
 import ch.hsr.winescore.model.DataLoadState;
-import ch.hsr.winescore.model.DataLoadStateObserver;
+import ch.hsr.winescore.utils.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,7 +41,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
         try {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
-            callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
+            callback.onResult(response.body().getWines(), params.requestedStartPosition);
             observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADED);
         } catch (IOException e) {
             e.printStackTrace();
