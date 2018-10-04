@@ -97,6 +97,19 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         presenter = new WineOverviewPresenter(createWineDataSourceFactory());
         presenter.attachView(this);
         presenter.getWines().observe(this, wines -> adapter.submitList(wines));
+        presenter.getLoadState().observe(this, loadState -> {
+            switch (loadState) {
+                case INITIAL_LOADING:
+                    showLoading();
+                    break;
+                case LOADED:
+                    hideLoading();
+                    break;
+                case FAILED:
+                    showError("An error occured. Try to reload."); // TODO: Localize
+                    break;
+            }
+        });
     }
 
     protected WineDataSourceFactory createWineDataSourceFactory() {

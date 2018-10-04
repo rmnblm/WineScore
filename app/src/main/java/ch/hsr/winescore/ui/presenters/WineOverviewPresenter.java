@@ -1,9 +1,11 @@
 package ch.hsr.winescore.ui.presenters;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.view.View;
+import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.views.WineOverviewView;
@@ -14,9 +16,11 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     private static final int PAGE_SIZE = 20;
     private LiveData<PagedList<Wine>> wines;
     private WineDataSourceFactory dataSourceFactory;
+    private MutableLiveData<DataLoadState> loadState;
 
     public WineOverviewPresenter(WineDataSourceFactory dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
+        this.loadState = new MutableLiveData<>();
     }
 
     @Override
@@ -37,23 +41,15 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     }
 
     private void setupLoadStateObserver() {
-        dataSourceFactory.setDataLoadStateObserver(loadState -> {
-            switch (loadState) {
-                case INITIAL_LOADING:
-                    view.showLoading();
-                    break;
-                case LOADED:
-                    view.hideLoading();
-                    break;
-                case FAILED:
-                    view.showError("An error occured. Try to reload."); // TODO: Localize
-                    break;
-            }
-        });
+        dataSourceFactory.setDataLoadStateObserver(loadState -> this.loadState.postValue(loadState));
     }
 
     public LiveData<PagedList<Wine>> getWines() {
         return wines;
+    }
+
+    public MutableLiveData<DataLoadState> getLoadState() {
+        return loadState;
     }
 
     public void refreshData() {
