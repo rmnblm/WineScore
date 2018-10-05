@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.api.GWSClient;
+import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
@@ -94,26 +95,17 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     }
 
     private void setupPresenter() {
-        presenter = new WineOverviewPresenter(createWineDataSourceFactory());
+        presenter = new WineOverviewPresenter();
         presenter.attachView(this);
         presenter.getWines().observe(this, wines -> adapter.submitList(wines));
         presenter.getLoadState().observe(this, loadState -> {
-            switch (loadState) {
-                case INITIAL_LOADING:
-                    showLoading();
-                    break;
-                case LOADED:
-                    hideLoading();
-                    break;
-                case FAILED:
-                    showError("An error occured. Try to reload."); // TODO: Localize
-                    break;
-            }
+            if (loadState == DataLoadState.INITIAL_LOADING)
+                showLoading();
+            else if (loadState == DataLoadState.LOADED)
+                hideLoading();
+            else if (loadState == DataLoadState.FAILED)
+                showError(getString(R.string.dataload_error_message));
         });
-    }
-
-    protected WineDataSourceFactory createWineDataSourceFactory() {
-        return new WineDataSourceFactory(GWSClient.getService());
     }
 
     @Override

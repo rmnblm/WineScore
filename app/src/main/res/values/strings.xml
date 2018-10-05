@@ -14,4 +14,6 @@
     <string name="rating">Rating</string>
     <string name="filter">Filter</string>
     <string name="filter_wines">Filter wines</string>
+
+    <string name="dataload_error_message">An error occured. Try to reload.</string>
 </resources>
