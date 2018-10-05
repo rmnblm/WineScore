@@ -50,13 +50,10 @@ public class WineDetailActivity extends AppCompatActivity implements WineDetailV
     }
 
     private void setupFloatingActionButton() {
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        floatingActionButton.setOnClickListener(
+                view -> Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        );
     }
 
     private void setupPresenter() {

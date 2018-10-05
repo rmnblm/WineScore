@@ -2,10 +2,11 @@ package ch.hsr.winescore.api;
 
 import android.util.Log;
 import ch.hsr.winescore.WineScoreApplication;
-import ch.hsr.winescore.model.WineList;
+
 import java.io.File;
 import java.io.IOException;
 
+import ch.hsr.winescore.WineScoreConstants;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -14,10 +15,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GlobalWineScoreApi {
-
-    private static final String ROOT_URL = "https://api.globalwinescore.com/globalwinescores/";
-    private static final String API_KEY = "03a6a975ed86c26d1a3d791571ef9c8df080c5c6";
+public class GWSClient {
 
     /**
      * Get Retrofit Instance
@@ -35,7 +33,7 @@ public class GlobalWineScoreApi {
                 .build();
 
         return new Retrofit.Builder()
-                .baseUrl(ROOT_URL)
+                .baseUrl(WineScoreConstants.ROOT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
@@ -46,8 +44,8 @@ public class GlobalWineScoreApi {
      *
      * @return API Endpoint
      */
-    public static GlobalWineScoreService getService() {
-        return getRetrofitInstance().create(GlobalWineScoreService.class);
+    public static GWSService getService() {
+        return getRetrofitInstance().create(GWSService.class);
     }
 
     private static class AuthorizationHeaderInterceptor implements Interceptor {
@@ -56,7 +54,7 @@ public class GlobalWineScoreApi {
             Request originalRequest = chain.request();
             Request.Builder builder = originalRequest
                     .newBuilder()
-                    .header("Authorization", "Token " + API_KEY);
+                    .header("Authorization", "Token " + WineScoreConstants.API_KEY);
             Request newRequest = builder.build();
             return chain.proceed(newRequest);
         }

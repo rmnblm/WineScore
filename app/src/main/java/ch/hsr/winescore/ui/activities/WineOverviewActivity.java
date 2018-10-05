@@ -3,40 +3,37 @@ package ch.hsr.winescore.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.api.GWSClient;
+import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.adapters.WineItemAdapter;
+import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
+import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
 import ch.hsr.winescore.ui.views.WineOverviewView;
-import ch.hsr.winescore.utils.InfiniteScrollListener;
-import ch.hsr.winescore.utils.ItemClickListener;
-
-import java.util.List;
 
 public class WineOverviewActivity extends AppCompatActivity implements WineOverviewView {
 
-    public static final String TAG = WineOverviewActivity.class.getSimpleName();
-
     @BindView(R.id.cl_overview) CoordinatorLayout cl_overview;
+    @BindView(R.id.swipe_container) SwipeRefreshLayout srl_swipe_container;
     @BindView(R.id.wine_list) RecyclerView rv_wine_list;
 
     private WineOverviewPresenter presenter;
-    private WineItemAdapter adapter;
-    private LinearLayoutManager linearLayoutManager;
-    private InfiniteScrollListener infiniteScrollListener;
+    private WineOverviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,19 +41,10 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         setContentView(R.layout.activity_wine_overview);
         ButterKnife.bind(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
-
+        setupToolbar();
         setupAdapter();
         setupRecyclerView();
         setupPresenter();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.unsubscribe();
     }
 
     @Override
@@ -77,82 +65,73 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         return false;
     }
 
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
+    }
+
     private void setupAdapter() {
-        adapter = new WineItemAdapter(this, new ItemClickListener() {
+        adapter = new WineOverviewAdapter(
+                (view, position) -> presenter.listItemClicked(view, position),
+                () -> srl_swipe_container.setRefreshing(true)
+        );
+    }
+
+    private void setupRecyclerView() {
+        rv_wine_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_wine_list.setHasFixedSize(true);
+        rv_wine_list.setAdapter(adapter);
+        rv_wine_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onItemClick(View view, int position) {
-                presenter.listItemClicked(view, position);
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                // Show loading indicator when bottom is reached before new data got loaded, e.g. slow API
+                if (!recyclerView.canScrollVertically(1)) { showLoading(); }
             }
         });
+
+        srl_swipe_container.setOnRefreshListener(() -> presenter.refreshData());
     }
 
     private void setupPresenter() {
         presenter = new WineOverviewPresenter();
         presenter.attachView(this);
-        presenter.subscribe();
-        presenter.updateWines(1);
-    }
-
-    private void setupRecyclerView() {
-        linearLayoutManager = new LinearLayoutManager(this);
-
-        rv_wine_list.hasFixedSize();
-        rv_wine_list.setLayoutManager(linearLayoutManager);
-
-        infiniteScrollListener = new InfiniteScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                presenter.updateWines(page);
-            }
-        };
-        rv_wine_list.addOnScrollListener(infiniteScrollListener);
-    }
-
-    @Override
-    public void showWineList() {
-        rv_wine_list.setAdapter(adapter);
-    }
-
-    @Override
-    public void showAddedWines(List<Wine> wines) {
-        adapter.addWines(wines);
+        presenter.getWines().observe(this, wines -> adapter.submitList(wines));
+        presenter.getLoadState().observe(this, loadState -> {
+            if (loadState == DataLoadState.INITIAL_LOADING)
+                showLoading();
+            else if (loadState == DataLoadState.LOADED)
+                hideLoading();
+            else if (loadState == DataLoadState.FAILED)
+                showError(getString(R.string.dataload_error_message));
+        });
     }
 
     @Override
     public void showLoading() {
-        Log.d(TAG, "*** Loading wines from server.");
+        srl_swipe_container.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-        Log.d(TAG, "*** Done loading.");
+        srl_swipe_container.setRefreshing(false);
     }
 
     @Override
-    public void showError(String message) {
-        Snackbar snackbar = Snackbar.make(cl_overview, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        presenter.updateWines(1);
-                    }
-                });
+    public void showError(String errorMessage) {
+        Snackbar snackbar = Snackbar.make(cl_overview, errorMessage, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
         snackbar.show();
     }
 
     @Override
-    public void navigateToDetailScreen(View view, int position) {
-        Wine wine = adapter.getWines().get(position);
+    public void navigateToDetailScreen(View view, Wine wine) {
         Context context = view.getContext();
         Intent intent = new Intent(context, WineDetailActivity.class);
         intent.putExtra("wine", wine);
         context.startActivity(intent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }
