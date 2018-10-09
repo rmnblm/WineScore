@@ -21,15 +21,16 @@ public class GWSClient {
      * Get Retrofit Instance
      */
     private static Retrofit getRetrofitInstance() {
+        File cacheDirectory = WineScoreApplication.getApplicationInstance().getCacheDir();
+        File responsesCache = new File(cacheDirectory, "wsApiResponses");
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(responsesCache, cacheSize);
+
         OkHttpClient client = new OkHttpClient.Builder()
-                .addNetworkInterceptor(new ResponseCacheInterceptor())
-                .addInterceptor(new AuthorizationHeaderInterceptor())
-                .addInterceptor(new OfflineCacheInterceptor())
-                .cache(new Cache(new File(
-                        WineScoreApplication.getApplicationInstance().getCacheDir(),
-                        "wsApiResponses"),
-                        5 * 1024 * 1024) // 5 MB
-                )
+                .addNetworkInterceptor(REWRITE_RESPONSE_INTERCEPTOR)
+                .addInterceptor(REWRITE_RESPONSE_INTERCEPTOR_OFFLINE)
+                .addInterceptor(AUTHORIZATION_HEADER_INTERCEPTOR)
+                .cache(cache)
                 .build();
 
         return new Retrofit.Builder()
@@ -48,39 +49,35 @@ public class GWSClient {
         return getRetrofitInstance().create(GWSService.class);
     }
 
-    private static class AuthorizationHeaderInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            Request.Builder builder = originalRequest
-                    .newBuilder()
-                    .header("Authorization", "Token " + WineScoreConstants.API_KEY);
-            Request newRequest = builder.build();
-            return chain.proceed(newRequest);
-        }
-    }
+    private static final Interceptor AUTHORIZATION_HEADER_INTERCEPTOR = chain -> {
+        Request originalRequest = chain.request();
+        Request.Builder builder = originalRequest
+                .newBuilder()
+                .header("Authorization", "Token " + WineScoreConstants.API_KEY);
+        Request newRequest = builder.build();
+        return chain.proceed(newRequest);
+    };
 
-    private static class ResponseCacheInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            okhttp3.Response originalResponse = chain.proceed(chain.request());
+    private static final Interceptor REWRITE_RESPONSE_INTERCEPTOR = chain -> {
+        Response originalResponse = chain.proceed(chain.request());
+        String cacheControl = originalResponse.header("Cache-Control");
+        if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
+                cacheControl.contains("must-revalidate") || cacheControl.contains("max-age=0")) {
             return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, max-size=" + 60)
+                    .header("Cache-Control", "public, max-age=" + 5000)
+                    .build();
+        } else {
+            return originalResponse;
+        }
+    };
+
+    private static final Interceptor REWRITE_RESPONSE_INTERCEPTOR_OFFLINE = chain -> {
+        Request request = chain.request();
+        if (!WineScoreApplication.hasNetwork()) {
+            request = request.newBuilder()
+                    .header("Cache-Control", "public, only-if-cached")
                     .build();
         }
-    }
-
-    private static class OfflineCacheInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            if (!WineScoreApplication.hasNetwork()) {
-                request = request.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + (60 * 60 * 24 * 7)) // 1 Week
-                        .build();
-                Log.d("API", "New offline cache stored");
-            }
-            return chain.proceed(request);
-        }
-    }
+        return chain.proceed(request);
+    };
 }
