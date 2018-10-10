@@ -1,75 +1,63 @@
 package ch.hsr.winescore.ui.presenters;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.paging.LivePagedListBuilder;
+import android.arch.paging.PagedList;
 import android.view.View;
-import ch.hsr.winescore.api.GlobalWineScoreApi;
+import ch.hsr.winescore.api.GWSClient;
+import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.model.WineList;
+import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.views.WineOverviewView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class WineOverviewPresenter implements Presenter<WineOverviewView> {
 
-    private static final int PER_PAGE_LIMIT = 30;
-
     private WineOverviewView view;
-    private Set<Call<WineList>> wineListCalls;
+    private static final int PAGE_SIZE = 20;
+    private LiveData<PagedList<Wine>> wines;
+    private final WineDataSourceFactory dataSourceFactory;
+    private final MutableLiveData<DataLoadState> loadState;
+
+    public WineOverviewPresenter() {
+        this.dataSourceFactory = new WineDataSourceFactory();
+        this.loadState = new MutableLiveData<>();
+    }
 
     @Override
     public void attachView(WineOverviewView view) {
         this.view = view;
-        this.wineListCalls = new HashSet<>();
+        setupLiveWineData();
+        setupLoadStateObserver();
     }
 
-    public void subscribe() {
-        view.showWineList();
+    private void setupLiveWineData() {
+        PagedList.Config config =
+                new PagedList.Config.Builder()
+                        .setEnablePlaceholders(false)
+                        .setPageSize(PAGE_SIZE)
+                        .build();
+
+        wines = new LivePagedListBuilder(dataSourceFactory, config).build();
     }
 
-    public void unsubscribe() {
-        for (Call<WineList> call : wineListCalls) {
-            if (call != null && call.isExecuted() && !call.isCanceled()) {
-                call.cancel();
-            }
-        }
-        wineListCalls.clear();
+    private void setupLoadStateObserver() {
+        dataSourceFactory.setDataLoadStateObserver(loadState -> this.loadState.postValue(loadState));
     }
 
-    /**
-     * Updates the wines based on the specified page.
-     * @param page One-based page index
-     */
-    public void updateWines(int page) {
-        view.showLoading();
+    public LiveData<PagedList<Wine>> getWines() {
+        return wines;
+    }
 
-        final Call<WineList> wineListCall = GlobalWineScoreApi
-                .getService()
-                .getLatest(PER_PAGE_LIMIT, (page - 1) * PER_PAGE_LIMIT);
+    public MutableLiveData<DataLoadState> getLoadState() {
+        return loadState;
+    }
 
-        wineListCalls.add(wineListCall);
-        wineListCall.enqueue(new Callback<WineList>() {
-            @Override
-            public void onResponse(Call<WineList> call, Response<WineList> response) {
-
-                if (response.isSuccessful()) {
-                    List<Wine> wines = response.body().getWines();
-                    view.hideLoading();
-                    view.showAddedWines(wines);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<WineList> call, Throwable t) {
-                view.showError("error"); // TODO: Localize this
-            }
-        });
+    public void refreshData() {
+        dataSourceFactory.invalidateDataSource();
     }
 
     public void listItemClicked(View v, int position) {
-        view.navigateToDetailScreen(v, position);
+        view.navigateToDetailScreen(v, wines.getValue().get(position));
     }
 }

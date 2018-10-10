@@ -7,13 +7,13 @@
     tools:context=".ui.fragments.BottomNavigationFragment">
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:itemTextColor="@color/buttom_navigation_view"
-        app:itemIconTint="@color/buttom_navigation_view"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation" />
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSecondary"
+            app:itemTextColor="@color/bottom_navigation_view"
+            app:itemIconTint="@color/bottom_navigation_view"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navigation"/>
 
 </FrameLayout>
