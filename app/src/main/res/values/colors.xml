@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#b71c1c</color>
     <color name="colorAccent">#536dfe</color>
     <color name="colorWineGlass">@android:color/primary_text_light</color>
+    <color name="colorWineWhite">#fece62</color>
+    <color name="colorWineRed">#d10039</color>
+    <color name="colorWinePink">#ff8496</color>
     <color name="colorErrorMessage">#960000</color>
     <color name="colorSecondary">#fafafa</color>
 </resources>
