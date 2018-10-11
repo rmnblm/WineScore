@@ -78,7 +78,7 @@ public class WineDetailActivity extends AppCompatActivity implements WineDetailV
     }
 
     private void setupViewsWithExtras() {
-        tbl_appbar.setTitle(wine.getName());
+        tbl_appbar.setTitle(wine.getShortName());
         tv_vintage.setText(wine.getVintage());
         tv_color.setText(wine.getColor());
         tv_appellation.setText(wine.getAppellation());

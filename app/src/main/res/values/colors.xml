@@ -8,5 +8,8 @@
     <color name="colorWineRed">#d10039</color>
     <color name="colorWinePink">#ff8496</color>
     <color name="colorErrorMessage">#960000</color>
+    <color name="colorTitleColor">#212121</color>
+    <color name="colorSubtitleColor">#616161</color>
     <color name="colorSecondary">#fafafa</color>
+    <color name="bottomNavigationBorder">#c7c7c7</color>
 </resources>

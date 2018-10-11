@@ -49,10 +49,27 @@ public class Wine implements Serializable {
     @Expose
     private String confidenceIndex;
 
+    private String shortName;
+    private String winery;
+
     public Wine(String name, String id) {
         this.name = name;
         this.id = id;
         this.regions = new ArrayList<>();
+    }
+
+    public String getWinery() {
+        if (winery == null) {
+            computeAdditionalProperties();
+        }
+        return winery;
+    }
+
+    public String getShortName() {
+        if (shortName == null) {
+            computeAdditionalProperties();
+        }
+        return shortName;
     }
 
     public String getName() {
@@ -93,6 +110,28 @@ public class Wine implements Serializable {
 
     public String getConfidenceIndex() {
         return confidenceIndex;
+    }
+
+    private void computeAdditionalProperties() {
+        // Set default values
+        winery = name;
+        shortName = name;
+
+        // The name typically defaults to the following parts:
+        // First:                       The name of the chateau/winery/etc
+        // Second:                      The actual name of the wine
+        // Between second and last:     Additional wine information (rarely)
+        // Last:                        The appellation name
+        String[] nameParts = name.split("\\s*,\\s*");
+        if (nameParts.length >= 1) {
+            winery = nameParts[0];
+
+            if (nameParts.length >= 2) {
+                shortName = nameParts[1];
+            } else {
+                shortName = nameParts[0];
+            }
+        }
     }
 
     @Override
