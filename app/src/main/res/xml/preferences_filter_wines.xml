@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_filter_wines">
+        <ListPreference
+            android:key="pref_color"
+            android:title="@string/pref_colorTitle"
+            android:dialogTitle="@string/pref_colorTitle"
+            android:entries="@array/color"
+            android:entryValues="@array/color_values"
+            android:defaultValue="@string/array_all_value"
+            />
+        <ListPreference
+            android:key="pref_country"
+            android:title="@string/pref_countryTitle"
+            android:dialogTitle="@string/pref_countryTitle"
+            android:entries="@array/country"
+            android:entryValues="@array/country_values"
+            android:defaultValue="@string/array_all_value"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

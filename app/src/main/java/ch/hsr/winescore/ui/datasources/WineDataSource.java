@@ -1,25 +1,36 @@
 package ch.hsr.winescore.ui.datasources;
 
 import android.arch.paging.PositionalDataSource;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+
+import java.io.IOException;
+
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.api.GWSService;
 import ch.hsr.winescore.api.responses.WineResponse;
 import ch.hsr.winescore.model.DataLoadState;
-import ch.hsr.winescore.utils.DataLoadStateObserver;
 import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.utils.DataLoadStateObserver;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import java.io.IOException;
 
 public class WineDataSource extends PositionalDataSource<Wine> {
 
     private final GWSService apiService;
     private final DataLoadStateObserver observer;
+    private SharedPreferences preferences;
+
+    private String color;
+    private String country;
+    private Integer vintage;
 
     public WineDataSource(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
         this.observer = observer;
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(WineScoreApplication.getApplicationInstance().getBaseContext());
     }
 
     public WineDataSource(GWSService apiService) {
@@ -32,11 +43,13 @@ public class WineDataSource extends PositionalDataSource<Wine> {
     public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADING);
 
+        refreshParameters();
+
         System.out.println("[loadInitial] pageSize = " + params.pageSize +
                 ", requestedStartPosition = " + params.requestedStartPosition +
                 ", requestedLoadSize = " + params.requestedLoadSize);
 
-        final Call<WineResponse> wineListCall = apiService.getLatest(params.pageSize, params.requestedStartPosition);
+        final Call<WineResponse> wineListCall = apiService.getLatest(params.pageSize, params.requestedStartPosition, color, country, vintage);
 
         try {
             // Execute call synchronously since function is called on a background thread
@@ -53,9 +66,11 @@ public class WineDataSource extends PositionalDataSource<Wine> {
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.LOADING);
 
+        refreshParameters();
+
         System.out.println("[loadRange] loadSize = " + params.loadSize + ", startPosition = " + params.startPosition);
 
-        final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition);
+        final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition, color, country, vintage);
 
         try {
             // Execute call synchronously since function is called on a background thread
@@ -67,4 +82,18 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             observer.onDataLoadStateChanged(DataLoadState.FAILED);
         }
     }
+
+    private void refreshParameters() {
+        if (preferences != null) {
+            color = getStringPreference("pref_color");
+            country = getStringPreference("pref_country");
+        }
+    }
+
+    private String getStringPreference(String key) {
+        String all = WineScoreApplication.getApplicationInstance().getString(R.string.array_all_value);
+        String value = preferences.getString(key, all);
+        return all.equals(value) ? null : value;
+    }
+    
 }

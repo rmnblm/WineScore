@@ -2,7 +2,9 @@ package ch.hsr.winescore.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,14 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.api.GWSClient;
 import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
-import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
 import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
 import ch.hsr.winescore.ui.views.WineOverviewView;
 
@@ -34,6 +35,8 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
 
     private WineOverviewPresenter presenter;
     private WineOverviewAdapter adapter;
+    private BottomSheetDialog filterDialog;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,20 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
         setupAdapter();
         setupRecyclerView();
         setupPresenter();
+        setupBottomSheetDialog();
+        setupPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+    }
+
+    @Override
+    protected void onPause() {
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+        super.onPause();
     }
 
     @Override
@@ -56,10 +73,7 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_filter) {
-            View view = getLayoutInflater().inflate(R.layout.fragment_filter_sheet, null);
-            BottomSheetDialog dialog = new BottomSheetDialog(this);
-            dialog.setContentView(view);
-            dialog.show();
+            filterDialog.show();
             return true;
         }
         return false;
@@ -107,6 +121,19 @@ public class WineOverviewActivity extends AppCompatActivity implements WineOverv
                 showError(getString(R.string.dataload_error_message));
         });
     }
+
+    private void setupPreferences() {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    private void setupBottomSheetDialog() {
+        View view = getLayoutInflater().inflate(R.layout.fragment_filter_dialog, null);
+        filterDialog = new BottomSheetDialog(this);
+        filterDialog.setContentView(view);
+    }
+
+    private SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener =
+            (sharedPreferences, key) -> presenter.refreshData();
 
     @Override
     public void showLoading() {

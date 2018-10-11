@@ -54,6 +54,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
         @BindView(R.id.icon) ImageView icon;
         @BindDrawable(R.drawable.ic_wine_red) Drawable wine_red;
         @BindDrawable(R.drawable.ic_wine_white) Drawable wine_white;
+        @BindDrawable(R.drawable.ic_wine_pink) Drawable wine_pink;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,7 +65,8 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
             title.setText(wine.getName());
             subtitle.setText(wine.getCountry() + ", " + wine.getVintage());
             index.setText(wine.getConfidenceIndex());
-            icon.setImageDrawable(wine.getColor().toLowerCase().equals("white") ? wine_white : wine_red);
+            String color = wine.getColor().toLowerCase();
+            icon.setImageDrawable(color.equals("red") ? wine_red : color.equals("white") ? wine_white : wine_pink);
         }
     }
 }
