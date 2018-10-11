@@ -14,7 +14,7 @@ import ch.hsr.winescore.ui.views.WineOverviewView;
 public class WineOverviewPresenter implements Presenter<WineOverviewView> {
 
     private WineOverviewView view;
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 50;
     private LiveData<PagedList<Wine>> wines;
     private final WineDataSourceFactory dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
@@ -42,7 +42,7 @@ public class WineOverviewPresenter implements Presenter<WineOverviewView> {
     }
 
     private void setupLoadStateObserver() {
-        dataSourceFactory.setDataLoadStateObserver(loadState -> this.loadState.postValue(loadState));
+        dataSourceFactory.setDataLoadStateObserver(this.loadState::postValue);
     }
 
     public LiveData<PagedList<Wine>> getWines() {

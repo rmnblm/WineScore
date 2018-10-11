@@ -23,7 +23,7 @@
                 android:name=".ui.activities.WineDetailActivity"
                 android:label="@string/title_wine_detail"
                 android:parentActivityName=".ui.activities.WineOverviewActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.TranslucentStatusBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value="ch.hsr.winescore.ui.activities.WineOverviewActivity"/>
