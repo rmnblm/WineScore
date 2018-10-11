@@ -11,5 +11,5 @@
     <color name="colorTitleColor">#212121</color>
     <color name="colorSubtitleColor">#616161</color>
     <color name="colorSecondary">#fafafa</color>
-    <color name="bottomNavigationBorder">#c7c7c7</color>
+    <color name="bottomNavigationBorder">#e2e2e2</color>
 </resources>

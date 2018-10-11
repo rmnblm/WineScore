@@ -35,11 +35,11 @@ public class Wine implements Serializable {
 
     @SerializedName("color")
     @Expose
-    private String color;
+    private WineColor color;
 
     @SerializedName("wine_type")
     @Expose
-    private String wineType;
+    private WineType type;
 
     @SerializedName("score")
     @Expose
@@ -96,12 +96,12 @@ public class Wine implements Serializable {
         return vintage;
     }
 
-    public String getColor() {
+    public WineColor getColor() {
         return color;
     }
 
-    public String getWineType() {
-        return wineType;
+    public WineType getWineType() {
+        return type;
     }
 
     public Double getScore() {

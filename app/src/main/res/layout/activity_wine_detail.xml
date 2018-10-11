@@ -5,33 +5,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.activities.WineDetailActivity"
-    tools:ignore="MergeRootFrame">
+    tools:context=".ui.activities.WineDetailActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/app_bar_height"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+                android:id="@+id/toolbar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:maxLines="3"
+                app:statusBarScrim="@android:color/transparent"
+                app:toolbarId="@+id/toolbar">
+
+            <ImageView
+                    android:id="@+id/toolbar_bgimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/detail_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    android:id="@+id/detail_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -48,88 +57,6 @@
                       android:layout_marginTop="@dimen/fab_margin"
                       android:orientation="vertical">
 
-            <android.support.constraint.ConstraintLayout
-                    android:id="@+id/infoConstraintLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/list_item_padding">
-
-                <ImageView
-                        android:id="@+id/infoIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/information"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_info_outline_black_24dp" />
-
-                <TextView
-                        android:id="@+id/vintage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/list_item_padding"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        app:layout_constraintBottom_toBottomOf="@+id/infoIcon"
-                        app:layout_constraintStart_toEndOf="@+id/infoIcon"
-                        app:layout_constraintTop_toTopOf="@+id/infoIcon"
-                        tools:text="2000" />
-
-                <TextView
-                        android:id="@+id/vintageLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/vintage"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintStart_toStartOf="@+id/vintage"
-                        app:layout_constraintTop_toBottomOf="@+id/vintage" />
-
-                <TextView
-                        android:id="@+id/color"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/list_item_margin"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        app:layout_constraintStart_toStartOf="@+id/vintage"
-                        app:layout_constraintTop_toBottomOf="@+id/vintageLabel"
-                        tools:text="red" />
-
-                <TextView
-                        android:id="@+id/colorLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/color"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintStart_toStartOf="@+id/color"
-                        app:layout_constraintTop_toBottomOf="@+id/color" />
-
-                <TextView
-                        android:id="@+id/appellation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/list_item_margin"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        app:layout_constraintStart_toStartOf="@+id/vintage"
-                        app:layout_constraintTop_toBottomOf="@+id/colorLabel"
-                        tools:text="Pomerol" />
-
-                <TextView
-                        android:id="@+id/appellationLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/appellation"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintStart_toStartOf="@+id/appellation"
-                        app:layout_constraintTop_toBottomOf="@+id/appellation" />
-            </android.support.constraint.ConstraintLayout>
-
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/listDivider" />
 
             <android.support.constraint.ConstraintLayout
                     android:id="@+id/locationConstraintLayout"
@@ -147,15 +74,35 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
+
                 <TextView
-                        android:id="@+id/regions"
+                        android:id="@+id/appellation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/list_item_padding"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        app:layout_constraintBottom_toBottomOf="@+id/locationIcon"
                         app:layout_constraintStart_toEndOf="@+id/locationIcon"
                         app:layout_constraintTop_toTopOf="@+id/locationIcon"
+                        tools:text="Pomerol" />
+
+                <TextView
+                        android:id="@+id/appellationLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/appellation"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:layout_constraintStart_toStartOf="@+id/appellation"
+                        app:layout_constraintTop_toBottomOf="@+id/appellation" />
+
+                <TextView
+                        android:id="@+id/regions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/list_item_margin"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        app:layout_constraintStart_toStartOf="@+id/appellationLabel"
+                        app:layout_constraintTop_toBottomOf="@+id/appellationLabel"
                         tools:text="Bordeaux" />
 
                 <TextView
@@ -264,13 +211,13 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@+id/wine_detail_container"
-        app:layout_anchorGravity="top|end"
-        app:srcCompat="@drawable/ic_favorite_black_24dp" />
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_margin="@dimen/fab_margin"
+            app:layout_anchor="@+id/wine_detail_container"
+            app:layout_anchorGravity="top|end"
+            app:srcCompat="@drawable/ic_favorite_black_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
