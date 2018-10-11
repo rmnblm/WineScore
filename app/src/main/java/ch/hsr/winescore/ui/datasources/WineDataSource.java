@@ -25,7 +25,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
     private String color;
     private String country;
-    private Integer vintage;
+    private String  vintage;
 
     public WineDataSource(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
@@ -66,8 +66,6 @@ public class WineDataSource extends PositionalDataSource<Wine> {
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.LOADING);
 
-        refreshParameters();
-
         System.out.println("[loadRange] loadSize = " + params.loadSize + ", startPosition = " + params.startPosition);
 
         final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition, color, country, vintage);
@@ -85,15 +83,16 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
     private void refreshParameters() {
         if (preferences != null) {
-            color = getStringPreference("pref_color");
-            country = getStringPreference("pref_country");
+            String all = WineScoreApplication.getApplicationInstance().getString(R.string.array_all_value);
+            color = getStringPreference("pref_color", all);
+            country = getStringPreference("pref_country", all);
+            vintage = getStringPreference("pref_vintage", "");
         }
     }
 
-    private String getStringPreference(String key) {
-        String all = WineScoreApplication.getApplicationInstance().getString(R.string.array_all_value);
-        String value = preferences.getString(key, all);
-        return all.equals(value) ? null : value;
+    private String getStringPreference(String key, String defaultValue) {
+        String value = preferences.getString(key, defaultValue);
+        return defaultValue.equals(value) ? null : value;
     }
     
 }

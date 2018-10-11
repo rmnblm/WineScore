@@ -8,6 +8,7 @@
             android:entries="@array/color"
             android:entryValues="@array/color_values"
             android:defaultValue="@string/array_all_value"
+            android:summary="%s"
             />
         <ListPreference
             android:key="pref_country"
@@ -16,6 +17,12 @@
             android:entries="@array/country"
             android:entryValues="@array/country_values"
             android:defaultValue="@string/array_all_value"
+            android:summary="%s"
+            />
+        <EditTextPreference
+            android:key="pref_vintage"
+            android:title="@string/pref_vintageTitle"
+            android:inputType="numberDecimal"
             />
     </PreferenceCategory>
 </PreferenceScreen>
