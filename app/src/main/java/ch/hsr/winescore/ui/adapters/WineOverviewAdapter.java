@@ -17,6 +17,8 @@ import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.utils.BottomReachedListener;
 import ch.hsr.winescore.utils.ItemClickListener;
 
+import java.util.Locale;
+
 public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdapter.ViewHolder> {
 
     private ItemClickListener itemClickListener;
@@ -48,9 +50,10 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.title) TextView title;
-        @BindView(R.id.subtitle) TextView subtitle;
-        @BindView(R.id.index) TextView index;
+        @BindView(R.id.titleName) TextView title_name;
+        @BindView(R.id.titleOrigin) TextView title_origin;
+        @BindView(R.id.titleWinery) TextView title_winery;
+        @BindView(R.id.score) TextView score;
         @BindView(R.id.icon) ImageView icon;
         @BindDrawable(R.drawable.ic_wine_red) Drawable wine_red;
         @BindDrawable(R.drawable.ic_wine_white) Drawable wine_white;
@@ -62,11 +65,17 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
         }
 
         public void bindTo(Wine wine) {
-            title.setText(wine.getName());
-            subtitle.setText(wine.getCountry() + ", " + wine.getVintage());
-            index.setText(wine.getConfidenceIndex());
-            String color = wine.getColor().toLowerCase();
-            icon.setImageDrawable(color.equals("red") ? wine_red : color.equals("white") ? wine_white : wine_pink);
+            title_winery.setText(wine.getWinery());
+
+            title_name.setText(String.format("%s %s", wine.getShortName(), wine.getVintage()));
+            title_origin.setText(String.format("%s, %s", wine.getAppellation(), wine.getCountry()));
+            score.setText(String.format(Locale.getDefault(), "%.2f", wine.getScore()));
+
+            switch(wine.getColor()) {
+                case Red: icon.setImageDrawable(wine_red); break;
+                case White: icon.setImageDrawable(wine_white); break;
+                case Pink: icon.setImageDrawable(wine_pink); break;
+            }
         }
     }
 }
