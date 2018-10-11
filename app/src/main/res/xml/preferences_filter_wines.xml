@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_category_filter_wines">
+        <ListPreference
+            android:key="pref_color"
+            android:title="@string/pref_colorTitle"
+            android:dialogTitle="@string/pref_colorTitle"
+            android:entries="@array/color"
+            android:entryValues="@array/color_values"
+            android:defaultValue="@string/array_all_value"
+            android:summary="%s"
+            />
+        <ListPreference
+            android:key="pref_country"
+            android:title="@string/pref_countryTitle"
+            android:dialogTitle="@string/pref_countryTitle"
+            android:entries="@array/country"
+            android:entryValues="@array/country_values"
+            android:defaultValue="@string/array_all_value"
+            android:summary="%s"
+            />
+        <EditTextPreference
+            android:key="pref_vintage"
+            android:title="@string/pref_vintageTitle"
+            android:inputType="numberDecimal"
+            />
+        <ListPreference
+            android:key="pref_ordering"
+            android:title="@string/pref_orderingTitle"
+            android:dialogTitle="@string/pref_orderingTitle"
+            android:entries="@array/ordering"
+            android:entryValues="@array/ordering_values"
+            android:defaultValue="-date"
+            android:summary="%s"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

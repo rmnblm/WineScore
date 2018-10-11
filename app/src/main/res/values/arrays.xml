@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color">
+        <item>(all)</item>
+        <item>Red</item>
+        <item>White</item>
+        <item>Pink</item>
+    </string-array>
+    <string-array name="color_values">
+        <item>@string/array_all_value</item>
+        <item>red</item>
+        <item>white</item>
+        <item>pink</item>
+    </string-array>
+    <string-array name="country">
+        <item>(all)</item>
+        <item>Argentina</item>
+        <item>Australia</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>France</item>
+        <item>Germany</item>
+        <item>Italy</item>
+        <item>Lebanon</item>
+        <item>New Zealand</item>
+        <item>Sicily</item>
+        <item>South Africa</item>
+        <item>Spain</item>
+        <item>Usa</item>
+    </string-array>
+    <string-array name="country_values">
+        <item>@string/array_all_value</item>
+        <item>Argentina</item>
+        <item>Australia</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>France</item>
+        <item>Germany</item>
+        <item>Italy</item>
+        <item>Lebanon</item>
+        <item>New Zealand</item>
+        <item>Sicily</item>
+        <item>South Africa</item>
+        <item>Spain</item>
+        <item>Usa</item>
+    </string-array>
+    <string-array name="ordering">
+        <item>Date (descending)</item>
+        <item>Date (ascending)</item>
+        <item>Score (descending)</item>
+        <item>Score (ascending)</item>
+    </string-array>
+    <string-array name="ordering_values">
+        <item>-date</item>
+        <item>date</item>
+        <item>-score</item>
+        <item>score</item>
+    </string-array>
+</resources>

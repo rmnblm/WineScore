@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/wines"
-        android:icon="@drawable/ic_star_black_24dp"
+        android:icon="@drawable/ic_wine_black_24dp"
         android:title="@string/wines" />
     <item
         android:id="@+id/my_favorites"
