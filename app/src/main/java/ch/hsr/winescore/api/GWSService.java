@@ -13,7 +13,8 @@ public interface GWSService {
             @Query("offset") int offset,
             @Query("color") String color,
             @Query("country") String country,
-            @Query("vintage") String vintage
+            @Query("vintage") String vintage,
+            @Query("ordering") String ordering
     );
 
 }

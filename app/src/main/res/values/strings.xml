@@ -18,6 +18,7 @@
     <string name="pref_colorTitle">Color</string>
     <string name="pref_countryTitle">Country</string>
     <string name="pref_vintageTitle">Vintage</string>
+    <string name="pref_orderingTitle">Ordering</string>
 
     <string name="dataload_error_message">An error occured. Try to reload.</string>
     <string name="pref_category_filter_wines">Filter wines</string>

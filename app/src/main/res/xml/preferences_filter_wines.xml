@@ -24,5 +24,14 @@
             android:title="@string/pref_vintageTitle"
             android:inputType="numberDecimal"
             />
+        <ListPreference
+            android:key="pref_ordering"
+            android:title="@string/pref_orderingTitle"
+            android:dialogTitle="@string/pref_orderingTitle"
+            android:entries="@array/ordering"
+            android:entryValues="@array/ordering_values"
+            android:defaultValue="-date"
+            android:summary="%s"
+            />
     </PreferenceCategory>
 </PreferenceScreen>

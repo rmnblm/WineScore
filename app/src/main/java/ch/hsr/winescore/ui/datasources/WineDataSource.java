@@ -25,7 +25,8 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
     private String color;
     private String country;
-    private String  vintage;
+    private String vintage;
+    private String ordering;
 
     public WineDataSource(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
@@ -49,7 +50,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
                 ", requestedStartPosition = " + params.requestedStartPosition +
                 ", requestedLoadSize = " + params.requestedLoadSize);
 
-        final Call<WineResponse> wineListCall = apiService.getLatest(params.pageSize, params.requestedStartPosition, color, country, vintage);
+        final Call<WineResponse> wineListCall = apiService.getLatest(params.pageSize, params.requestedStartPosition, color, country, vintage, ordering);
 
         try {
             // Execute call synchronously since function is called on a background thread
@@ -68,7 +69,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
         System.out.println("[loadRange] loadSize = " + params.loadSize + ", startPosition = " + params.startPosition);
 
-        final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition, color, country, vintage);
+        final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition, color, country, vintage, ordering);
 
         try {
             // Execute call synchronously since function is called on a background thread
@@ -87,6 +88,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             color = getStringPreference("pref_color", all);
             country = getStringPreference("pref_country", all);
             vintage = getStringPreference("pref_vintage", "");
+            ordering = getStringPreference("pref_ordering", "-date");
         }
     }
 

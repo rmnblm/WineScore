@@ -44,4 +44,16 @@
         <item>Spain</item>
         <item>Usa</item>
     </string-array>
+    <string-array name="ordering">
+        <item>Date (descending)</item>
+        <item>Date (ascending)</item>
+        <item>Score (descending)</item>
+        <item>Score (ascending)</item>
+    </string-array>
+    <string-array name="ordering_values">
+        <item>-date</item>
+        <item>date</item>
+        <item>-score</item>
+        <item>score</item>
+    </string-array>
 </resources>
