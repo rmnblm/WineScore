@@ -37,7 +37,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:orientation="vertical"
-            tools:listitem="@layout/content_wine_overview" />
+            tools:listitem="@layout/content_explore" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <fragment

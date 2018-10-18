@@ -11,6 +11,8 @@
     <string name="wines">Wines</string>
     <string name="my_favorites">My Favorites</string>
     <string name="my_ratings">My Ratings</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
     <string name="rating">Rating</string>
     <string name="filter">Filter</string>
     <string name="filter_wines">Filter wines</string>
@@ -24,4 +26,9 @@
     <string name="pref_category_filter_wines">Filter wines</string>
 
     <string name="array_all_value" translatable="false">_</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

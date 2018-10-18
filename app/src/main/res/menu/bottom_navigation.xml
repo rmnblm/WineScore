@@ -5,11 +5,11 @@
         android:icon="@drawable/ic_wine_black_24dp"
         android:title="@string/wines" />
     <item
-        android:id="@+id/my_favorites"
-        android:icon="@drawable/ic_favorite_black_24dp"
-        android:title="@string/my_favorites" />
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/search" />
     <item
-        android:id="@+id/my_ratings"
-        android:icon="@drawable/ic_star_black_24dp"
-        android:title="@string/my_ratings" />
+        android:id="@+id/profile"
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="@string/profile" />
 </menu>

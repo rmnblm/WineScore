@@ -2,7 +2,6 @@ package ch.hsr.winescore.ui.adapters;
 
 import android.arch.paging.PagedListAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +32,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_wine_overview, parent, false);
+                .inflate(R.layout.content_explore, parent, false);
 
         final ViewHolder wineItemViewHolder = new ViewHolder(itemView);
         itemView.setOnClickListener(v -> itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition()));

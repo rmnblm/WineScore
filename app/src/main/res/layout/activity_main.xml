@@ -7,4 +7,25 @@
         android:layout_height="match_parent"
         tools:context=".ui.activities.MainActivity">
 
+    <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/navigation"
+            android:layout_marginBottom="@dimen/bottom_navigation_height"
+            android:animateLayoutChanges="true">
+
+    </FrameLayout>
+
+    <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bottom_navigation_height"
+            android:background="@color/colorSecondary"
+            app:itemTextColor="@color/bottom_navigation_view"
+            app:itemIconTint="@color/bottom_navigation_view"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navigation" />
+
 </android.support.constraint.ConstraintLayout>
