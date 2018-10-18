@@ -18,23 +18,23 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.activities.WineDetailActivity;
-import ch.hsr.winescore.ui.adapters.WineOverviewAdapter;
-import ch.hsr.winescore.ui.presenters.WineOverviewPresenter;
-import ch.hsr.winescore.ui.views.WineOverviewView;
+import ch.hsr.winescore.ui.activities.DetailsActivity;
+import ch.hsr.winescore.ui.adapters.WineRecyclerViewAdapter;
+import ch.hsr.winescore.ui.presenters.ExplorePresenter;
+import ch.hsr.winescore.ui.views.ExploreView;
 
-public class ExploreFragment extends Fragment implements WineOverviewView {
+public class ExploreFragment extends Fragment implements ExploreView {
     public static ExploreFragment newInstance() {
         ExploreFragment fragment = new ExploreFragment();
         return fragment;
     }
 
-    @BindView(R.id.cl_overview) CoordinatorLayout cl_overview;
-    @BindView(R.id.swipe_container) SwipeRefreshLayout srl_swipe_container;
-    @BindView(R.id.wine_list) RecyclerView rv_wine_list;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.wineList) RecyclerView wineList;
 
-    private WineOverviewPresenter presenter;
-    private WineOverviewAdapter adapter;
+    private ExplorePresenter presenter;
+    private WineRecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,17 +50,17 @@ public class ExploreFragment extends Fragment implements WineOverviewView {
 
     @Override
     public void showLoading() {
-        srl_swipe_container.setRefreshing(true);
+        swipeContainer.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-        srl_swipe_container.setRefreshing(false);
+        swipeContainer.setRefreshing(false);
     }
 
     @Override
     public void showError(String errorMessage) {
-        Snackbar snackbar = Snackbar.make(cl_overview, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
@@ -70,23 +70,23 @@ public class ExploreFragment extends Fragment implements WineOverviewView {
     @Override
     public void navigateToDetailScreen(View view, Wine wine) {
         Context context = view.getContext();
-        Intent intent = new Intent(context, WineDetailActivity.class);
+        Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra("wine", wine);
         context.startActivity(intent);
     }
 
     private void setupAdapter() {
-        adapter = new WineOverviewAdapter(
+        adapter = new WineRecyclerViewAdapter(
                 (view, position) -> presenter.listItemClicked(view, position),
-                () -> srl_swipe_container.setRefreshing(true)
+                () -> swipeContainer.setRefreshing(true)
         );
     }
 
     private void setupRecyclerView() {
-        // rv_wine_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_wine_list.setHasFixedSize(true);
-        rv_wine_list.setAdapter(adapter);
-        rv_wine_list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        wineList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        wineList.setHasFixedSize(true);
+        wineList.setAdapter(adapter);
+        wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -95,11 +95,11 @@ public class ExploreFragment extends Fragment implements WineOverviewView {
             }
         });
 
-        srl_swipe_container.setOnRefreshListener(() -> presenter.refreshData());
+        swipeContainer.setOnRefreshListener(() -> presenter.refreshData());
     }
 
     private void setupPresenter() {
-        presenter = new WineOverviewPresenter();
+        presenter = new ExplorePresenter();
         presenter.attachView(this);
         presenter.getWines().observe(this, wines -> adapter.submitList(wines));
         presenter.getLoadState().observe(this, loadState -> {

@@ -5,27 +5,26 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.view.View;
-import ch.hsr.winescore.api.GWSClient;
 import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
-import ch.hsr.winescore.ui.views.WineOverviewView;
+import ch.hsr.winescore.ui.views.ExploreView;
 
-public class WineOverviewPresenter implements Presenter<WineOverviewView> {
+public class ExplorePresenter implements Presenter<ExploreView> {
 
-    private WineOverviewView view;
+    private ExploreView view;
     private static final int PAGE_SIZE = 50;
     private LiveData<PagedList<Wine>> wines;
     private final WineDataSourceFactory dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
 
-    public WineOverviewPresenter() {
+    public ExplorePresenter() {
         this.dataSourceFactory = new WineDataSourceFactory();
         this.loadState = new MutableLiveData<>();
     }
 
     @Override
-    public void attachView(WineOverviewView view) {
+    public void attachView(ExploreView view) {
         this.view = view;
         setupLiveWineData();
         setupLoadStateObserver();

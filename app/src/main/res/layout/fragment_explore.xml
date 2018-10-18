@@ -11,25 +11,10 @@
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:fitsSystemWindows="true"
-         android:id="@+id/cl_overview"
-         tools:context=".ui.activities.WineOverviewActivity">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-        </android.support.design.widget.AppBarLayout>
+         android:id="@+id/coordinatorLayout">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_container"
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -37,14 +22,13 @@
             <android.support.v7.widget.RecyclerView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-
-                android:id="@+id/wine_list"
+                android:id="@+id/wineList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical"
-                tools:listitem="@layout/content_explore" />
+                tools:listitem="@layout/fragment_explore_listentry" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>

@@ -15,22 +15,15 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.activities.WineOverviewActivity"
-                android:label="@string/app_name"
-                android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-                android:name=".ui.activities.WineDetailActivity"
+                android:name=".ui.activities.DetailsActivity"
                 android:label="@string/title_wine_detail"
-                android:parentActivityName=".ui.activities.WineOverviewActivity"
+                android:parentActivityName=".ui.activities.MainActivity"
                 android:theme="@style/AppTheme.TranslucentStatusBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="ch.hsr.winescore.ui.activities.WineOverviewActivity"/>
+                    android:value="ch.hsr.winescore.ui.activities.MainActivity"/>
         </activity>
-        <activity
-                android:name=".ui.activities.MainActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

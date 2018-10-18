@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ExploreFragment.newInstance());
+        transaction.commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.wines:
                 selectedFragment = ExploreFragment.newInstance();
                 break;
-            case R.id.my_favorites:
+            case R.id.search:
                 selectedFragment = SearchFragment.newInstance();
                 break;
             case R.id.profile:
