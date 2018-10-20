@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,26 +32,45 @@ import ch.hsr.winescore.ui.adapters.WineViewHolder;
 import ch.hsr.winescore.ui.datasources.WinesFirebaseRepository;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class FavoritesFragment extends Fragment implements ListView {
-    public static FavoritesFragment newInstance() {
-        return new FavoritesFragment();
-    }
+public class ListFragment extends Fragment implements ListView {
 
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
+    public static final String TITLE = "title";
+    public static final String QUERY_FIELD = "query_field";
+    @BindView(R.id.layout)
+    View layout;
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
-    @BindView(R.id.wineList)
-    RecyclerView wineList;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     private FirestorePagingAdapter<Wine, WineViewHolder> adapter;
+    int mTitle;
+    String mQueryField;
+
+    public static ListFragment newInstance(int title, String queryField) {
+        ListFragment fragment = new ListFragment();
+        Bundle args = new Bundle();
+        args.putInt(TITLE, title);
+        args.putString(QUERY_FIELD, queryField);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mTitle = getArguments().getInt(TITLE);
+            mQueryField = getArguments().getString(QUERY_FIELD);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.favorites_title);
-        View rootView = inflater.inflate(R.layout.fragment_explore, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
 
+        getActivity().setTitle(mTitle);
         setupAdapter();
         setupRecyclerView();
 
@@ -70,7 +89,7 @@ public class FavoritesFragment extends Fragment implements ListView {
 
     @Override
     public void showError() {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, getString(R.string.dataload_error_message), Snackbar.LENGTH_INDEFINITE)
+        Snackbar snackbar = Snackbar.make(layout, getString(R.string.dataload_error_message), Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.dataload_error_retry, v -> adapter.retry());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
@@ -86,8 +105,8 @@ public class FavoritesFragment extends Fragment implements ListView {
     }
 
     private void setupAdapter() {
-        CollectionReference mWineCollection = FirebaseFirestore.getInstance().collection(WinesFirebaseRepository.COLLECTION);
-        Query query = mWineCollection.whereArrayContains("favorisedBy", FirebaseAuth.getInstance().getUid());
+        CollectionReference wineCollection = FirebaseFirestore.getInstance().collection(WinesFirebaseRepository.COLLECTION);
+        Query query = wineCollection.whereArrayContains(mQueryField, FirebaseAuth.getInstance().getUid());
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -103,10 +122,10 @@ public class FavoritesFragment extends Fragment implements ListView {
     }
 
     private void setupRecyclerView() {
-        wineList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        wineList.setHasFixedSize(true);
-        wineList.setAdapter(adapter);
-        wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);

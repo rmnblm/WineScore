@@ -1,14 +1,13 @@
 package ch.hsr.winescore.ui.activities;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.ListType;
-import ch.hsr.winescore.ui.fragments.ExploreFragment;
-import ch.hsr.winescore.ui.fragments.FavoritesFragment;
+import ch.hsr.winescore.ui.fragments.ListFragment;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -18,22 +17,11 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
 
-
+        Intent intent = getIntent();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        ListType type = (ListType) getIntent().getSerializableExtra(ListType.class.getSimpleName());
-        switch (type) {
-            case FAVORITES:
-                transaction.replace(R.id.frame_layout, FavoritesFragment.newInstance());
-                break;
-            case RATINGS:
-                // transaction.replace(R.id.frame_layout, RatingsFragment.newInstance());
-                // break;
-            case COMMENTS:
-                // transaction.replace(R.id.frame_layout, CommentsFragment.newInstance());
-                // break;
-            default:
-                finish();
-        }
+        transaction.replace(R.id.frame_layout, ListFragment.newInstance(
+                intent.getIntExtra(ListFragment.TITLE, R.string.favorites_title),
+                intent.getStringExtra(ListFragment.QUERY_FIELD)));
         transaction.commit();
     }
 }

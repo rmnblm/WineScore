@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.ListType;
 import ch.hsr.winescore.ui.activities.ListActivity;
 
 import static android.app.Activity.RESULT_OK;
@@ -74,20 +72,17 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.layout_favorites)
     public void onClickFavorites(View v) {
-        Log.d(TAG, "Navigate to Favorites");
-        navigateToList(ListType.FAVORITES);
+        navigateToList(R.string.favorites_title, "favorisedBy");
     }
 
     @OnClick(R.id.layout_ratings)
     public void onClickRatings(View v) {
-        Log.d(TAG, "Navigate to Ratings");
-        navigateToList(ListType.RATINGS);
+        navigateToList(R.string.ratings_title, "ratedBy");
     }
 
     @OnClick(R.id.layout_comments)
     public void onClickComments(View v) {
-        Log.d(TAG, "Navigate to Comments");
-        navigateToList(ListType.COMMENTS);
+        navigateToList(R.string.ratings_title, "commentedBy");
     }
 
     @OnClick(R.id.button_sign_out)
@@ -143,9 +138,10 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void navigateToList(ListType type) {
+    private void navigateToList(int title, String queryField) {
         Intent intent = new Intent(getContext(), ListActivity.class);
-        intent.putExtra(ListType.class.getSimpleName(), type);
+        intent.putExtra(ListFragment.TITLE, title);
+        intent.putExtra(ListFragment.QUERY_FIELD, queryField);
         getActivity().startActivity(intent);
     }
 
