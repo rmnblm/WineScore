@@ -31,4 +31,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_welcome">Welcome to WineScore!</string>
+    <string name="profile_login_message">Please log in to rate and comment on wines\nand add them to your favorites.</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="ratings_title">Ratings</string>
+    <string name="comments_title">Comments</string>
+    <string name="error_no_internet_connection">Error: No internet connection</string>
+    <string name="error_unknown">Unknown Error…</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="button_sign_in">Sign in</string>
+    <string name="button_sign_out">Sign out</string>
 </resources>

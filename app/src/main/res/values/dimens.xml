@@ -9,4 +9,5 @@
     <dimen name="list_item_margin">8dp</dimen>
     <dimen name="progressbar_thickness">8dp</dimen>
     <dimen name="bottom_navigation_height">56dp</dimen>
+    <dimen name="profile_padding">16dp</dimen>
 </resources>
