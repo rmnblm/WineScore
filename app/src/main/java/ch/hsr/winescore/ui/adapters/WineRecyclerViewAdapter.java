@@ -2,7 +2,6 @@ package ch.hsr.winescore.ui.adapters;
 
 import android.arch.paging.PagedListAdapter;
 import android.graphics.drawable.Drawable;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,12 @@ import ch.hsr.winescore.utils.ItemClickListener;
 
 import java.util.Locale;
 
-public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdapter.ViewHolder> {
+public class WineRecyclerViewAdapter extends PagedListAdapter<Wine, WineRecyclerViewAdapter.ViewHolder> {
 
     private ItemClickListener itemClickListener;
     private final BottomReachedListener bottomReachedListener;
 
-    public WineOverviewAdapter(ItemClickListener itemClickListener, BottomReachedListener bottomReachedListener) {
+    public WineRecyclerViewAdapter(ItemClickListener itemClickListener, BottomReachedListener bottomReachedListener) {
         super(Wine.DIFF_CALLBACK);
         this.itemClickListener = itemClickListener;
         this.bottomReachedListener = bottomReachedListener;
@@ -33,7 +32,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.content_wine_overview, parent, false);
+                .inflate(R.layout.fragment_explore_listentry, parent, false);
 
         final ViewHolder wineItemViewHolder = new ViewHolder(itemView);
         itemView.setOnClickListener(v -> itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition()));
@@ -49,7 +48,7 @@ public class WineOverviewAdapter extends PagedListAdapter<Wine, WineOverviewAdap
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.titleName) TextView title_name;
         @BindView(R.id.titleOrigin) TextView title_origin;
         @BindView(R.id.titleWinery) TextView title_winery;

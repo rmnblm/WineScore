@@ -15,12 +15,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.presenters.WineDetailPresenter;
-import ch.hsr.winescore.ui.views.WineDetailView;
+import ch.hsr.winescore.ui.presenters.DetailsPresenter;
+import ch.hsr.winescore.ui.views.DetailsView;
 import com.bumptech.glide.Glide;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
-public class WineDetailActivity extends AppCompatActivity implements WineDetailView {
+public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
@@ -34,13 +34,13 @@ public class WineDetailActivity extends AppCompatActivity implements WineDetailV
     @BindView(R.id.score) TextView tv_score;
     @BindView(R.id.scoreCircle) ProgressBar pb_score;
 
-    private WineDetailPresenter presenter;
+    private DetailsPresenter presenter;
     private Wine wine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wine_detail);
+        setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
         setupPresenter();
@@ -58,7 +58,7 @@ public class WineDetailActivity extends AppCompatActivity implements WineDetailV
     }
 
     private void setupPresenter() {
-        presenter = new WineDetailPresenter();
+        presenter = new DetailsPresenter();
         presenter.attachView(this);
     }
 

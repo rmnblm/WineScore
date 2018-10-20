@@ -51,17 +51,17 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
-    androidTestImplementation ('com.squareup.okhttp:mockwebserver:2.7.0')
+    androidTestImplementation('com.squareup.okhttp:mockwebserver:2.7.0')
 
     // Butterknife
     implementation 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-    
+
     // GSON with Retrofit
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    
+
     // Multiline CollapsingToolBar
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
 

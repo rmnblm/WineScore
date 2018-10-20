@@ -1,22 +1,50 @@
 package ch.hsr.winescore.ui.activities;
 
-import android.content.Intent;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.ui.fragments.ExploreFragment;
+import ch.hsr.winescore.ui.fragments.ProfileFragment;
+import ch.hsr.winescore.ui.fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startApp();
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(listener);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ExploreFragment.newInstance());
+        transaction.commit();
     }
 
-    private void startApp() {
-        Intent intent = new Intent(this, WineOverviewActivity.class);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish(); // Prevents going back to the previous activity with the "back" button
-    }
+    private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
+        Fragment selectedFragment = null;
+        switch (item.getItemId()) {
+            case R.id.wines:
+                selectedFragment = ExploreFragment.newInstance();
+                break;
+            case R.id.search:
+                selectedFragment = SearchFragment.newInstance();
+                break;
+            case R.id.profile:
+                selectedFragment = ProfileFragment.newInstance();
+                break;
+        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, selectedFragment);
+        transaction.commit();
+        return true;
+    };
 }
