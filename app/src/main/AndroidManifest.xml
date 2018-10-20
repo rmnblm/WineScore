@@ -33,7 +33,11 @@
         <activity
             android:name=".ui.activities.ListActivity"
             android:label="@string/title_list"
-            />
+            android:parentActivityName=".ui.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ch.hsr.winescore.ui.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
