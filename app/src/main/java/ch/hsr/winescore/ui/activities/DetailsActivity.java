@@ -1,6 +1,7 @@
 package ch.hsr.winescore.ui.activities;
 
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,19 +9,30 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.model.Favorite;
 import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
 import ch.hsr.winescore.ui.presenters.DetailsPresenter;
 import ch.hsr.winescore.ui.views.DetailsView;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
+
+    private static final String TAG = DetailsActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
@@ -36,6 +48,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private DetailsPresenter presenter;
     private Wine wine;
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +64,17 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     }
 
     private void setupFloatingActionButton() {
-        floatingActionButton.setOnClickListener(
-                view -> Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        );
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser == null) {
+            floatingActionButton.hide();
+        } else {
+            floatingActionButton.show();
+            floatingActionButton.setOnClickListener(view -> {
+                FavoritesFirebaseRepository.add(wine).addOnCompleteListener(x -> {
+                    Log.d(TAG, "New favorite: " + wine.getId());
+                });
+            });
+        }
     }
 
     private void setupPresenter() {

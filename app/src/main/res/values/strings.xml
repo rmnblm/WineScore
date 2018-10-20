@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WineScore</string>
     <string name="title_wine_detail">Wine Detail</string>
+    <string name="title_list">List</string>
     <string name="information">Information</string>
     <string name="vintage">Vintage</string>
     <string name="appellation">Appellation</string>
@@ -41,4 +42,5 @@
     <string name="anonymous">Anonymous</string>
     <string name="button_sign_in">Sign in</string>
     <string name="button_sign_out">Sign out</string>
+    <string name="dataload_error_retry">RETRY</string>
 </resources>

@@ -3,7 +3,6 @@ package ch.hsr.winescore.ui.fragments;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -29,6 +28,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.model.ListType;
+import ch.hsr.winescore.ui.activities.ListActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -74,16 +75,19 @@ public class ProfileFragment extends Fragment {
     @OnClick(R.id.layout_favorites)
     public void onClickFavorites(View v) {
         Log.d(TAG, "Navigate to Favorites");
+        navigateToList(ListType.FAVORITES);
     }
 
     @OnClick(R.id.layout_ratings)
     public void onClickRatings(View v) {
         Log.d(TAG, "Navigate to Ratings");
+        navigateToList(ListType.RATINGS);
     }
 
     @OnClick(R.id.layout_comments)
     public void onClickComments(View v) {
         Log.d(TAG, "Navigate to Comments");
+        navigateToList(ListType.COMMENTS);
     }
 
     @OnClick(R.id.button_sign_out)
@@ -137,6 +141,12 @@ public class ProfileFragment extends Fragment {
                 snackbar.show();
             }
         }
+    }
+
+    private void navigateToList(ListType type) {
+        Intent intent = new Intent(getContext(), ListActivity.class);
+        intent.putExtra(ListType.class.getSimpleName(), type);
+        getActivity().startActivity(intent);
     }
 
     private void onSignedIn(FirebaseUser user) {
