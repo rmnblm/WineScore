@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,25 +21,23 @@ import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.activities.DetailsActivity;
 import ch.hsr.winescore.ui.adapters.WineRecyclerViewAdapter;
-import ch.hsr.winescore.ui.presenters.ExplorePresenter;
-import ch.hsr.winescore.ui.views.ExploreView;
+import ch.hsr.winescore.ui.presenters.LatestPresenter;
+import ch.hsr.winescore.ui.views.LatestView;
 
-public class ExploreFragment extends Fragment implements ExploreView {
-    public static ExploreFragment newInstance() {
-        ExploreFragment fragment = new ExploreFragment();
-        return fragment;
-    }
+public class LatestFragment extends Fragment implements LatestView {
+
+    public static final String TAG = "LatestFragment";
 
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.wineList) RecyclerView wineList;
 
-    private ExplorePresenter presenter;
+    private LatestPresenter presenter;
     private WineRecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_explore, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_latest, container, false);
         ButterKnife.bind(this, rootView);
 
         setupAdapter();
@@ -99,7 +98,7 @@ public class ExploreFragment extends Fragment implements ExploreView {
     }
 
     private void setupPresenter() {
-        presenter = new ExplorePresenter();
+        presenter = new LatestPresenter();
         presenter.attachView(this);
         presenter.getWines().observe(this, wines -> adapter.submitList(wines));
         presenter.getLoadState().observe(this, loadState -> {

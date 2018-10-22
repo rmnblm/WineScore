@@ -8,23 +8,23 @@ import android.view.View;
 import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.WineDataSourceFactory;
-import ch.hsr.winescore.ui.views.ExploreView;
+import ch.hsr.winescore.ui.views.LatestView;
 
-public class ExplorePresenter implements Presenter<ExploreView> {
+public class LatestPresenter implements Presenter<LatestView> {
 
-    private ExploreView view;
+    private LatestView view;
     private static final int PAGE_SIZE = 50;
     private LiveData<PagedList<Wine>> wines;
     private final WineDataSourceFactory dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
 
-    public ExplorePresenter() {
+    public LatestPresenter() {
         this.dataSourceFactory = new WineDataSourceFactory();
         this.loadState = new MutableLiveData<>();
     }
 
     @Override
-    public void attachView(ExploreView view) {
+    public void attachView(LatestView view) {
         this.view = view;
         setupLiveWineData();
         setupLoadStateObserver();

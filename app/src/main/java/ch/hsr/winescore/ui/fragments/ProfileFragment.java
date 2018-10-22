@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import ch.hsr.winescore.R;
 
 public class ProfileFragment extends Fragment {
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
-    }
+
+    public static final String TAG = "ProfileFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
