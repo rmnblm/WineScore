@@ -1,34 +1,30 @@
 package ch.hsr.winescore.ui.activities;
 
 import android.content.res.ColorStateList;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import butterknife.BindDrawable;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.Favorite;
-import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
-import ch.hsr.winescore.ui.presenters.DetailsPresenter;
-import ch.hsr.winescore.ui.views.DetailsView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
+import ch.hsr.winescore.ui.presenters.DetailsPresenter;
+import ch.hsr.winescore.ui.views.DetailsView;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
@@ -49,6 +45,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
+    private boolean mIsFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +61,26 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     }
 
     private void setupFloatingActionButton() {
+        floatingActionButton.hide();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mUser == null) {
-            floatingActionButton.hide();
-        } else {
-            floatingActionButton.show();
+        if (mUser != null) {
+            FavoritesFirebaseRepository.get(wine, result -> {
+                updateFavorite(result != null);
+                floatingActionButton.show();
+            });
             floatingActionButton.setOnClickListener(view -> {
-                FavoritesFirebaseRepository.add(wine).addOnCompleteListener(x -> {
-                    Log.d(TAG, "New favorite: " + wine.getId());
-                });
+                floatingActionButton.setEnabled(false);
+                if (mIsFavorite) {
+                    FavoritesFirebaseRepository.delete(wine, result -> {
+                        updateFavorite(result != null);
+                        floatingActionButton.setEnabled(true);
+                    });
+                } else {
+                    FavoritesFirebaseRepository.add(wine, result -> {
+                        updateFavorite(result != null);
+                        floatingActionButton.setEnabled(true);
+                    });
+                }
             });
         }
     }
@@ -125,6 +133,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         }
 
         Glide.with(this).load(countryResID).into(tbl_bgimage);
+    }
+
+    private void updateFavorite(boolean isFavorite) {
+        mIsFavorite = isFavorite;
+        floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_favorite_border_black_24dp : R.drawable.ic_favorite_black_24dp);
     }
 
     @Override

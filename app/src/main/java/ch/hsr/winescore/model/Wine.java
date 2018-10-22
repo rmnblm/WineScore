@@ -86,6 +86,10 @@ public class Wine implements Serializable {
         return lwin_11 != null ? lwin_11 : wineId + "-" + vintage;
     }
 
+    public String getWineId() {
+        return wineId;
+    }
+
     public String getCountry() {
         return country;
     }

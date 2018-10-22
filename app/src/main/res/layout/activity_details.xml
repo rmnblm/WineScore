@@ -207,17 +207,31 @@
                         tools:text="99.99" />
             </android.support.constraint.ConstraintLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:numStars="6"
+                android:stepSize="1" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:layout_margin="@dimen/fab_margin"
-            app:layout_anchor="@+id/wine_detail_container"
-            app:layout_anchorGravity="top|end"
-            app:srcCompat="@drawable/ic_favorite_black_24dp"/>
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        app:layout_anchor="@+id/wine_detail_container"
+        app:layout_anchorGravity="top|end"
+        app:srcCompat="@drawable/ic_favorite_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>
