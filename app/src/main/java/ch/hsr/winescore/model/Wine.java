@@ -90,6 +90,10 @@ public class Wine implements Serializable {
         return wineId;
     }
 
+    public String getLwin_11() {
+        return lwin_11;
+    }
+
     public String getCountry() {
         return country;
     }

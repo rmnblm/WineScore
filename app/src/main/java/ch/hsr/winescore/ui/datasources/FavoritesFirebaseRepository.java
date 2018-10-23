@@ -1,18 +1,9 @@
 package ch.hsr.winescore.ui.datasources;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-
-import java.util.List;
 
 import ch.hsr.winescore.model.Favorite;
 import ch.hsr.winescore.model.Wine;
@@ -20,8 +11,6 @@ import ch.hsr.winescore.model.Wine;
 public class FavoritesFirebaseRepository {
 
     private static final String COLLECTION = "favorites";
-    private static final String USER_ID = "userId";
-    private static final String WINE_ID = "wineId";
 
     public static void add(Wine wine, IFirebaseCallback<Favorite> callback) {
         WinesFirebaseRepository.add(wine)

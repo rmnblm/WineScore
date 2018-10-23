@@ -229,6 +229,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
+        android:tint="@color/colorSecondary"
         android:visibility="gone"
         app:layout_anchor="@+id/wine_detail_container"
         app:layout_anchorGravity="top|end"

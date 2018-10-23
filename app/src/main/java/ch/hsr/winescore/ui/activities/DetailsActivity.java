@@ -55,9 +55,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         setupPresenter();
         setupActionBar();
-        setupFloatingActionButton();
         setupIntentExtras();
         setupViewsWithExtras();
+        setupFloatingActionButton();
     }
 
     private void setupFloatingActionButton() {
@@ -137,7 +137,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private void updateFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
-        floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_favorite_border_black_24dp : R.drawable.ic_favorite_black_24dp);
+        floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_unfavorite_black_24dp : R.drawable.ic_favorite_black_24dp);
     }
 
     @Override
