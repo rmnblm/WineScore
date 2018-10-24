@@ -7,9 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +25,7 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
+import ch.hsr.winescore.ui.datasources.RatingsFirebaseRepository;
 import ch.hsr.winescore.ui.presenters.DetailsPresenter;
 import ch.hsr.winescore.ui.views.DetailsView;
 
@@ -42,6 +45,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.score) TextView tv_score;
     @BindView(R.id.scoreCircle) ProgressBar pb_score;
 
+    @BindView(R.id.ratings_1) TextView tv_ratings_1;
+    @BindView(R.id.ratings_2) TextView tv_ratings_2;
+    @BindView(R.id.ratings_3) TextView tv_ratings_3;
+    @BindView(R.id.ratings_4) TextView tv_ratings_4;
+    @BindView(R.id.ratings_5) TextView tv_ratings_5;
+
+    @BindView(R.id.myRatingsLayout) View view_my_ratings;
+    @BindView(R.id.ratingBar_my_ratings) RatingBar rb_my_rating;
+    @BindView(R.id.button_remove_rating) Button btn_remove_rating;
+
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
@@ -58,31 +71,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         setupIntentExtras();
         setupViewsWithExtras();
         setupFloatingActionButton();
-    }
-
-    private void setupFloatingActionButton() {
-        floatingActionButton.hide();
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (mUser != null) {
-            FavoritesFirebaseRepository.get(wine, result -> {
-                updateFavorite(result != null);
-                floatingActionButton.show();
-            });
-            floatingActionButton.setOnClickListener(view -> {
-                floatingActionButton.setEnabled(false);
-                if (mIsFavorite) {
-                    FavoritesFirebaseRepository.delete(wine, result -> {
-                        updateFavorite(result != null);
-                        floatingActionButton.setEnabled(true);
-                    });
-                } else {
-                    FavoritesFirebaseRepository.add(wine, result -> {
-                        updateFavorite(result != null);
-                        floatingActionButton.setEnabled(true);
-                    });
-                }
-            });
-        }
+        setupRatings();
     }
 
     private void setupPresenter() {
@@ -135,9 +124,76 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         Glide.with(this).load(countryResID).into(tbl_bgimage);
     }
 
+    private void setupFloatingActionButton() {
+        floatingActionButton.hide();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser != null) {
+            FavoritesFirebaseRepository.get(wine, result -> {
+                updateFavorite(result != null);
+                floatingActionButton.show();
+            });
+            floatingActionButton.setOnClickListener(view -> {
+                floatingActionButton.setEnabled(false);
+                if (mIsFavorite) {
+                    FavoritesFirebaseRepository.delete(wine, result -> {
+                        updateFavorite(result != null);
+                        floatingActionButton.setEnabled(true);
+                    });
+                } else {
+                    FavoritesFirebaseRepository.set(wine, result -> {
+                        updateFavorite(result != null);
+                        floatingActionButton.setEnabled(true);
+                    });
+                }
+            });
+        }
+    }
+
+    private void setupRatings() {
+        refreshRatingList();
+        if (mUser == null) {
+            view_my_ratings.setVisibility(View.GONE);
+        } else {
+            RatingsFirebaseRepository.get(wine, result -> {
+                if (result != null) {
+                    rb_my_rating.setRating(result.getRating());
+                    btn_remove_rating.setVisibility(View.VISIBLE);
+                } else {
+                    btn_remove_rating.setVisibility(View.GONE);
+                }
+            });
+
+            rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                if (fromUser) {
+                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {});
+                    btn_remove_rating.setVisibility(View.VISIBLE);
+                    refreshRatingList();
+                }
+            });
+
+            btn_remove_rating.setOnClickListener(v -> {
+                RatingsFirebaseRepository.delete(wine, result -> {
+                    rb_my_rating.setRating(0);
+                    btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
+                    refreshRatingList();
+                });
+            });
+        }
+    }
+
     private void updateFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
         floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_unfavorite_black_24dp : R.drawable.ic_favorite_black_24dp);
+    }
+
+    private void refreshRatingList() {
+        RatingsFirebaseRepository.getRatings(wine, result -> {
+            tv_ratings_1.setText(String.valueOf(result.get(1, 0)));
+            tv_ratings_2.setText(String.valueOf(result.get(2, 0)));
+            tv_ratings_3.setText(String.valueOf(result.get(3, 0)));
+            tv_ratings_4.setText(String.valueOf(result.get(4, 0)));
+            tv_ratings_5.setText(String.valueOf(result.get(5, 0)));
+        });
     }
 
     @Override

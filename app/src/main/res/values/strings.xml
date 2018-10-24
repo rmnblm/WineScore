@@ -43,4 +43,7 @@
     <string name="button_sign_in">Sign in</string>
     <string name="button_sign_out">Sign out</string>
     <string name="dataload_error_retry">RETRY</string>
+    <string name="my_rating">My Rating</string>
+    <string name="ratings">Ratings</string>
+    <string name="button_remove_rating">Remove rating</string>
 </resources>

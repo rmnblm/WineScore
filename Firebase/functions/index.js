@@ -24,3 +24,11 @@ exports.processDeleteFavorite = functions.firestore.document('favorites/{favorit
         favorisedBy: admin.firestore.FieldValue.arrayRemove(item.userId)
     });
 });
+
+exports.processAddRating = functions.firestore.document('ratings/{ratingId}').onCreate((snap, context) => {
+    const item = snap.data();
+    firestore.doc(`wines/${item.wineId}`).update({
+        ratedBy: admin.firestore.FieldValue.arrayUnion(item.userId)
+    });
+});
+

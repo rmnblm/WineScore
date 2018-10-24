@@ -12,7 +12,7 @@ public class FavoritesFirebaseRepository {
 
     private static final String COLLECTION = "favorites";
 
-    public static void add(Wine wine, IFirebaseCallback<Favorite> callback) {
+    public static void set(Wine wine, IFirebaseCallback<Favorite> callback) {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {
                     Favorite favorite = new Favorite(FirebaseAuth.getInstance().getUid(), wine.getId());
