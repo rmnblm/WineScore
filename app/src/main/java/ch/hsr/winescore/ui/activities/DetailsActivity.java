@@ -113,7 +113,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
 
-        int countryResID = 0;
+        int countryResID;
         switch(wine.getCountry().toLowerCase()) {
             case "italy": countryResID = R.drawable.img_it_montepulciano; break;
             case "usa": countryResID = R.drawable.img_us_sonoma; break;
