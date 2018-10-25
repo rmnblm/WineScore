@@ -46,4 +46,6 @@
     <string name="my_rating">My Rating</string>
     <string name="ratings">Ratings</string>
     <string name="button_remove_rating">Remove rating</string>
+    <string name="empty_data_title">The wine glass is empty!</string>
+    <string name="empty_data_content">There is nothing to show here...</string>
 </resources>

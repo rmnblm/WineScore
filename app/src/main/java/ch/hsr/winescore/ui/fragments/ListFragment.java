@@ -42,6 +42,8 @@ public class ListFragment extends Fragment implements ListView {
     SwipeRefreshLayout swipeContainer;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.emptyDataStore)
+    View emptyDataView;
 
     private FirestorePagingAdapter<Wine, WineViewHolder> adapter;
     int mTitle;
@@ -85,6 +87,16 @@ public class ListFragment extends Fragment implements ListView {
     @Override
     public void hideLoading() {
         swipeContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showEmptyState() {
+        emptyDataView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyState() {
+        emptyDataView.setVisibility(View.GONE);
     }
 
     @Override

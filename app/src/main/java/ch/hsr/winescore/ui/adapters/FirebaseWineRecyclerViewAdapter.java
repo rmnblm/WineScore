@@ -47,6 +47,9 @@ public class FirebaseWineRecyclerViewAdapter extends FirestorePagingAdapter<Wine
             case LOADED:
             case FINISHED:
                 view.hideLoading();
+                if (getItemCount() == 0) {
+                    view.showEmptyState();
+                }
                 break;
             case ERROR:
                 view.showError();
