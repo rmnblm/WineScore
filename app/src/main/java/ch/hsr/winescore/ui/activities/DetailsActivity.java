@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -165,9 +166,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
             rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {});
+                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {
+                        refreshRatingList();
+                    });
                     btn_remove_rating.setVisibility(View.VISIBLE);
-                    refreshRatingList();
                 }
             });
 
