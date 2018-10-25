@@ -2,6 +2,7 @@
     <string name="app_name">WineScore</string>
     <string name="search_hint">Search WineScore</string>
     <string name="title_wine_detail">Wine Detail</string>
+    <string name="title_list">List</string>
     <string name="information">Information</string>
     <string name="vintage">Vintage</string>
     <string name="appellation">Appellation</string>
@@ -33,5 +34,21 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile_welcome">Welcome to WineScore!</string>
+    <string name="profile_login_message">Please log in to rate and comment on wines\nand add them to your favorites.</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="ratings_title">Ratings</string>
+    <string name="comments_title">Comments</string>
+    <string name="error_no_internet_connection">Error: No internet connection</string>
+    <string name="error_unknown">Unknown Error…</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="button_sign_in">Sign in</string>
+    <string name="button_sign_out">Sign out</string>
+    <string name="dataload_error_retry">RETRY</string>
+    <string name="my_rating">My Rating</string>
+    <string name="ratings">Ratings</string>
+    <string name="button_remove_rating">Remove rating</string>
+    <string name="empty_data_title">The wine glass is empty!</string>
+    <string name="empty_data_content">There is nothing to show here...</string>
     <string name="title_activity_search">SearchActivity</string>
 </resources>

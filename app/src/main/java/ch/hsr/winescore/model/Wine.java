@@ -15,7 +15,11 @@ public class Wine implements Serializable {
 
     @SerializedName("wine_id")
     @Expose
-    private String id;
+    private String wineId;
+
+    @SerializedName("lwin_11")
+    @Expose
+    private String lwin_11;
 
     @SerializedName("country")
     @Expose
@@ -52,9 +56,11 @@ public class Wine implements Serializable {
     private String shortName;
     private String winery;
 
-    public Wine(String name, String id) {
+    public Wine() { }
+
+    public Wine(String name, String wineId) {
         this.name = name;
-        this.id = id;
+        this.wineId = wineId;
         this.regions = new ArrayList<>();
     }
 
@@ -77,7 +83,15 @@ public class Wine implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return lwin_11 != null ? lwin_11 : wineId + "-" + vintage;
+    }
+
+    public String getWineId() {
+        return wineId;
+    }
+
+    public String getLwin_11() {
+        return lwin_11;
     }
 
     public String getCountry() {
@@ -140,7 +154,7 @@ public class Wine implements Serializable {
             return true;
 
         Wine wine = (Wine) obj;
-        return wine.id == this.id;
+        return wine.getId() == this.getId();
     }
 
     public static final DiffUtil.ItemCallback<Wine> DIFF_CALLBACK =
