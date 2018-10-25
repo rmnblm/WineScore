@@ -2,7 +2,7 @@ package ch.hsr.winescore.ui.presenters;
 
 import android.view.View;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.views.WineOverviewView;
+import ch.hsr.winescore.ui.views.LatestView;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,15 +10,15 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class WineOverviewPresenterTest {
+public class LatestPresenterTest {
 
-    private WineOverviewViewMock view;
-    private WineOverviewPresenter presenter;
+    private LatestViewMock view;
+    private LatestPresenter presenter;
 
     @Before
     public void setupPresenter() {
-        view = new WineOverviewViewMock();
-        presenter = new WineOverviewPresenter();
+        view = new LatestViewMock();
+        presenter = new LatestPresenter();
         presenter.attachView(view);
     }
 
@@ -28,7 +28,7 @@ public class WineOverviewPresenterTest {
         assertTrue(view.showWineListCalled);
     }
 
-    public class WineOverviewViewMock implements WineOverviewView {
+    public class LatestViewMock implements LatestView {
 
         public boolean showWineListCalled = false;
 
