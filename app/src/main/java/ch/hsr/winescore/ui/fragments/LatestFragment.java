@@ -48,6 +48,12 @@ public class LatestFragment extends Fragment implements LatestView {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.getWines().removeObservers(this);
+    }
+
+    @Override
     public void showLoading() {
         swipeContainer.setRefreshing(true);
     }

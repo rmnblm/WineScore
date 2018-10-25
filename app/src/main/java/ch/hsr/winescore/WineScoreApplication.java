@@ -2,8 +2,10 @@ package ch.hsr.winescore;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 
 public class WineScoreApplication extends Application {
 
@@ -21,6 +23,10 @@ public class WineScoreApplication extends Application {
 
     public static boolean hasNetwork() {
         return instance.isNetworkAvailable();
+    }
+
+    public static SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(instance.getBaseContext());
     }
 
     public boolean isNetworkAvailable() {
