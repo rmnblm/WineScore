@@ -8,7 +8,7 @@ import android.os.Bundle;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.ui.fragments.ExploreFragment;
+import ch.hsr.winescore.ui.fragments.LatestFragment;
 import ch.hsr.winescore.ui.fragments.ProfileFragment;
 import ch.hsr.winescore.ui.fragments.SearchFragment;
 
@@ -25,21 +25,21 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ExploreFragment.newInstance());
+        transaction.replace(R.id.frame_layout, new LatestFragment());
         transaction.commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
         Fragment selectedFragment = null;
         switch (item.getItemId()) {
-            case R.id.wines:
-                selectedFragment = ExploreFragment.newInstance();
+            case R.id.latest:
+                selectedFragment = new LatestFragment();
                 break;
             case R.id.search:
-                selectedFragment = SearchFragment.newInstance();
+                selectedFragment = new SearchFragment();
                 break;
             case R.id.profile:
-                selectedFragment = ProfileFragment.newInstance();
+                selectedFragment = new ProfileFragment();
                 break;
         }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
