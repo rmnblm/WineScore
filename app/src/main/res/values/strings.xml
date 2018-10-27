@@ -53,4 +53,7 @@
     <string name="title_activity_search">SearchActivity</string>
     <string name="critics">Critics</string>
     <string name="users">Users</string>
+    <string name="comments_add_title">Add comment</string>
+    <string name="button_submit">Submit</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

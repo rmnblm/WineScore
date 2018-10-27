@@ -1,8 +1,6 @@
 package ch.hsr.winescore.ui.fragments;
 
 import android.arch.paging.PagedList;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,24 +15,21 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.model.Comment;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.activities.DetailsActivity;
-import ch.hsr.winescore.ui.adapters.FirebaseWineRecyclerViewAdapter;
-import ch.hsr.winescore.ui.adapters.WineViewHolder;
-import ch.hsr.winescore.ui.datasources.WinesFirebaseRepository;
+import ch.hsr.winescore.ui.adapters.CommentViewHolder;
+import ch.hsr.winescore.ui.adapters.FirebaseCommentsRecyclerViewAdapter;
+import ch.hsr.winescore.ui.datasources.CommentsFirebaseRepository;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class ListFragment extends Fragment implements ListView {
+public class CommentsFragment extends Fragment implements ListView {
 
-    public static final String QUERY_FIELD = "query_field";
+    public static final String ARGUMENT_WINE = "WINE";
+
     @BindView(R.id.layout)
     View layout;
     @BindView(R.id.swipeContainer)
@@ -44,13 +39,13 @@ public class ListFragment extends Fragment implements ListView {
     @BindView(R.id.emptyDataStore)
     View emptyDataView;
 
-    private FirebaseWineRecyclerViewAdapter adapter;
-    String mQueryField;
+    private FirestorePagingAdapter<Comment, CommentViewHolder> adapter;
+    private Wine mWine;
 
-    public static ListFragment newInstance(String queryField) {
-        ListFragment fragment = new ListFragment();
+    public static CommentsFragment newInstance(Wine wine) {
+        CommentsFragment fragment = new CommentsFragment();
         Bundle args = new Bundle();
-        args.putString(QUERY_FIELD, queryField);
+        args.putSerializable(ARGUMENT_WINE, wine);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,7 +54,7 @@ public class ListFragment extends Fragment implements ListView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mQueryField = getArguments().getString(QUERY_FIELD);
+            mWine = (Wine) getArguments().getSerializable(ARGUMENT_WINE);
         }
     }
 
@@ -104,28 +99,20 @@ public class ListFragment extends Fragment implements ListView {
     }
 
     @Override
-    public void navigateToDetailScreen(View view, Wine wine) {
-        Context context = view.getContext();
-        Intent intent = new Intent(context, DetailsActivity.class);
-        intent.putExtra("wine", wine);
-        context.startActivity(intent);
-    }
+    public void navigateToDetailScreen(View view, Wine wine) { }
 
     private void setupAdapter() {
-        CollectionReference wineCollection = FirebaseFirestore.getInstance().collection(WinesFirebaseRepository.COLLECTION);
-        Query query = wineCollection.whereArrayContains(mQueryField, FirebaseAuth.getInstance().getUid());
-
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(FirebaseWineRecyclerViewAdapter.PAGE_SIZE)
+                .setPageSize(FirebaseCommentsRecyclerViewAdapter.PAGE_SIZE)
                 .build();
 
-        FirestorePagingOptions<Wine> options = new FirestorePagingOptions.Builder<Wine>()
+        FirestorePagingOptions<Comment> options = new FirestorePagingOptions.Builder<Comment>()
                 .setLifecycleOwner(this)
-                .setQuery(query, config, Wine.class)
+                .setQuery(CommentsFirebaseRepository.getListQuery(mWine), config, Comment.class)
                 .build();
 
-        adapter = new FirebaseWineRecyclerViewAdapter(this, options);
+        adapter = new FirebaseCommentsRecyclerViewAdapter(this, options);
     }
 
     private void setupRecyclerView() {
@@ -140,7 +127,7 @@ public class ListFragment extends Fragment implements ListView {
             }
         });
 
-        swipeContainer.setOnRefreshListener(() -> adapter.refresh());
+        swipeContainer.setOnRefreshListener(() -> adapter.retry());
     }
 
 }

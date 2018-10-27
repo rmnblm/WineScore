@@ -12,31 +12,30 @@ import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.model.Comment;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class FirebaseWineRecyclerViewAdapter extends FirestorePagingAdapter<Wine, WineViewHolder> {
+public class FirebaseCommentsRecyclerViewAdapter extends FirestorePagingAdapter<Comment, CommentViewHolder> {
 
-    public static final int PAGE_SIZE = 50;
+    public static final int PAGE_SIZE = 20;
     private final ListView view;
 
-    public FirebaseWineRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<Wine> options) {
+    public FirebaseCommentsRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<Comment> options) {
         super(options);
         this.view = view;
     }
 
     @NonNull
     @Override
-    public WineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_explore_listentry, parent, false);
-        return new WineViewHolder(itemView);
+                .inflate(R.layout.fragment_comment_listentry, parent, false);
+        return new CommentViewHolder(itemView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull WineViewHolder holder, int position, @NonNull Wine model) {
+    protected void onBindViewHolder(@NonNull CommentViewHolder holder, int position, @NonNull Comment model) {
         holder.bindTo(model);
-        holder.layout.setOnClickListener(v -> view.navigateToDetailScreen(v, model));
     }
 
     @Override
