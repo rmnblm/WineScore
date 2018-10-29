@@ -104,16 +104,7 @@ public abstract class ListFragment<TElement> extends Fragment implements ListVie
 
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1)) { showLoading(); }
-            }
-        });
-
         swipeContainer.setOnRefreshListener(() -> adapter.refresh());
     }
 

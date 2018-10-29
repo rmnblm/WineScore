@@ -1,24 +1,21 @@
 package ch.hsr.winescore.ui.fragments;
 
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.TextInputEditText;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.ImageButton;
 
-import org.w3c.dom.Text;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
@@ -29,7 +26,13 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
 
     private Wine mWine;
     private String mComment;
-    private AlertDialog mAddCommentDialog;
+
+    @BindView(R.id.addCommentLayout)
+    View mLayoutAddComment;
+    @BindView(R.id.input_comment)
+    TextInputEditText mInputAddComment;
+    @BindView(R.id.button_add_comment)
+    ImageButton mButtonAddComment;
 
     @OnClick(R.id.button_close)
     public void onClose(View v) {
@@ -38,8 +41,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
 
     @OnClick(R.id.button_add_comment)
     public void onAddComment(View v) {
-        mAddCommentDialog.show();
-        mAddCommentDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        CommentsFirebaseRepository.add(mWine, mComment, result -> dismiss());
     }
 
     public static CommentsBottomDialogFragment newInstane(Wine wine) {
@@ -58,8 +60,6 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
         if (arguments != null) {
             mWine = (Wine) arguments.getSerializable(CommentsFragment.ARGUMENT_WINE);
         }
-
-        setupAddCommentDialog();
     }
 
     @Nullable
@@ -71,28 +71,13 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
                 .replace(R.id.frame_layout, CommentsFragment.newInstance(mWine))
                 .commit();
         getDialog().setOnShowListener(dialog -> {
+            mInputAddComment.setText("");
             BottomSheetBehavior behavior = BottomSheetBehavior.from((View) view.getParent());
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
+        mButtonAddComment.setEnabled(false);
+        mInputAddComment.addTextChangedListener(mCommentTextWatcher);
         return view;
-    }
-
-    private void setupAddCommentDialog() {
-        final EditText input = new EditText(getContext());
-        input.setSingleLine(false);
-        input.setLines(5);
-        input.setHorizontalScrollBarEnabled(false);
-        input.addTextChangedListener(mCommentTextWatcher);
-
-        mAddCommentDialog = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.comments_add_title)
-                .setIcon(R.drawable.ic_mode_comment_black_24dp)
-                .setView(input)
-                .setPositiveButton(R.string.button_submit, (dialog, which) -> {
-                    CommentsFirebaseRepository.add(mWine, mComment, result -> dismiss());
-                })
-                .setNegativeButton(R.string.button_cancel, (dialog, which) -> dialog.cancel())
-                .create();
     }
 
     private TextWatcher mCommentTextWatcher = new TextWatcher() {
@@ -105,7 +90,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
         @Override
         public void afterTextChanged(Editable s) {
             mComment = s.toString();
-            mAddCommentDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(!TextUtils.isEmpty(s));
+            mButtonAddComment.setEnabled(!TextUtils.isEmpty(s));
         }
     };
 }

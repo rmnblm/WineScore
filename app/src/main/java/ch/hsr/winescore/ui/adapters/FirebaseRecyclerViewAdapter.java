@@ -54,9 +54,12 @@ public class FirebaseRecyclerViewAdapter<TElement, TViewHolder extends BaseViewH
                 mView.hideLoading();
                 if (getItemCount() == 0) {
                     mView.showEmptyState();
+                } else {
+                    mView.hideEmptyState();
                 }
                 break;
             case ERROR:
+                mView.hideLoading();
                 mView.showError();
                 break;
         }
