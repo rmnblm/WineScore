@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,12 +26,12 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.activities.DetailsActivity;
-import ch.hsr.winescore.ui.adapters.FirebaseWineRecyclerViewAdapter;
+import ch.hsr.winescore.ui.adapters.FirebaseRecyclerViewAdapter;
 import ch.hsr.winescore.ui.adapters.WineViewHolder;
 import ch.hsr.winescore.ui.datasources.WinesFirebaseRepository;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class ListFragment extends Fragment implements ListView {
+public class ListFragment extends Fragment implements ListView<Wine> {
 
     public static final String QUERY_FIELD = "query_field";
     @BindView(R.id.layout)
@@ -44,7 +43,7 @@ public class ListFragment extends Fragment implements ListView {
     @BindView(R.id.emptyDataStore)
     View emptyDataView;
 
-    private FirebaseWineRecyclerViewAdapter adapter;
+    private FirebaseRecyclerViewAdapter<Wine, WineViewHolder> adapter;
     String mQueryField;
 
     public static ListFragment newInstance(String queryField) {
@@ -117,7 +116,7 @@ public class ListFragment extends Fragment implements ListView {
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(FirebaseWineRecyclerViewAdapter.PAGE_SIZE)
+                .setPageSize(FirebaseRecyclerViewAdapter.PAGE_SIZE)
                 .build();
 
         FirestorePagingOptions<Wine> options = new FirestorePagingOptions.Builder<Wine>()
@@ -125,7 +124,7 @@ public class ListFragment extends Fragment implements ListView {
                 .setQuery(query, config, Wine.class)
                 .build();
 
-        adapter = new FirebaseWineRecyclerViewAdapter(this, options);
+        adapter = new FirebaseRecyclerViewAdapter<>(this, options, R.layout.fragment_explore_listentry, WineViewHolder::newInstance);
     }
 
     private void setupRecyclerView() {

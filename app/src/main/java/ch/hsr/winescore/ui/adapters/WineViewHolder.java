@@ -1,7 +1,6 @@
 package ch.hsr.winescore.ui.adapters;
 
 import android.graphics.drawable.Drawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,7 +13,7 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
 
-public class WineViewHolder extends RecyclerView.ViewHolder {
+public class WineViewHolder extends BaseViewHolder<Wine> {
 
     @BindView(R.id.constraintLayout)
     View layout;
@@ -30,11 +29,16 @@ public class WineViewHolder extends RecyclerView.ViewHolder {
     @BindDrawable(R.drawable.ic_wine_white) Drawable wine_white;
     @BindDrawable(R.drawable.ic_wine_pink) Drawable wine_pink;
 
-    public WineViewHolder(View itemView) {
+    WineViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
+    public static WineViewHolder newInstance(View view) {
+        return new WineViewHolder(view);
+    }
+
+    @Override
     public void bindTo(Wine wine) {
         title_winery.setText(wine.getWinery());
 

@@ -12,31 +12,34 @@ import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class FirebaseWineRecyclerViewAdapter extends FirestorePagingAdapter<Wine, WineViewHolder> {
+public class FirebaseRecyclerViewAdapter<TElement, TViewHolder extends BaseViewHolder<TElement>> extends FirestorePagingAdapter<TElement, TViewHolder> {
 
-    public static final int PAGE_SIZE = 50;
-    private final ListView view;
+    public static final int PAGE_SIZE = 20;
+    private final ListView<TElement> mView;
+    private final int mListEntryLayout;
+    private final ViewHolderCreator<TViewHolder> mViewHolderCreator;
 
-    public FirebaseWineRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<Wine> options) {
+    public FirebaseRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<TElement> options, int listEntryLayout, ViewHolderCreator<TViewHolder> creator) {
         super(options);
-        this.view = view;
+        this.mView = view;
+        this.mListEntryLayout = listEntryLayout;
+        this.mViewHolderCreator = creator;
     }
 
     @NonNull
     @Override
-    public WineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public TViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_explore_listentry, parent, false);
-        return new WineViewHolder(itemView);
+                .inflate(mListEntryLayout, parent, false);
+        return mViewHolderCreator.createViewHolder(itemView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull WineViewHolder holder, int position, @NonNull Wine model) {
+    protected void onBindViewHolder(@NonNull TViewHolder holder, int position, @NonNull TElement model) {
         holder.bindTo(model);
-        holder.layout.setOnClickListener(v -> view.navigateToDetailScreen(v, model));
+        holder.itemView.setOnClickListener(v -> mView.navigateToDetailScreen(v, model));
     }
 
     @Override
@@ -44,17 +47,17 @@ public class FirebaseWineRecyclerViewAdapter extends FirestorePagingAdapter<Wine
         switch (state) {
             case LOADING_INITIAL:
             case LOADING_MORE:
-                view.showLoading();
+                mView.showLoading();
                 break;
             case LOADED:
             case FINISHED:
-                view.hideLoading();
+                mView.hideLoading();
                 if (getItemCount() == 0) {
-                    view.showEmptyState();
+                    mView.showEmptyState();
                 }
                 break;
             case ERROR:
-                view.showError();
+                mView.showError();
                 break;
         }
     }
@@ -64,5 +67,9 @@ public class FirebaseWineRecyclerViewAdapter extends FirestorePagingAdapter<Wine
         if (list != null) {
             list.getDataSource().invalidate();
         }
+    }
+
+    public interface ViewHolderCreator<T> {
+        T createViewHolder(View view);
     }
 }

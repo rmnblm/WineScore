@@ -22,11 +22,11 @@ import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Comment;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.adapters.CommentViewHolder;
-import ch.hsr.winescore.ui.adapters.FirebaseCommentsRecyclerViewAdapter;
+import ch.hsr.winescore.ui.adapters.FirebaseRecyclerViewAdapter;
 import ch.hsr.winescore.ui.datasources.CommentsFirebaseRepository;
 import ch.hsr.winescore.ui.views.ListView;
 
-public class CommentsFragment extends Fragment implements ListView {
+public class CommentsFragment extends Fragment implements ListView<Comment> {
 
     public static final String ARGUMENT_WINE = "WINE";
 
@@ -39,7 +39,7 @@ public class CommentsFragment extends Fragment implements ListView {
     @BindView(R.id.emptyDataStore)
     View emptyDataView;
 
-    private FirestorePagingAdapter<Comment, CommentViewHolder> adapter;
+    private FirebaseRecyclerViewAdapter<Comment, CommentViewHolder> adapter;
     private Wine mWine;
 
     public static CommentsFragment newInstance(Wine wine) {
@@ -99,12 +99,12 @@ public class CommentsFragment extends Fragment implements ListView {
     }
 
     @Override
-    public void navigateToDetailScreen(View view, Wine wine) { }
+    public void navigateToDetailScreen(View view, Comment item) { }
 
     private void setupAdapter() {
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
-                .setPageSize(FirebaseCommentsRecyclerViewAdapter.PAGE_SIZE)
+                .setPageSize(FirebaseRecyclerViewAdapter.PAGE_SIZE)
                 .build();
 
         FirestorePagingOptions<Comment> options = new FirestorePagingOptions.Builder<Comment>()
@@ -112,7 +112,7 @@ public class CommentsFragment extends Fragment implements ListView {
                 .setQuery(CommentsFirebaseRepository.getListQuery(mWine), config, Comment.class)
                 .build();
 
-        adapter = new FirebaseCommentsRecyclerViewAdapter(this, options);
+        adapter = new FirebaseRecyclerViewAdapter<>(this, options, R.layout.fragment_comment_listentry, CommentViewHolder::newInstance);
     }
 
     private void setupRecyclerView() {
