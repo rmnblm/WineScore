@@ -36,6 +36,7 @@ import ch.hsr.winescore.ui.views.DetailsView;
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    public static final String ARGUMENT_WINE = "wine";
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
@@ -101,7 +102,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private void setupIntentExtras() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            wine = (Wine) extras.get("wine");
+            wine = (Wine) extras.get(ARGUMENT_WINE);
             System.out.println(wine);
         }
     }

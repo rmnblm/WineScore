@@ -141,7 +141,7 @@ public class ProfileFragment extends Fragment {
     private void navigateToList(int title, String queryField) {
         Intent intent = new Intent(getContext(), ListActivity.class);
         intent.putExtra(ListActivity.TITLE, title);
-        intent.putExtra(ListFragment.QUERY_FIELD, queryField);
+        intent.putExtra(WinesFragment.ARGUMENT_QUERY_FIELD, queryField);
         getActivity().startActivity(intent);
     }
 
