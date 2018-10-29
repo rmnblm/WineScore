@@ -70,7 +70,7 @@ public class LatestFragment extends Fragment implements LatestView {
     public void navigateToDetailScreen(View view, Wine wine) {
         Context context = view.getContext();
         Intent intent = new Intent(context, DetailsActivity.class);
-        intent.putExtra("wine", wine);
+        intent.putExtra(DetailsActivity.ARGUMENT_WINE, wine);
         context.startActivity(intent);
     }
 

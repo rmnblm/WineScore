@@ -82,7 +82,7 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.layout_comments)
     public void onClickComments(View v) {
-        navigateToList(R.string.ratings_title, "commentedBy");
+        navigateToList(R.string.comments_title, "commentedBy");
     }
 
     @OnClick(R.id.button_sign_out)
@@ -140,8 +140,8 @@ public class ProfileFragment extends Fragment {
 
     private void navigateToList(int title, String queryField) {
         Intent intent = new Intent(getContext(), ListActivity.class);
-        intent.putExtra(ListFragment.TITLE, title);
-        intent.putExtra(ListFragment.QUERY_FIELD, queryField);
+        intent.putExtra(ListActivity.TITLE, title);
+        intent.putExtra(WinesFragment.ARGUMENT_QUERY_FIELD, queryField);
         getActivity().startActivity(intent);
     }
 

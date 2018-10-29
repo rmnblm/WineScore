@@ -5,6 +5,9 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 public class WineScoreApplication extends Application {
 
     private static WineScoreApplication instance;
@@ -13,6 +16,11 @@ public class WineScoreApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder(firestore.getFirestoreSettings())
+                .setTimestampsInSnapshotsEnabled(true).build();
+        firestore.setFirestoreSettings(settings);
     }
 
     public static WineScoreApplication getApplicationInstance() {

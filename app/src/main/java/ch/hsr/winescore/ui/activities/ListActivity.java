@@ -7,9 +7,11 @@ import android.os.Bundle;
 
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.ui.fragments.ListFragment;
+import ch.hsr.winescore.ui.fragments.WinesFragment;
 
 public class ListActivity extends AppCompatActivity {
+
+    public static final String TITLE = "title";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,10 +20,9 @@ public class ListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
+        setTitle(intent.getIntExtra(TITLE, R.string.favorites_title));
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ListFragment.newInstance(
-                intent.getIntExtra(ListFragment.TITLE, R.string.favorites_title),
-                intent.getStringExtra(ListFragment.QUERY_FIELD)));
+        transaction.replace(R.id.frame_layout, WinesFragment.newInstance(intent.getStringExtra(WinesFragment.ARGUMENT_QUERY_FIELD)));
         transaction.commit();
     }
 }

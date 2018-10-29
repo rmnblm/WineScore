@@ -2,7 +2,9 @@ package ch.hsr.winescore.ui.activities;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,16 +24,19 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
 import ch.hsr.winescore.ui.datasources.RatingsFirebaseRepository;
+import ch.hsr.winescore.ui.fragments.CommentsBottomDialogFragment;
 import ch.hsr.winescore.ui.presenters.DetailsPresenter;
 import ch.hsr.winescore.ui.views.DetailsView;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    public static final String ARGUMENT_WINE = "wine";
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
@@ -55,10 +60,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.ratingBar_my_ratings) RatingBar rb_my_rating;
     @BindView(R.id.button_remove_rating) Button btn_remove_rating;
 
+    @OnClick(R.id.commentsLayout)
+    public void openCommentsDialog(View v) {
+        mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag());
+    }
+
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
     private boolean mIsFavorite = false;
+    private BottomSheetDialogFragment mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +83,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         setupViewsWithExtras();
         setupFloatingActionButton();
         setupRatings();
+        setupCommentsDialog();
     }
 
     private void setupPresenter() {
@@ -90,7 +102,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private void setupIntentExtras() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            wine = (Wine) extras.get("wine");
+            wine = (Wine) extras.get(ARGUMENT_WINE);
             System.out.println(wine);
         }
     }
@@ -165,9 +177,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
             rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {});
+                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {
+                        refreshRatingList();
+                    });
                     btn_remove_rating.setVisibility(View.VISIBLE);
-                    refreshRatingList();
                 }
             });
 
@@ -179,6 +192,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                 });
             });
         }
+    }
+
+    private void setupCommentsDialog() {
+        mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
     }
 
     private void updateFavorite(boolean isFavorite) {
