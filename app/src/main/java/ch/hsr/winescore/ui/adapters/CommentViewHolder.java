@@ -32,6 +32,6 @@ public class CommentViewHolder extends BaseViewHolder<Comment> {
                 System.currentTimeMillis(),
                 DateUtils.DAY_IN_MILLIS));
         textViewUser.setText(comment.getUserName());
-        textViewContent.setText(comment.getComment());
+        textViewContent.setText(comment.getContent());
     }
 }

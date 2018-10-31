@@ -4,6 +4,7 @@ import android.arch.paging.PositionalDataSource;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -18,6 +19,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class WineDataSource extends PositionalDataSource<Wine> {
+
+    public static final String TAG = WineDataSource.class.getSimpleName();
 
     private final GWSService apiService;
     private final DataLoadStateObserver observer;
@@ -46,7 +49,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
         refreshParameters();
 
-        System.out.println("[loadInitial] pageSize = " + params.pageSize +
+        Log.d(TAG, "[loadInitial] pageSize = " + params.pageSize +
                 ", requestedStartPosition = " + params.requestedStartPosition +
                 ", requestedLoadSize = " + params.requestedLoadSize);
 
@@ -58,7 +61,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             callback.onResult(response.body().getWines(), params.requestedStartPosition);
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Initial load failed", e);
             observer.onDataLoadStateChanged(DataLoadState.FAILED);
         }
     }
@@ -67,7 +70,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.LOADING);
 
-        System.out.println("[loadRange] loadSize = " + params.loadSize + ", startPosition = " + params.startPosition);
+        Log.d(TAG, "[loadRange] loadSize = " + params.loadSize + ", startPosition = " + params.startPosition);
 
         final Call<WineResponse> wineListCall = apiService.getLatest(params.loadSize, params.startPosition, color, country, vintage, ordering);
 
@@ -77,7 +80,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
             callback.onResult(response.body().getWines());
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Load range failed", e);
             observer.onDataLoadStateChanged(DataLoadState.FAILED);
         }
     }

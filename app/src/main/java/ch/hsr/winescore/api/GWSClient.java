@@ -1,11 +1,8 @@
 package ch.hsr.winescore.api;
 
-import android.util.Log;
-import ch.hsr.winescore.WineScoreApplication;
-
 import java.io.File;
-import java.io.IOException;
 
+import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.WineScoreConstants;
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -16,6 +13,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GWSClient {
+
+    private static final String CACHE_CONTROL = "Cache-Control";
+
+    private GWSClient() {
+        throw new IllegalStateException("Static class");
+    }
 
     /**
      * Get Retrofit Instance
@@ -60,11 +63,11 @@ public class GWSClient {
 
     private static final Interceptor REWRITE_RESPONSE_INTERCEPTOR = chain -> {
         Response originalResponse = chain.proceed(chain.request());
-        String cacheControl = originalResponse.header("Cache-Control");
+        String cacheControl = originalResponse.header(CACHE_CONTROL);
         if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
                 cacheControl.contains("must-revalidate") || cacheControl.contains("max-age=0")) {
             return originalResponse.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + 5000)
+                    .header(CACHE_CONTROL, "public, max-age=" + 5000)
                     .build();
         } else {
             return originalResponse;
@@ -75,7 +78,7 @@ public class GWSClient {
         Request request = chain.request();
         if (!WineScoreApplication.hasNetwork()) {
             request = request.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached")
+                    .header(CACHE_CONTROL, "public, only-if-cached")
                     .build();
         }
         return chain.proceed(request);

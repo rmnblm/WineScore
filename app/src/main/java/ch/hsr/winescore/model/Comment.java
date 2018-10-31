@@ -8,18 +8,18 @@ public class Comment {
     private String userId;
     private String userName;
     private String wineId;
-    private String comment;
+    private String content;
     @ServerTimestamp
     private Timestamp timestamp = null;
 
     public Comment() {
     }
 
-    public Comment(String userId, String userName, String wineId, String comment) {
+    public Comment(String userId, String userName, String wineId, String content) {
         this.userId = userId;
         this.userName = userName;
         this.wineId = wineId;
-        this.comment = comment;
+        this.content = content;
     }
 
     public String getUserId() {
@@ -46,12 +46,12 @@ public class Comment {
         this.wineId = wineId;
     }
 
-    public String getComment() {
-        return comment;
+    public String getContent() {
+        return content;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Timestamp getTimestamp() {

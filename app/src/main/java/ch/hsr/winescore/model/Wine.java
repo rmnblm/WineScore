@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Wine implements Serializable {
 
@@ -98,7 +100,7 @@ public class Wine implements Serializable {
         return country;
     }
 
-    public ArrayList<String> getRegions() {
+    public List<String> getRegions() {
         return regions;
     }
 
@@ -150,18 +152,27 @@ public class Wine implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) {
             return true;
+        }
+        if (!(obj instanceof Wine)) {
+            return false;
+        }
 
         Wine wine = (Wine) obj;
-        return wine.getId() == this.getId();
+        return Objects.equals(wine.getId(), this.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     public static final DiffUtil.ItemCallback<Wine> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Wine>() {
                 @Override
                 public boolean areItemsTheSame(Wine oldItem, Wine newItem) {
-                    return oldItem.getId() == newItem.getId();
+                    return oldItem.getId().equals(newItem.getId());
                 }
                 @Override
                 public boolean areContentsTheSame(Wine oldItem, Wine newItem) {

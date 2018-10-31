@@ -4,7 +4,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -118,9 +117,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         int colorResID = 0;
         switch(wine.getColor()) {
-            case Red: colorResID = R.color.colorWineRed; break;
-            case White: colorResID = R.color.colorWineWhite; break;
-            case Pink: colorResID = R.color.colorWinePink; break;
+            case RED: colorResID = R.color.colorWineRed; break;
+            case WHITE: colorResID = R.color.colorWineWhite; break;
+            case PINK: colorResID = R.color.colorWinePink; break;
         }
 
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
@@ -168,7 +167,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         } else {
             RatingsFirebaseRepository.get(wine, result -> {
                 if (result != null) {
-                    rb_my_rating.setRating(result.getRating());
+                    rb_my_rating.setRating(result.getRatingValue());
                     btn_remove_rating.setVisibility(View.VISIBLE);
                 } else {
                     btn_remove_rating.setVisibility(View.GONE);

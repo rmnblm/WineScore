@@ -6,18 +6,20 @@ import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import ch.hsr.winescore.R;
 
 public class FilterBottomDialogFragment extends BottomSheetDialogFragment {
 
 
-    public FilterBottomDialogFragment() { }
+    public FilterBottomDialogFragment() {
+        // empty
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,8 +27,6 @@ public class FilterBottomDialogFragment extends BottomSheetDialogFragment {
     }
 
     public static class FilterSettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-        private SharedPreferences preferences;
 
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
