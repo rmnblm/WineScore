@@ -35,6 +35,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
     private SearchPresenter presenter;
     private BottomSheetDialog filterDialog;
+    private boolean didFirstSearch = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         presenter = new SearchPresenter();
         presenter.attachView(this);
         presenter.bindLoadState(this);
-        presenter.bindWines(this);
     }
 
     private void setupRecyclerView() {
@@ -91,7 +92,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
         swipeContainer.setEnabled(false);
         swipeContainer.setOnRefreshListener(() -> presenter.refreshData());
-        swipeContainer.setVisibility(View.INVISIBLE);
     }
 
     private void setupSearchbox() {
@@ -113,14 +113,18 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
     private void handleSearch(String query) {
         presenter.setSearchQuery(query);
-        presenter.refreshData();
-        swipeContainer.setVisibility(View.VISIBLE);
+
+        if (didFirstSearch) {
+            presenter.refreshData();
+        } else {
+            presenter.bindWines(this);
+            didFirstSearch = true;
+        }
     }
 
     @OnClick(R.id.clearSearchButton)
     public void clearSearch(View animationSource) {
         searchEditText.setText("");
-        swipeContainer.setVisibility(View.INVISIBLE);
     }
 
     @Override

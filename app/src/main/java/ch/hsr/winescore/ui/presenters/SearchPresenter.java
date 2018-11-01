@@ -11,7 +11,6 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
 
     private SearchView view;
     private final SharedPreferences sharedPreferences;
-    private boolean isObservingWines = false;
 
     public SearchPresenter() {
         super(new SearchDataSourceFactory());
