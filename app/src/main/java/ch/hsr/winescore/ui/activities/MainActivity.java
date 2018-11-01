@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
+    private int selectedFragmentId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +29,17 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, new LatestFragment());
         transaction.commit();
+
+        selectedFragmentId = R.id.latest;
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
+        if (selectedFragmentId == item.getItemId()) return false;
+
+        selectedFragmentId = item.getItemId();
+
         Fragment selectedFragment = null;
-        switch (item.getItemId()) {
+        switch (selectedFragmentId) {
             case R.id.latest:
                 selectedFragment = new LatestFragment();
                 break;
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new ProfileFragment();
                 break;
         }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, selectedFragment);
         transaction.commit();
