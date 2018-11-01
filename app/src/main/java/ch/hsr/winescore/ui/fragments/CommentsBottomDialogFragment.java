@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -79,6 +81,8 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
             BottomSheetBehavior behavior = BottomSheetBehavior.from((View) view.getParent());
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
+
+        mLayoutAddComment.setVisibility(FirebaseAuth.getInstance().getCurrentUser() != null ? View.VISIBLE : View.GONE);
         mButtonAddComment.setEnabled(false);
         mInputAddComment.addTextChangedListener(mCommentTextWatcher);
         return view;
