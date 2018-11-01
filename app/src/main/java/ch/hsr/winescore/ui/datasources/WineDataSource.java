@@ -24,7 +24,7 @@ public class WineDataSource extends PositionalDataSource<Wine> {
 
     private final GWSService apiService;
     private final DataLoadStateObserver observer;
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     private String color;
     private String country;

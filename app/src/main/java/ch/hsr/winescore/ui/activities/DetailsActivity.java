@@ -102,7 +102,6 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             wine = (Wine) extras.get(ARGUMENT_WINE);
-            System.out.println(wine);
         }
     }
 
@@ -176,20 +175,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
             rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {
-                        refreshRatingList();
-                    });
+                    RatingsFirebaseRepository.set(wine, (int) rating, result -> refreshRatingList());
                     btn_remove_rating.setVisibility(View.VISIBLE);
                 }
             });
 
-            btn_remove_rating.setOnClickListener(v -> {
-                RatingsFirebaseRepository.delete(wine, result -> {
-                    rb_my_rating.setRating(0);
-                    btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
-                    refreshRatingList();
-                });
-            });
+            btn_remove_rating.setOnClickListener(v -> RatingsFirebaseRepository.delete(wine, result -> {
+                rb_my_rating.setRating(0);
+                btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
+                refreshRatingList();
+            }));
         }
     }
 
