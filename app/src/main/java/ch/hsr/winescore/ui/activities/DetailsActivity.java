@@ -132,15 +132,15 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         pb_score.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_ratings_1.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_1.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_ratings_2.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_2.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_ratings_3.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_3.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_ratings_4.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_4.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_ratings_5.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_5.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_my_rating.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
         rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
 
