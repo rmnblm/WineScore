@@ -190,7 +190,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ratingIcon">
 
                     <android.support.constraint.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -489,7 +489,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/comments_title"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -506,14 +505,68 @@
                     app:layout_constraintStart_toEndOf="@+id/commentsIcon"
                     app:layout_constraintTop_toTopOf="@+id/commentsIcon" />
 
+                <TextView
+                    android:id="@+id/commentsViewAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/comments_view_all"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView" />
+
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/commentsLastComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/commentsLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/commentsIcon">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:singleLine="true"
+                            android:text="@string/last_comment"
+                            android:textColor="@color/colorSubtitleColor"
+                            app:layout_constraintBottom_toBottomOf="@+id/icon"
+                            app:layout_constraintEnd_toStartOf="@+id/date"
+                            app:layout_constraintStart_toEndOf="@+id/icon"
+                            app:layout_constraintTop_toTopOf="@+id/icon" />
+
+                        <TextView
+                            android:id="@+id/tv_last_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="italic"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/user"
+                            app:layout_constraintTop_toBottomOf="@+id/icon"
+                            tools:text="Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content Comment Content " />
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
 
             </android.support.constraint.ConstraintLayout>
 

@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
+import ch.hsr.winescore.ui.datasources.CommentsFirebaseRepository;
 import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
 import ch.hsr.winescore.ui.datasources.RatingsFirebaseRepository;
 import ch.hsr.winescore.ui.fragments.CommentsBottomDialogFragment;
@@ -59,6 +60,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.ratingBar_my_ratings) RatingBar rb_my_rating;
     @BindView(R.id.button_remove_rating) Button btn_remove_rating;
 
+    @BindView(R.id.commentsLastComment) View view_last_comment;
+    @BindView(R.id.tv_last_comment) TextView tv_last_comment;
+
     @OnClick(R.id.commentsLayout)
     public void openCommentsDialog(View v) {
         mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag());
@@ -82,7 +86,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         setupViewsWithExtras();
         setupFloatingActionButton();
         setupRatings();
-        setupCommentsDialog();
+        setupComments();
     }
 
     private void setupPresenter() {
@@ -188,7 +192,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         }
     }
 
-    private void setupCommentsDialog() {
+    private void setupComments() {
+        view_last_comment.setVisibility(View.GONE);
+        CommentsFirebaseRepository.getLast(wine, comment -> {
+            if (comment != null) {
+                tv_last_comment.setText(getString(R.string.comments_citation, comment.getContent()));
+                view_last_comment.setVisibility(View.VISIBLE);
+            }
+        });
         mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
     }
 
