@@ -1,21 +1,18 @@
 package ch.hsr.winescore.model;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.ServerTimestamp;
-
 public class Rating {
 
     private String userId;
     private String wineId;
-    private Integer rating;
+    private Integer ratingValue;
 
     public Rating() {
     }
 
-    public Rating(String userId, String wineId, Integer rating) {
+    public Rating(String userId, String wineId, Integer ratingValue) {
         this.userId = userId;
         this.wineId = wineId;
-        this.rating = rating;
+        this.ratingValue = ratingValue;
     }
 
     public String getUserId() {
@@ -34,11 +31,11 @@ public class Rating {
         this.wineId = wineId;
     }
 
-    public Integer getRating() {
-        return rating;
+    public Integer getRatingValue() {
+        return ratingValue;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setRatingValue(Integer ratingValue) {
+        this.ratingValue = ratingValue;
     }
 }

@@ -80,12 +80,16 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
         return view;
     }
 
-    private TextWatcher mCommentTextWatcher = new TextWatcher() {
+    private final TextWatcher mCommentTextWatcher = new TextWatcher() {
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            // not used
+        }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) { }
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            // not used
+        }
 
         @Override
         public void afterTextChanged(Editable s) {

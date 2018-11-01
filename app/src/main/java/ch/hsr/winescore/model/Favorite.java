@@ -1,8 +1,5 @@
 package ch.hsr.winescore.model;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.ServerTimestamp;
-
 public class Favorite {
 
     private String userId;

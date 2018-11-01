@@ -11,7 +11,6 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import ch.hsr.winescore.R;
 import ch.hsr.winescore.ui.views.ListView;
 
 public class FirebaseRecyclerViewAdapter<TElement, TViewHolder extends BaseViewHolder<TElement>> extends FirestorePagingAdapter<TElement, TViewHolder> {

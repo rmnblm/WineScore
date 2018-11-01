@@ -47,9 +47,9 @@ public class WineViewHolder extends BaseViewHolder<Wine> {
         score.setText(String.format(Locale.getDefault(), "%.2f", wine.getScore()));
 
         switch(wine.getColor()) {
-            case Red: icon.setImageDrawable(wine_red); break;
-            case White: icon.setImageDrawable(wine_white); break;
-            case Pink: icon.setImageDrawable(wine_pink); break;
+            case RED: icon.setImageDrawable(wine_red); break;
+            case WHITE: icon.setImageDrawable(wine_white); break;
+            case PINK: icon.setImageDrawable(wine_pink); break;
         }
     }
 }

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
+    private final BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
         Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.latest:

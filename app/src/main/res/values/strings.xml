@@ -25,15 +25,13 @@
     <string name="pref_vintageTitle">Vintage</string>
     <string name="pref_orderingTitle">Ordering</string>
 
-    <string name="dataload_error_message">An error occured. Try to reload.</string>
+    <string name="dataload_error_message">An error occurred. Try to reload.</string>
     <string name="pref_category_filter_wines">Filter wines</string>
 
     <string name="array_all_value" translatable="false">_</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_profile">ProfileActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile_welcome">Welcome to WineScore!</string>
     <string name="profile_login_message">Please log in to rate and comment on wines\nand add them to your favorites.</string>
     <string name="favorites_title">Favorites</string>
@@ -49,7 +47,7 @@
     <string name="ratings">Ratings</string>
     <string name="button_remove_rating">Remove rating</string>
     <string name="empty_data_title">The wine glass is empty!</string>
-    <string name="empty_data_content">There is nothing to show here...</string>
+    <string name="empty_data_content">There is nothing to show here…</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="critics">Critics</string>
     <string name="users">Users</string>

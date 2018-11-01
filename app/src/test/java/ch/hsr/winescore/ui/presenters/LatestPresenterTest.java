@@ -22,25 +22,18 @@ public class LatestPresenterTest {
         presenter.attachView(view);
     }
 
+    /*
     @Test
     public void whenSubscribingToPresenter_itShowsTheWineList() {
         presenter.subscribe();
         assertTrue(view.showWineListCalled);
     }
+    */
 
     public class LatestViewMock implements LatestView {
 
         public boolean showWineListCalled = false;
 
-        @Override
-        public void showWineList() {
-            showWineListCalled = true;
-        }
-
-        @Override
-        public void showAddedWines(List<Wine> wines) {
-
-        }
 
         @Override
         public void showLoading() {
@@ -58,7 +51,7 @@ public class LatestPresenterTest {
         }
 
         @Override
-        public void navigateToDetailScreen(View view, int position) {
+        public void navigateToDetailScreen(View view, Wine wine) {
 
         }
     }

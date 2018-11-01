@@ -1,11 +1,7 @@
 package ch.hsr.winescore.ui.fragments;
 
 import android.arch.paging.PagedList;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,23 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.activities.DetailsActivity;
 import ch.hsr.winescore.ui.adapters.BaseViewHolder;
 import ch.hsr.winescore.ui.adapters.FirebaseRecyclerViewAdapter;
-import ch.hsr.winescore.ui.adapters.WineViewHolder;
-import ch.hsr.winescore.ui.datasources.WinesFirebaseRepository;
 import ch.hsr.winescore.ui.views.ListView;
 
-public abstract class ListFragment<TElement> extends Fragment implements ListView<TElement> {
+public abstract class ListFragment<T> extends Fragment implements ListView<T> {
 
     @BindView(R.id.layout)
     View layout;
@@ -43,11 +32,11 @@ public abstract class ListFragment<TElement> extends Fragment implements ListVie
     @BindView(R.id.emptyDataStore)
     View emptyDataView;
 
-    private FirebaseRecyclerViewAdapter<TElement, BaseViewHolder<TElement>> adapter;
+    private FirebaseRecyclerViewAdapter<T, BaseViewHolder<T>> adapter;
 
     protected abstract Query getQuery();
-    protected abstract Class<TElement> getElementClass();
-    protected abstract FirebaseRecyclerViewAdapter<TElement, BaseViewHolder<TElement>> createAdapter(FirestorePagingOptions<TElement> options);
+    protected abstract Class<T> getElementClass();
+    protected abstract FirebaseRecyclerViewAdapter<T, BaseViewHolder<T>> createAdapter(FirestorePagingOptions<T> options);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +84,7 @@ public abstract class ListFragment<TElement> extends Fragment implements ListVie
                 .setEnablePlaceholders(false)
                 .setPageSize(FirebaseRecyclerViewAdapter.PAGE_SIZE)
                 .build();
-        FirestorePagingOptions<TElement> options = new FirestorePagingOptions.Builder<TElement>()
+        FirestorePagingOptions<T> options = new FirestorePagingOptions.Builder<T>()
                 .setLifecycleOwner(this)
                 .setQuery(getQuery(), config, getElementClass())
                 .build();

@@ -5,12 +5,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class WineResponse {
 
     @SerializedName("results")
     @Expose
-    private ArrayList<Wine> wines;
+    private List<Wine> wines;
 
     @SerializedName("count")
     @Expose
@@ -24,7 +25,7 @@ public class WineResponse {
     /**
      * @return The wines
      */
-    public ArrayList<Wine> getWines() {
+    public List<Wine> getWines() {
         return wines;
     }
 

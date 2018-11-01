@@ -52,5 +52,7 @@ public class CommentsFragment extends ListFragment<Comment> {
     }
 
     @Override
-    public void navigateToDetailScreen(View view, Comment item) {}
+    public void navigateToDetailScreen(View view, Comment item) {
+        // empty
+    }
 }
