@@ -54,6 +54,12 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.ratings_4) TextView tv_ratings_4;
     @BindView(R.id.ratings_5) TextView tv_ratings_5;
 
+    @BindView(R.id.ratings_1_stars) RatingBar rb_ratings_1;
+    @BindView(R.id.ratings_2_stars) RatingBar rb_ratings_2;
+    @BindView(R.id.ratings_3_stars) RatingBar rb_ratings_3;
+    @BindView(R.id.ratings_4_stars) RatingBar rb_ratings_4;
+    @BindView(R.id.ratings_5_stars) RatingBar rb_ratings_5;
+
     @BindView(R.id.myRatingsLayout) View view_my_ratings;
     @BindView(R.id.ratingBar_my_ratings) RatingBar rb_my_rating;
     @BindView(R.id.button_remove_rating) Button btn_remove_rating;
@@ -124,6 +130,19 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         }
 
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        pb_score.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_1.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_2.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_3.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_4.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_ratings_5.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
 
         int countryResID;
         switch(wine.getCountry().toLowerCase()) {

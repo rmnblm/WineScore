@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#c62828</color>
-    <color name="colorPrimaryDark">#b71c1c</color>
-    <color name="colorAccent">#536dfe</color>
+    <color name="colorPrimary">#A29585</color>
+    <color name="colorPrimaryDark">#493E2E</color>
+    <color name="colorAccent">#C8BFA7</color>
     <color name="colorWineGlass">@android:color/primary_text_light</color>
-    <color name="colorWineWhite">#fece62</color>
+    <color name="colorWineWhite">#ffd700</color>
     <color name="colorWineRed">#d10039</color>
     <color name="colorWinePink">#ff8496</color>
-    <color name="colorErrorMessage">#960000</color>
-    <color name="colorTitleColor">#212121</color>
-    <color name="colorSubtitleColor">#616161</color>
+    <color name="colorErrorMessage">#d10039</color>
+    <color name="colorTitleColor">#493E2E</color>
+    <color name="colorSubtitleColor">#A29585</color>
     <color name="colorSecondary">#fafafa</color>
+    <color name="bottomNavigationBackground">#fafafa</color>
     <color name="bottomNavigationBorder">#e2e2e2</color>
 </resources>

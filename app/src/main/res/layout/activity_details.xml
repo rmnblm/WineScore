@@ -289,14 +289,14 @@
                                 android:orientation="horizontal">
 
                                 <RatingBar
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:numStars="5"
-                                    android:progressTint="@color/colorPrimaryDark"
-                                    android:rating="5"
-                                    android:stepSize="1" />
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:numStars="5"
+                                        android:progressTint="@color/colorPrimaryDark"
+                                        android:rating="5"
+                                        android:stepSize="1" android:id="@+id/ratings_5_stars"/>
 
                                 <TextView
                                     android:id="@+id/ratings_5"
@@ -315,14 +315,14 @@
                                 android:orientation="horizontal">
 
                                 <RatingBar
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:numStars="5"
-                                    android:progressTint="@color/colorPrimaryDark"
-                                    android:rating="4"
-                                    android:stepSize="1" />
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:numStars="5"
+                                        android:progressTint="@color/colorPrimaryDark"
+                                        android:rating="4"
+                                        android:stepSize="1" android:id="@+id/ratings_4_stars"/>
 
                                 <TextView
                                     android:id="@+id/ratings_4"
@@ -341,14 +341,14 @@
                                 android:orientation="horizontal">
 
                                 <RatingBar
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:numStars="5"
-                                    android:progressTint="@color/colorPrimaryDark"
-                                    android:rating="3"
-                                    android:stepSize="1" />
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:numStars="5"
+                                        android:progressTint="@color/colorPrimaryDark"
+                                        android:rating="3"
+                                        android:stepSize="1" android:id="@+id/ratings_3_stars"/>
 
                                 <TextView
                                     android:id="@+id/ratings_3"
@@ -367,14 +367,14 @@
                                 android:orientation="horizontal">
 
                                 <RatingBar
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:numStars="5"
-                                    android:progressTint="@color/colorPrimaryDark"
-                                    android:rating="2"
-                                    android:stepSize="1" />
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:numStars="5"
+                                        android:progressTint="@color/colorPrimaryDark"
+                                        android:rating="2"
+                                        android:stepSize="1" android:id="@+id/ratings_2_stars"/>
 
                                 <TextView
                                     android:id="@+id/ratings_2"
@@ -393,14 +393,14 @@
                                 android:orientation="horizontal">
 
                                 <RatingBar
-                                    style="?android:attr/ratingBarStyleSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:numStars="5"
-                                    android:progressTint="@color/colorPrimaryDark"
-                                    android:rating="1"
-                                    android:stepSize="1" />
+                                        style="?android:attr/ratingBarStyleSmall"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:numStars="5"
+                                        android:progressTint="@color/colorPrimaryDark"
+                                        android:rating="1"
+                                        android:stepSize="1" android:id="@+id/ratings_1_stars"/>
 
                                 <TextView
                                     android:id="@+id/ratings_1"
