@@ -28,6 +28,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.ui.activities.ListActivity;
+import ch.hsr.winescore.ui.datasources.CommentsFirebaseRepository;
+import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
+import ch.hsr.winescore.ui.datasources.RatingsFirebaseRepository;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -46,6 +49,13 @@ public class ProfileFragment extends Fragment {
     ImageView mProfilePicture;
     @BindView(R.id.tv_displayname)
     TextView mDisplayName;
+    @BindView(R.id.favorites_count)
+    TextView mFavoritesCount;
+    @BindView(R.id.ratings_count)
+    TextView mRatingsCount;
+    @BindView(R.id.comments_count)
+    TextView mCommentsCount;
+
     @BindDrawable(R.drawable.ic_wine_red)
     Drawable mWineIcon;
     @BindString(R.string.anonymous)
@@ -150,6 +160,7 @@ public class ProfileFragment extends Fragment {
         mLayoutSignIn.setVisibility(View.GONE);
         mLayoutMenu.setVisibility(View.VISIBLE);
         mDisplayName.setText(user.isAnonymous() ? mDisplayNameAnonymous : user.getDisplayName());
+        loadCounts();
     }
 
     private void onSignedOut() {
@@ -157,5 +168,16 @@ public class ProfileFragment extends Fragment {
         mProfilePicture.setImageDrawable(mWineIcon);
         mLayoutMenu.setVisibility(View.GONE);
         mLayoutSignIn.setVisibility(View.VISIBLE);
+    }
+
+    private void loadCounts() {
+        FavoritesFirebaseRepository.getCount(count -> setCount(mFavoritesCount, count));
+        RatingsFirebaseRepository.getCount(count -> setCount(mRatingsCount, count));
+        CommentsFirebaseRepository.getCount(count -> setCount(mCommentsCount, count));
+    }
+
+    private void setCount(TextView view, Integer count) {
+        view.setText(count.toString());
+        view.setVisibility(View.VISIBLE);
     }
 }
