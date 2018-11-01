@@ -14,16 +14,11 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> impleme
 
     @Override
     public void attachView(LatestView view) {
+        super.attachView(view);
         this.view = view;
-        setupLiveWineData(dataSourceFactory);
-        setupLoadStateObserver(dataSourceFactory);
     }
 
-    public void refreshData() {
-        dataSourceFactory.invalidateDataSource();
-    }
-
-    public void reachedEndOfList(boolean canScrollVertically) {
+    public void scrollStateChanged(boolean canScrollVertically) {
         if (!canScrollVertically) { view.showLoading(); }
     }
 

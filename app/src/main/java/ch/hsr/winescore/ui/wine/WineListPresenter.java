@@ -17,8 +17,8 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
     private static final int PAGE_SIZE = 50;
     protected LiveData<PagedList<Wine>> wines;
     protected final LoadStateObservableFactory<T> dataSourceFactory;
-    protected final MutableLiveData<DataLoadState> loadState;
-    protected WineRecyclerViewAdapter adapter;
+    private final MutableLiveData<DataLoadState> loadState;
+    private WineRecyclerViewAdapter adapter;
 
     public WineListPresenter(LoadStateObservableFactory<T> dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
@@ -26,7 +26,14 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
         this.adapter = new WineRecyclerViewAdapter(this::listItemClicked);
     }
 
-    protected void setupLiveWineData(LoadStateObservableFactory dataSourceFactory) {
+    protected void attachView(WineListView view) {
+        setupLiveWineData(dataSourceFactory);
+        setupLoadStateObserver(dataSourceFactory);
+    }
+
+    protected abstract WineListView getView();
+
+    private void setupLiveWineData(LoadStateObservableFactory dataSourceFactory) {
         PagedList.Config config =
                 new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
@@ -36,12 +43,13 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
         wines = new LivePagedListBuilder(dataSourceFactory, config).build();
     }
 
-    protected void setupLoadStateObserver(LoadStateObservableFactory dataSourceFactory) {
+    private void setupLoadStateObserver(LoadStateObservableFactory dataSourceFactory) {
         dataSourceFactory.setDataLoadStateObserver(this.loadState::postValue);
 
     }
 
     public void listItemClicked(View v, int position) {
+        if (wines.getValue() == null) { return; }
         getView().navigateToDetailScreen(v, wines.getValue().get(position));
     }
 
@@ -65,9 +73,11 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
         });
     }
 
+    public void refreshData() {
+        dataSourceFactory.invalidateDataSource();
+    }
+
     public WineRecyclerViewAdapter getAdapter() {
         return adapter;
     }
-
-    protected abstract WineListView getView();
 }

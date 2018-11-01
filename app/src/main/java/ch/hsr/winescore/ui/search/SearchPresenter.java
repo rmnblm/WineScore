@@ -18,13 +18,8 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
 
     @Override
     public void attachView(SearchView view) {
+        super.attachView(view);
         this.view = view;
-        setupLiveWineData(dataSourceFactory);
-        setupLoadStateObserver(dataSourceFactory);
-    }
-
-    public void refreshData() {
-        dataSourceFactory.invalidateDataSource();
     }
 
     public void setSearchQuery(String query) {
@@ -33,7 +28,7 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
         editor.apply();
     }
 
-    public void reachedEndOfList(boolean canScrollVertically) {
+    public void scrollStateChanged(boolean canScrollVertically) {
         if (canScrollVertically) { return; }
         int wineCount = wines.getValue().size();
         int totalWineCount = dataSourceFactory.getTotalCountOfCurrentDataSource();

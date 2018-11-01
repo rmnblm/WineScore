@@ -85,7 +85,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                presenter.reachedEndOfList(recyclerView.canScrollVertically(1));
+                presenter.scrollStateChanged(recyclerView.canScrollVertically(1));
             }
         });
 
