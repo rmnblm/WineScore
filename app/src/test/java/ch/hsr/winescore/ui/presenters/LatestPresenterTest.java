@@ -1,12 +1,10 @@
 package ch.hsr.winescore.ui.presenters;
 
 import android.view.View;
-import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.views.LatestView;
+import ch.hsr.winescore.domain.models.Wine;
+import ch.hsr.winescore.ui.latest.LatestPresenter;
+import ch.hsr.winescore.ui.latest.LatestView;
 import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 

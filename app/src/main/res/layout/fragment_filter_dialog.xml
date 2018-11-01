@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.FilterBottomDialogFragment">
+    tools:context=".ui.utils.FilterBottomDialogFragment">
     <fragment
         android:id="@+id/filter_settings_dialog"
-        android:name="ch.hsr.winescore.ui.fragments.FilterBottomDialogFragment$FilterSettingsFragment"
+        android:name="ch.hsr.winescore.ui.utils.FilterBottomDialogFragment$FilterSettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>
