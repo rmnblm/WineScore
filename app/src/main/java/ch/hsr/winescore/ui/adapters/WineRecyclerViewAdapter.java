@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.utils.BottomReachedListener;
 import ch.hsr.winescore.utils.ItemClickListener;
 
 public class WineRecyclerViewAdapter extends PagedListAdapter<Wine, WineViewHolder> {
@@ -22,7 +21,7 @@ public class WineRecyclerViewAdapter extends PagedListAdapter<Wine, WineViewHold
     @Override
     public WineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_explore_listentry, parent, false);
+                .inflate(R.layout.fragment_latest_listentry, parent, false);
 
         final WineViewHolder wineItemViewHolder = new WineViewHolder(itemView);
         itemView.setOnClickListener(v -> itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition()));

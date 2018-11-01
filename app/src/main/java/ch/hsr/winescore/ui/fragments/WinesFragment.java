@@ -53,7 +53,7 @@ public class WinesFragment extends ListFragment<Wine> {
 
     @Override
     protected FirebaseRecyclerViewAdapter<Wine, BaseViewHolder<Wine>> createAdapter(FirestorePagingOptions<Wine> options) {
-        return new FirebaseRecyclerViewAdapter<>(this, options, R.layout.fragment_explore_listentry, WineViewHolder::newInstance);
+        return new FirebaseRecyclerViewAdapter<>(this, options, R.layout.fragment_latest_listentry, WineViewHolder::newInstance);
     }
 
     @Override
