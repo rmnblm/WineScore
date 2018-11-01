@@ -2,7 +2,6 @@ package ch.hsr.winescore.ui.activities;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +34,6 @@ import ch.hsr.winescore.ui.views.DetailsView;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
-    private static final String TAG = DetailsActivity.class.getSimpleName();
     public static final String ARGUMENT_WINE = "wine";
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
@@ -65,14 +63,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     @OnClick(R.id.commentsLayout)
     public void openCommentsDialog(View v) {
-        mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag());
+        mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag(), this);
     }
 
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
     private boolean mIsFavorite = false;
-    private BottomSheetDialogFragment mDialogFragment;
+    private CommentsBottomDialogFragment mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,13 +192,17 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private void setupComments() {
         view_last_comment.setVisibility(View.GONE);
+        loadLastComment();
+        mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
+    }
+
+    private void loadLastComment() {
         CommentsFirebaseRepository.getLast(wine, comment -> {
             if (comment != null) {
                 tv_last_comment.setText(getString(R.string.comments_citation, comment.getContent()));
                 view_last_comment.setVisibility(View.VISIBLE);
             }
         });
-        mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
     }
 
     private void updateFavorite(boolean isFavorite) {
@@ -222,5 +224,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBottomDialogClosed() {
+        loadLastComment();
     }
 }
