@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.activities.DetailsActivity;
 import ch.hsr.winescore.ui.adapters.WineRecyclerViewAdapter;
@@ -31,16 +30,14 @@ public class LatestFragment extends Fragment implements LatestView {
     @BindView(R.id.wineList) RecyclerView wineList;
 
     private LatestPresenter presenter;
-    private WineRecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_latest, container, false);
         ButterKnife.bind(this, rootView);
 
-        setupAdapter();
-        setupRecyclerView();
         setupPresenter();
+        setupRecyclerView();
 
         return rootView;
     }
@@ -72,23 +69,15 @@ public class LatestFragment extends Fragment implements LatestView {
         context.startActivity(intent);
     }
 
-    private void setupAdapter() {
-        adapter = new WineRecyclerViewAdapter(
-                (view, position) -> presenter.listItemClicked(view, position),
-                () -> swipeContainer.setRefreshing(true)
-        );
-    }
-
     private void setupRecyclerView() {
         wineList.setLayoutManager(new LinearLayoutManager(getActivity()));
         wineList.setHasFixedSize(true);
-        wineList.setAdapter(adapter);
+        wineList.setAdapter(presenter.getAdapter());
         wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                // Show loading indicator when bottom is reached before new data got loaded, e.g. slow API
-                if (!recyclerView.canScrollVertically(1)) { showLoading(); }
+                presenter.reachedEndOfList(recyclerView.canScrollVertically(1));
             }
         });
 
@@ -98,14 +87,7 @@ public class LatestFragment extends Fragment implements LatestView {
     private void setupPresenter() {
         presenter = new LatestPresenter();
         presenter.attachView(this);
-        presenter.getWines().observe(this, wines -> adapter.submitList(wines));
-        presenter.getLoadState().observe(this, loadState -> {
-            if (loadState == DataLoadState.INITIAL_LOADING)
-                showLoading();
-            else if (loadState == DataLoadState.LOADED)
-                hideLoading();
-            else if (loadState == DataLoadState.FAILED)
-                showError(getString(R.string.dataload_error_message));
-        });
+        presenter.bindLoadState(this);
+        presenter.bindWines(this);
     }
 }
