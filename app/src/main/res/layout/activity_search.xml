@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/coordinatorLayout"
         tools:context=".ui.activities.SearchActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -44,29 +45,29 @@
                             android:id="@+id/searchImageView"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="8dp"
-                            app:srcCompat="@drawable/ic_search_black_24dp" />
+                            android:layout_marginStart="8dp"
+                            app:srcCompat="@drawable/ic_search_black_24dp"/>
 
                     <EditText
                             android:id="@+id/searchEditText"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginLeft="8dp"
-                            android:layout_toRightOf="@+id/searchImageView"
+                            android:layout_marginStart="8dp"
+                            android:layout_toEndOf="@+id/searchImageView"
                             android:background="@android:color/transparent"
                             android:hint="@string/search_hint"
                             android:imeOptions="actionSearch"
                             android:inputType="text" />
 
                     <ImageView
-                            android:id="@+id/clearFilterButton"
+                            android:id="@+id/clearSearchButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:padding="8dp"
-                            android:tint="?attr/colorAccent"
-                            app:srcCompat="@drawable/ic_close_black_24dp" />
+                            android:tint="@color/colorTitleColor"
+                            app:srcCompat="@drawable/ic_close_black_24dp"/>
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
@@ -74,5 +75,23 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <android.support.v7.widget.RecyclerView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/wineList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                tools:listitem="@layout/activity_search_listentry" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

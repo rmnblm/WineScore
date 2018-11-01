@@ -123,12 +123,14 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
 
-        int countryResID = 0;
+        int countryResID;
         switch(wine.getCountry().toLowerCase()) {
             case "italy": countryResID = R.drawable.img_it_montepulciano; break;
             case "usa": countryResID = R.drawable.img_us_sonoma; break;
             case "france": countryResID = R.drawable.img_fr_bordeaux; break;
             case "argentina": countryResID = R.drawable.img_arg_calchaqui; break;
+            case "new zealand": countryResID = R.drawable.img_nz_centralotago; break;
+            default: countryResID = R.drawable.img_grapes; break;
         }
 
         Glide.with(this).load(countryResID).into(tbl_bgimage);
