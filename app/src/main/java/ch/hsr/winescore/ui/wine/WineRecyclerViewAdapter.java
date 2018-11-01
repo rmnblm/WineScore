@@ -21,7 +21,7 @@ public class WineRecyclerViewAdapter extends PagedListAdapter<Wine, WineViewHold
     @Override
     public WineViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_latest_listentry, parent, false);
+                .inflate(R.layout.wine_listentry, parent, false);
 
         final WineViewHolder wineItemViewHolder = new WineViewHolder(itemView);
         itemView.setOnClickListener(v -> itemClickListener.onItemClick(v, wineItemViewHolder.getAdapterPosition()));

@@ -22,7 +22,7 @@
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="@dimen/bottom_navigation_height"
-            android:background="@color/bottomNavigationBackground"
+            android:background="#fafafa"
             app:itemTextColor="@color/bottom_navigation_view"
             app:itemIconTint="@color/bottom_navigation_view"
             app:labelVisibilityMode="labeled"

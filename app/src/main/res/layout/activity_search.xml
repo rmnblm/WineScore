@@ -66,7 +66,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:padding="8dp"
-                            android:tint="@color/colorTitleColor"
+                            android:tint="@color/colorPrimaryText"
                             app:srcCompat="@drawable/ic_close_black_24dp"/>
                 </RelativeLayout>
 
@@ -91,7 +91,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:orientation="vertical"
-                tools:listitem="@layout/activity_search_listentry" />
+                tools:listitem="@layout/wine_listentry" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

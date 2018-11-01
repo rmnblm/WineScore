@@ -40,7 +40,7 @@
         android:ellipsize="end"
         android:fontFamily="sans-serif-medium"
         android:singleLine="true"
-        android:textColor="@color/colorSubtitleColor"
+        android:textColor="@color/colorSecondaryText"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toEndOf="@+id/icon"
