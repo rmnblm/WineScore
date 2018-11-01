@@ -19,6 +19,8 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
     protected final GWSService apiService;
     protected final DataLoadStateObserver observer;
 
+    private int totalCount = 0;
+
     public WineDataSourceBase(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
         this.observer = observer;
@@ -26,6 +28,10 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
 
     protected abstract Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params);
     protected abstract Call<WineResponse> getLoadRangeCall(@NonNull LoadRangeParams params);
+
+    public int getTotalCount() {
+        return totalCount;
+    }
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Wine> callback) {
@@ -36,6 +42,7 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
         try {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
+            totalCount = response.body().getCount();
             callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {

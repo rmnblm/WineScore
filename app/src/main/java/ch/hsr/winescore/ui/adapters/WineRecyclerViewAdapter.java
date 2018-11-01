@@ -13,12 +13,10 @@ import ch.hsr.winescore.utils.ItemClickListener;
 public class WineRecyclerViewAdapter extends PagedListAdapter<Wine, WineViewHolder> {
 
     private ItemClickListener itemClickListener;
-    private final BottomReachedListener bottomReachedListener;
 
-    public WineRecyclerViewAdapter(ItemClickListener itemClickListener, BottomReachedListener bottomReachedListener) {
+    public WineRecyclerViewAdapter(ItemClickListener itemClickListener) {
         super(Wine.DIFF_CALLBACK);
         this.itemClickListener = itemClickListener;
-        this.bottomReachedListener = bottomReachedListener;
     }
 
     @Override

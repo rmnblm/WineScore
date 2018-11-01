@@ -29,6 +29,10 @@ public class WineScoreApplication extends Application {
         return PreferenceManager.getDefaultSharedPreferences(instance.getBaseContext());
     }
 
+    public static String getResourcesString(int resId) {
+        return instance.getString(resId);
+    }
+
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

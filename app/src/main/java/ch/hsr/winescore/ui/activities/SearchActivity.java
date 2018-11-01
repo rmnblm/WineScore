@@ -1,19 +1,16 @@
 package ch.hsr.winescore.ui.activities;
 
-import android.app.ActivityOptions;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -21,9 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.model.DataLoadState;
 import ch.hsr.winescore.model.Wine;
-import ch.hsr.winescore.ui.adapters.WineRecyclerViewAdapter;
 import ch.hsr.winescore.ui.presenters.SearchPresenter;
 import ch.hsr.winescore.ui.views.SearchView;
 
@@ -35,9 +30,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @BindView(R.id.wineList) RecyclerView wineList;
 
     private SearchPresenter presenter;
-    private WineRecyclerViewAdapter adapter;
-
-    private boolean isObservingWines = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,53 +44,33 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
             handleSearch(query);
         }
 
-        setupSearchbox();
-        setupAdapter();
-        setupRecyclerView();
         setupPresenter();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        presenter.getWines().removeObservers(this);
+        setupSearchbox();
+        setupRecyclerView();
     }
 
     private void setupPresenter() {
         presenter = new SearchPresenter();
         presenter.attachView(this);
-        presenter.getLoadState().observe(this, loadState -> {
-            if (loadState == DataLoadState.INITIAL_LOADING)
-                showLoading();
-            else if (loadState == DataLoadState.LOADED)
-                hideLoading();
-            else if (loadState == DataLoadState.FAILED)
-                showError(getString(R.string.dataload_error_message));
-        });
-    }
-
-    private void setupAdapter() {
-        adapter = new WineRecyclerViewAdapter(
-                (view, position) -> presenter.listItemClicked(view, position),
-                () -> swipeContainer.setRefreshing(true)
-        );
+        presenter.bindLoadState(this);
+        presenter.bindWines(this);
     }
 
     private void setupRecyclerView() {
         wineList.setLayoutManager(new LinearLayoutManager(this));
         wineList.setHasFixedSize(true);
-        wineList.setAdapter(adapter);
+        wineList.setAdapter(presenter.getAdapter());
         wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                // Show loading indicator when bottom is reached before new data got loaded, e.g. slow API
-                if (!recyclerView.canScrollVertically(1)) { showLoading(); }
+                presenter.reachedEndOfList(recyclerView.canScrollVertically(1));
             }
         });
 
         swipeContainer.setEnabled(false);
         swipeContainer.setOnRefreshListener(() -> presenter.refreshData());
+        swipeContainer.setVisibility(View.INVISIBLE);
     }
 
     private void setupSearchbox() {
@@ -113,15 +85,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
     private void handleSearch(String query) {
         presenter.setSearchQuery(query);
+        presenter.refreshData();
         swipeContainer.setVisibility(View.VISIBLE);
-
-        if (!isObservingWines) {
-            // Setup the observer when searching for the first time
-            presenter.getWines().observe(this, wines -> adapter.submitList(wines));
-            isObservingWines = true;
-        } else {
-            presenter.refreshData();
-        }
     }
 
     @OnClick(R.id.clearSearchButton)

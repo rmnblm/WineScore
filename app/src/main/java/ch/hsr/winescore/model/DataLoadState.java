@@ -6,5 +6,4 @@ public enum DataLoadState {
     LOADING,
     LOADED,
     FAILED
-
 }
