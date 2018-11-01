@@ -8,7 +8,12 @@ import com.google.firebase.firestore.SetOptions;
 import ch.hsr.winescore.model.Wine;
 
 public class WinesFirebaseRepository {
+
     public static final String COLLECTION = "wines";
+
+    private WinesFirebaseRepository() {
+        throw new IllegalStateException("Static class");
+    }
 
     public static Task<Void> add(Wine wine) {
         DocumentReference ref = FirebaseFirestore.getInstance().collection(COLLECTION).document(wine.getId());

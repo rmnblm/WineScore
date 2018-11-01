@@ -1,24 +1,13 @@
 package ch.hsr.winescore.ui.datasources;
 
-import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
 
-import com.firebase.ui.firestore.FirestoreArray;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import ch.hsr.winescore.model.Favorite;
-import ch.hsr.winescore.model.Rating;
 import ch.hsr.winescore.model.Rating;
 import ch.hsr.winescore.model.Wine;
 
@@ -26,6 +15,10 @@ public class RatingsFirebaseRepository {
 
     private static final String COLLECTION = "ratings";
     private static final String FIELD_WINE_ID = "wineId";
+
+    private RatingsFirebaseRepository() {
+        throw new IllegalStateException("Static class");
+    }
 
     public static void get(Wine wine, IFirebaseCallback<Rating> callback) {
         getRatingReference(wine).get()
@@ -39,7 +32,7 @@ public class RatingsFirebaseRepository {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            int rating = document.toObject(Rating.class).getRating();
+                            int rating = document.toObject(Rating.class).getRatingValue();
                             ratings.put(rating, ratings.get(rating, 0) + 1);
                         }
                     }

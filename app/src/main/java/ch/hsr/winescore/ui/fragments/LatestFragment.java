@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
@@ -64,7 +65,7 @@ public class LatestFragment extends Fragment implements LatestView {
     public void navigateToDetailScreen(View view, Wine wine) {
         Context context = view.getContext();
         Intent intent = new Intent(context, DetailsActivity.class);
-        intent.putExtra("wine", wine);
+        intent.putExtra(DetailsActivity.ARGUMENT_WINE, wine);
         context.startActivity(intent);
     }
 

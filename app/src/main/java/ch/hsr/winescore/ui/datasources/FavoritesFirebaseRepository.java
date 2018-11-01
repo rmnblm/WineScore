@@ -12,6 +12,10 @@ public class FavoritesFirebaseRepository {
 
     private static final String COLLECTION = "favorites";
 
+    private FavoritesFirebaseRepository() {
+        throw new IllegalStateException("Static class");
+    }
+
     public static void set(Wine wine, IFirebaseCallback<Favorite> callback) {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {

@@ -32,3 +32,23 @@ exports.processAddRating = functions.firestore.document('ratings/{ratingId}').on
     });
 });
 
+exports.processDeleteRating = functions.firestore.document('ratings/{ratingId}').onDelete((snap, context) => {
+    const item = snap.data();
+    firestore.doc(`wines/${item.wineId}`).update({
+        ratedBy: admin.firestore.FieldValue.arrayRemove(item.userId)
+    });
+});
+
+exports.processAddComment = functions.firestore.document('comments/{commentId}').onCreate((snap, context) => {
+    const item = snap.data();
+    firestore.doc(`wines/${item.wineId}`).update({
+        commentedBy: admin.firestore.FieldValue.arrayUnion(item.userId)
+    });
+});
+
+exports.processDeleteComment = functions.firestore.document('comments/{commentId}').onDelete((snap, context) => {
+    const item = snap.data();
+    firestore.doc(`wines/${item.wineId}`).update({
+        commentedBy: admin.firestore.FieldValue.arrayRemove(item.userId)
+    });
+});

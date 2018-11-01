@@ -33,7 +33,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    private static final String TAG = ProfileFragment.class.getSimpleName();
     private static final int RC_SIGN_IN = 100;
     private FirebaseAuth mAuth;
 
@@ -82,7 +81,7 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.layout_comments)
     public void onClickComments(View v) {
-        navigateToList(R.string.ratings_title, "commentedBy");
+        navigateToList(R.string.comments_title, "commentedBy");
     }
 
     @OnClick(R.id.button_sign_out)
@@ -92,8 +91,7 @@ public class ProfileFragment extends Fragment {
     }
 
     public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
-        return fragment;
+        return new ProfileFragment();
     }
 
     @Override
@@ -140,8 +138,8 @@ public class ProfileFragment extends Fragment {
 
     private void navigateToList(int title, String queryField) {
         Intent intent = new Intent(getContext(), ListActivity.class);
-        intent.putExtra(ListFragment.TITLE, title);
-        intent.putExtra(ListFragment.QUERY_FIELD, queryField);
+        intent.putExtra(ListActivity.TITLE, title);
+        intent.putExtra(WinesFragment.ARGUMENT_QUERY_FIELD, queryField);
         getActivity().startActivity(intent);
     }
 

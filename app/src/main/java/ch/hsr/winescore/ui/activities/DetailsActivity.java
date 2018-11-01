@@ -2,6 +2,7 @@ package ch.hsr.winescore.ui.activities;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,16 +23,19 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.model.Wine;
 import ch.hsr.winescore.ui.datasources.FavoritesFirebaseRepository;
 import ch.hsr.winescore.ui.datasources.RatingsFirebaseRepository;
+import ch.hsr.winescore.ui.fragments.CommentsBottomDialogFragment;
 import ch.hsr.winescore.ui.presenters.DetailsPresenter;
 import ch.hsr.winescore.ui.views.DetailsView;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private static final String TAG = DetailsActivity.class.getSimpleName();
+    public static final String ARGUMENT_WINE = "wine";
 
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout tbl_appbar;
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
@@ -55,10 +59,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.ratingBar_my_ratings) RatingBar rb_my_rating;
     @BindView(R.id.button_remove_rating) Button btn_remove_rating;
 
+    @OnClick(R.id.commentsLayout)
+    public void openCommentsDialog(View v) {
+        mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag());
+    }
+
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
     private boolean mIsFavorite = false;
+    private BottomSheetDialogFragment mDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         setupViewsWithExtras();
         setupFloatingActionButton();
         setupRatings();
+        setupCommentsDialog();
     }
 
     private void setupPresenter() {
@@ -90,8 +101,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private void setupIntentExtras() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            wine = (Wine) extras.get("wine");
-            System.out.println(wine);
+            wine = (Wine) extras.get(ARGUMENT_WINE);
         }
     }
 
@@ -106,9 +116,9 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
         int colorResID = 0;
         switch(wine.getColor()) {
-            case Red: colorResID = R.color.colorWineRed; break;
-            case White: colorResID = R.color.colorWineWhite; break;
-            case Pink: colorResID = R.color.colorWinePink; break;
+            case RED: colorResID = R.color.colorWineRed; break;
+            case WHITE: colorResID = R.color.colorWineWhite; break;
+            case PINK: colorResID = R.color.colorWinePink; break;
         }
 
         floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
@@ -158,7 +168,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         } else {
             RatingsFirebaseRepository.get(wine, result -> {
                 if (result != null) {
-                    rb_my_rating.setRating(result.getRating());
+                    rb_my_rating.setRating(result.getRatingValue());
                     btn_remove_rating.setVisibility(View.VISIBLE);
                 } else {
                     btn_remove_rating.setVisibility(View.GONE);
@@ -167,20 +177,21 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
             rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                 if (fromUser) {
-                    RatingsFirebaseRepository.set(wine, (int) rating, result -> {});
+                    RatingsFirebaseRepository.set(wine, (int) rating, result -> refreshRatingList());
                     btn_remove_rating.setVisibility(View.VISIBLE);
-                    refreshRatingList();
                 }
             });
 
-            btn_remove_rating.setOnClickListener(v -> {
-                RatingsFirebaseRepository.delete(wine, result -> {
-                    rb_my_rating.setRating(0);
-                    btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
-                    refreshRatingList();
-                });
-            });
+            btn_remove_rating.setOnClickListener(v -> RatingsFirebaseRepository.delete(wine, result -> {
+                rb_my_rating.setRating(0);
+                btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
+                refreshRatingList();
+            }));
         }
+    }
+
+    private void setupCommentsDialog() {
+        mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
     }
 
     private void updateFavorite(boolean isFavorite) {

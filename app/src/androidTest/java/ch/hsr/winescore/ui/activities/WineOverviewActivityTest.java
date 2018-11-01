@@ -23,6 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class WineOverviewActivityTest {
 
+    /*
     @Rule
     public ActivityTestRule<WineOverviewActivity> mActivityRule =
             new ActivityTestRule<>(WineOverviewActivity.class, true, false);
@@ -47,4 +48,5 @@ public class WineOverviewActivityTest {
     public void tearDown() throws Exception {
         server.shutdown();
     }
+    */
 }

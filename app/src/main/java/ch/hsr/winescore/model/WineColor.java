@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public enum WineColor {
     @SerializedName("Red")
-    Red,
+    RED,
     @SerializedName("White")
-    White,
+    WHITE,
     @SerializedName("Pink")
-    Pink
+    PINK
 }

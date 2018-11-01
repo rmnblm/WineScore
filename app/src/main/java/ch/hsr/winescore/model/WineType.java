@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public enum WineType {
     @SerializedName("sweet")
-    Sweet,
+    SWEET,
     @SerializedName("sparkling")
-    Sparkling,
+    SPARKLING,
     @SerializedName("dry")
-    Dry,
+    DRY,
     @SerializedName("")
-    None
+    NONE
 }
