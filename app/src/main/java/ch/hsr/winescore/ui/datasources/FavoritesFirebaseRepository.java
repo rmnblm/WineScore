@@ -8,7 +8,7 @@ import com.google.firebase.firestore.SetOptions;
 import ch.hsr.winescore.model.Favorite;
 import ch.hsr.winescore.model.Wine;
 
-public class FavoritesFirebaseRepository {
+public class FavoritesFirebaseRepository extends FirebaseRepository {
 
     private static final String COLLECTION = "favorites";
 
@@ -38,6 +38,10 @@ public class FavoritesFirebaseRepository {
         getFavoriteReference(wine).delete()
                 .addOnSuccessListener(result -> callback.onCallback(null))
                 .addOnFailureListener(result -> callback.onCallback(new Favorite()));
+    }
+
+    public static void getCount(IFirebaseCallback<Integer> callback) {
+        countCollectionItemsByUser(COLLECTION, callback);
     }
 
     private static DocumentReference getFavoriteReference(Wine wine) {

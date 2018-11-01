@@ -11,7 +11,7 @@ import com.google.firebase.firestore.SetOptions;
 import ch.hsr.winescore.model.Rating;
 import ch.hsr.winescore.model.Wine;
 
-public class RatingsFirebaseRepository {
+public class RatingsFirebaseRepository extends FirebaseRepository {
 
     private static final String COLLECTION = "ratings";
     private static final String FIELD_WINE_ID = "wineId";
@@ -55,6 +55,10 @@ public class RatingsFirebaseRepository {
         getRatingReference(wine).delete()
                 .addOnSuccessListener(result -> callback.onCallback(null))
                 .addOnFailureListener(result -> callback.onCallback(new Rating()));
+    }
+
+    public static void getCount(IFirebaseCallback<Integer> callback) {
+        countCollectionItemsByUser(COLLECTION, callback);
     }
 
     private static DocumentReference getRatingReference(Wine wine) {

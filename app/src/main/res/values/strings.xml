@@ -54,4 +54,7 @@
     <string name="comments_add_title">Add comment</string>
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
+    <string name="last_comment">Latest comment</string>
+    <string name="comments_view_all">View all</string>
+    <string name="comments_citation">\"%1$s\"</string>
 </resources>
