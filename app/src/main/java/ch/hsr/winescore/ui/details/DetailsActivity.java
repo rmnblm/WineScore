@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,10 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.domain.models.Comment;
 import ch.hsr.winescore.domain.models.Wine;
-import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
-import ch.hsr.winescore.data.repositories.FavoritesFirebaseRepository;
-import ch.hsr.winescore.data.repositories.RatingsFirebaseRepository;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
@@ -71,6 +70,22 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag(), this);
     }
 
+    @OnClick(R.id.fab)
+    public void onClickFavorite(View v) {
+        floatingActionButton.setEnabled(false);
+        if (mIsFavorite) {
+            presenter.removeAsFavorite(wine);
+        } else {
+            presenter.addAsFavorite(wine);
+        }
+    }
+
+    @OnClick(R.id.button_remove_rating)
+    public void onClickRemoveRating(View v) {
+        rb_my_rating.setRating(0);
+        presenter.removeMyRating(wine);
+    }
+
     private DetailsPresenter presenter;
     private Wine wine;
     private FirebaseUser mUser;
@@ -110,6 +125,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
         if (extras != null) {
             wine = (Wine) extras.get(ARGUMENT_WINE);
         }
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     private void setupViewsWithExtras() {
@@ -158,59 +174,25 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     private void setupFloatingActionButton() {
         floatingActionButton.hide();
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
         if (mUser != null) {
-            FavoritesFirebaseRepository.get(wine, result -> {
-                updateFavorite(result != null);
-                floatingActionButton.show();
-            });
-            floatingActionButton.setOnClickListener(view -> {
-                floatingActionButton.setEnabled(false);
-                if (mIsFavorite) {
-                    FavoritesFirebaseRepository.delete(wine, result -> {
-                        updateFavorite(result != null);
-                        if (result == null) {
-                            Snackbar.make(detailContainer, R.string.favorite_removed, Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    FavoritesFirebaseRepository.set(wine, result -> {
-                        updateFavorite(result != null);
-                        if (result != null) {
-                            Snackbar.make(detailContainer, R.string.favorite_added, Snackbar.LENGTH_LONG).show();
-                        }
-                    });
-                }
-            });
+            presenter.isFavorite(wine);
         }
     }
 
     private void setupRatings() {
-        refreshRatingList();
+        presenter.loadRatings(wine);
         if (mUser == null) {
             view_my_ratings.setVisibility(View.GONE);
         } else {
-            RatingsFirebaseRepository.get(wine, result -> {
-                if (result != null) {
-                    rb_my_rating.setRating(result.getRatingValue());
-                    btn_remove_rating.setVisibility(View.VISIBLE);
-                } else {
-                    btn_remove_rating.setVisibility(View.GONE);
-                }
-            });
+            presenter.loadMyRating(wine);
+            rb_my_rating.setOnRatingBarChangeListener(this::onRatingChanged);
+        }
+    }
 
-            rb_my_rating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-                if (fromUser) {
-                    RatingsFirebaseRepository.set(wine, (int) rating, result -> refreshRatingList());
-                    btn_remove_rating.setVisibility(View.VISIBLE);
-                }
-            });
-
-            btn_remove_rating.setOnClickListener(v -> RatingsFirebaseRepository.delete(wine, result -> {
-                rb_my_rating.setRating(0);
-                btn_remove_rating.setVisibility(result == null ? View.GONE : View.VISIBLE);
-                refreshRatingList();
-            }));
+    private void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+        if (fromUser) {
+            presenter.setMyRating(wine, (int) rating);
+            btn_remove_rating.setVisibility(View.VISIBLE);
         }
     }
 
@@ -221,34 +203,61 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     }
 
     private void loadLastComment() {
-        CommentsFirebaseRepository.getLast(wine, comment -> {
-            if (comment != null) {
-                tv_last_comment.setText(getString(R.string.comments_citation, comment.getContent()));
-                view_last_comment.setVisibility(View.VISIBLE);
-            }
-        });
+        presenter.loadLastComment(wine);
     }
 
-    private void updateFavorite(boolean isFavorite) {
-        mIsFavorite = isFavorite;
-        floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_unfavorite_black_24dp : R.drawable.ic_favorite_black_24dp);
-        floatingActionButton.setEnabled(true);
-    }
-
-    private void refreshRatingList() {
-        RatingsFirebaseRepository.getRatings(wine, result -> {
-            tv_ratings_1.setText(String.valueOf(result.get(1, 0)));
-            tv_ratings_2.setText(String.valueOf(result.get(2, 0)));
-            tv_ratings_3.setText(String.valueOf(result.get(3, 0)));
-            tv_ratings_4.setText(String.valueOf(result.get(4, 0)));
-            tv_ratings_5.setText(String.valueOf(result.get(5, 0)));
-        });
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void refreshFavoriteButton(boolean isFavorite) {
+        mIsFavorite = isFavorite;
+        floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_unfavorite_black_24dp : R.drawable.ic_favorite_black_24dp);
+        floatingActionButton.setEnabled(true);
+        floatingActionButton.show();
+    }
+
+    @Override
+    public void onFavoriteAdded() {
+        Snackbar.make(detailContainer, R.string.favorite_added, Snackbar.LENGTH_LONG).show();
+        refreshFavoriteButton(true);
+    }
+
+    @Override
+    public void onFavoriteRemoved() {
+        Snackbar.make(detailContainer, R.string.favorite_removed, Snackbar.LENGTH_LONG).show();
+        refreshFavoriteButton(false);
+    }
+
+    @Override
+    public void refreshRatings(SparseIntArray ratings) {
+        tv_ratings_1.setText(String.valueOf(ratings.get(1, 0)));
+        tv_ratings_2.setText(String.valueOf(ratings.get(2, 0)));
+        tv_ratings_3.setText(String.valueOf(ratings.get(3, 0)));
+        tv_ratings_4.setText(String.valueOf(ratings.get(4, 0)));
+        tv_ratings_5.setText(String.valueOf(ratings.get(5, 0)));
+    }
+
+    @Override
+    public void showMyRating(int rating) {
+        rb_my_rating.setRating(rating);
+        btn_remove_rating.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideMyRating() {
+        rb_my_rating.setRating(0);
+        btn_remove_rating.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void refreshLastComment(Comment comment) {
+        tv_last_comment.setText(getString(R.string.comments_citation, comment.getContent()));
+        view_last_comment.setVisibility(View.VISIBLE);
     }
 
     @Override
