@@ -31,6 +31,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.wineList) RecyclerView wineList;
+    @BindView(R.id.emptyDataStore) View emptyDataView;
 
     private SearchPresenter presenter;
     private BottomSheetDialog filterDialog;
@@ -134,6 +135,16 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @Override
     public void hideLoading() {
         swipeContainer.setRefreshing(false);
+    }
+
+    @Override
+    public void showEmptyState() {
+        emptyDataView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyState() {
+        emptyDataView.setVisibility(View.GONE);
     }
 
     @Override

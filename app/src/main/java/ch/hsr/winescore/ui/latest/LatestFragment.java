@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,15 +21,17 @@ import ch.hsr.winescore.ui.details.DetailsActivity;
 
 public class LatestFragment extends Fragment implements LatestView {
 
-    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.layout) View layout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
-    @BindView(R.id.wineList) RecyclerView wineList;
+    @BindView(R.id.recyclerView) RecyclerView wineList;
+    @BindView(R.id.emptyDataStore)
+    View emptyDataView;
 
     private LatestPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_latest, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
 
         setupPresenter();
@@ -50,8 +51,18 @@ public class LatestFragment extends Fragment implements LatestView {
     }
 
     @Override
+    public void showEmptyState() {
+        emptyDataView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyState() {
+        emptyDataView.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showError(String errorMessage) {
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_INDEFINITE)
+        Snackbar snackbar = Snackbar.make(layout, errorMessage, Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
