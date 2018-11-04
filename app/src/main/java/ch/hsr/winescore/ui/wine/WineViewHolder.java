@@ -16,19 +16,15 @@ import ch.hsr.winescore.ui.utils.BaseViewHolder;
 
 public class WineViewHolder extends BaseViewHolder<Wine> {
 
-    @BindView(R.id.constraintLayout)
-    View layout;
-    @BindView(R.id.titleName)
-    TextView title_name;
-    @BindView(R.id.titleOrigin) TextView title_origin;
-    @BindView(R.id.titleWinery) TextView title_winery;
-    @BindView(R.id.score) TextView score;
-    @BindView(R.id.icon)
-    ImageView icon;
-    @BindDrawable(R.drawable.ic_wine_red)
-    Drawable wine_red;
-    @BindDrawable(R.drawable.ic_wine_white) Drawable wine_white;
-    @BindDrawable(R.drawable.ic_wine_pink) Drawable wine_pink;
+    @BindView(R.id.constraintLayout) View layout;
+    @BindView(R.id.titleName) TextView tvTitleName;
+    @BindView(R.id.titleOrigin) TextView tvTitleOrigin;
+    @BindView(R.id.titleWinery) TextView tvTitleWinery;
+    @BindView(R.id.score) TextView tvScore;
+    @BindView(R.id.icon) ImageView ivIcon;
+    @BindDrawable(R.drawable.ic_wine_red) Drawable drawWineRed;
+    @BindDrawable(R.drawable.ic_wine_white) Drawable drawWineWhite;
+    @BindDrawable(R.drawable.ic_wine_pink) Drawable drawWinePink;
 
     WineViewHolder(View itemView) {
         super(itemView);
@@ -41,16 +37,16 @@ public class WineViewHolder extends BaseViewHolder<Wine> {
 
     @Override
     public void bindTo(Wine wine) {
-        title_winery.setText(wine.getWinery());
+        tvTitleWinery.setText(wine.getWinery());
 
-        title_name.setText(String.format("%s %s", wine.getShortName(), wine.getVintage()));
-        title_origin.setText(String.format("%s, %s", wine.getAppellation(), wine.getCountry()));
-        score.setText(String.format(Locale.getDefault(), "%.2f", wine.getScore()));
+        tvTitleName.setText(String.format("%s %s", wine.getShortName(), wine.getVintage()));
+        tvTitleOrigin.setText(String.format("%s, %s", wine.getAppellation(), wine.getCountry()));
+        tvScore.setText(String.format(Locale.getDefault(), "%.2f", wine.getScore()));
 
         switch(wine.getColor()) {
-            case RED: icon.setImageDrawable(wine_red); break;
-            case WHITE: icon.setImageDrawable(wine_white); break;
-            case PINK: icon.setImageDrawable(wine_pink); break;
+            case RED: ivIcon.setImageDrawable(drawWineRed); break;
+            case WHITE: ivIcon.setImageDrawable(drawWineWhite); break;
+            case PINK: ivIcon.setImageDrawable(drawWinePink); break;
         }
     }
 }

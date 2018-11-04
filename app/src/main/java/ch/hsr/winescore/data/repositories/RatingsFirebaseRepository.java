@@ -16,10 +16,6 @@ public class RatingsFirebaseRepository extends FirebaseRepository {
     private static final String COLLECTION = "ratings";
     private static final String FIELD_WINE_ID = "wineId";
 
-    private RatingsFirebaseRepository() {
-        throw new IllegalStateException("Static class");
-    }
-
     public static void get(Wine wine, IFirebaseCallback<Rating> callback) {
         getRatingReference(wine).get()
                 .addOnSuccessListener(result -> callback.onCallback(result.toObject(Rating.class)))

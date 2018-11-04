@@ -24,6 +24,6 @@ public class MainActivityTest {
 
     @Test
     public void whenMainActivityLaunched_itInitiallyShowsLatest() {
-        onView(withId(R.id.fragment_latest)).check(matches(isDisplayed()));
+        onView(withId(R.id.fragment_list)).check(matches(isDisplayed()));
     }
 }

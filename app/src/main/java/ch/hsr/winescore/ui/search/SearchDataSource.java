@@ -12,7 +12,7 @@ import retrofit2.Call;
 
 public class SearchDataSource extends WineDataSourceBase {
 
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     private String query;
     private String color;
@@ -28,7 +28,7 @@ public class SearchDataSource extends WineDataSourceBase {
     @Override
     protected Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params) {
         refreshParameters();
-        return apiService.searchBy(query, color, country, vintage, ordering, params.pageSize, params.requestedStartPosition);
+        return apiService.searchBy(query, color, country, vintage, ordering, params.pageSize, 0);
     }
 
     @Override

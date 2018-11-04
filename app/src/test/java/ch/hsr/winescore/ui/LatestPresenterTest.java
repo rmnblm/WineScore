@@ -7,13 +7,11 @@ import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.view.View;
-import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.WineScoreConstants;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadState;
-import ch.hsr.winescore.ui.latest.LatestFragment;
 import ch.hsr.winescore.ui.latest.LatestPresenter;
-import ch.hsr.winescore.ui.latest.LatestView;
+import ch.hsr.winescore.ui.utils.ListView;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import org.junit.After;
@@ -115,7 +113,7 @@ public class LatestPresenterTest {
         server.shutdown();
     }
 
-    private class LatestViewMock implements LatestView {
+    private class LatestViewMock implements ListView<Wine> {
 
         boolean showLoadingCalled = false;
         boolean hideLoadingCalled = false;
@@ -133,6 +131,16 @@ public class LatestPresenterTest {
         @Override
         public void hideLoading() {
             hideLoadingCalled = true;
+        }
+
+        @Override
+        public void showEmptyState() {
+
+        }
+
+        @Override
+        public void hideEmptyState() {
+
         }
 
         @Override

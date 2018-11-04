@@ -1,5 +1,6 @@
 package ch.hsr.winescore.domain.models;
 
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -19,6 +20,7 @@ public class Wine implements Serializable {
     @Expose
     private String wineId = "";
 
+    @SuppressWarnings("squid:S00116") // Field name must be like this because of Firestore
     @SerializedName("lwin_11")
     @Expose
     private String lwin_11 = "";
@@ -94,6 +96,7 @@ public class Wine implements Serializable {
         return wineId;
     }
 
+    @SuppressWarnings("squid:S00100") // Method name must be like this because of Firestore
     public String getLwin_11() {
         return lwin_11;
     }
@@ -177,7 +180,7 @@ public class Wine implements Serializable {
                     return oldItem.getId().equals(newItem.getId());
                 }
                 @Override
-                public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
+                public boolean areContentsTheSame(Wine oldItem, @NonNull Wine newItem) {
                     return oldItem.equals(newItem);
                 }
             };
