@@ -5,6 +5,6 @@ public interface ListView<T> extends View {
     void hideLoading();
     void showEmptyState();
     void hideEmptyState();
-    void showError();
+    void showError(String errorMessage);
     void navigateToDetailScreen(android.view.View view, T item);
 }

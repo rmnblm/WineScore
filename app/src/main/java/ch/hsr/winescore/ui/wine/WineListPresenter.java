@@ -11,10 +11,11 @@ import ch.hsr.winescore.R;
 import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadState;
+import ch.hsr.winescore.ui.utils.ListView;
 import ch.hsr.winescore.ui.utils.LoadStateObservableFactory;
 import ch.hsr.winescore.ui.utils.Presenter;
 
-public abstract class WineListPresenter<T extends WineDataSourceBase> implements Presenter<WineListView> {
+public abstract class WineListPresenter<T extends WineDataSourceBase> implements Presenter<ListView<Wine>> {
 
     private static final int PAGE_SIZE = 50;
     protected LiveData<PagedList<Wine>> wines;
@@ -28,12 +29,12 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
         this.adapter = new WineRecyclerViewAdapter(this::listItemClicked);
     }
 
-    public void attachView(WineListView view) {
+    public void attachView(ListView<Wine> view) {
         setupLiveWineData(dataSourceFactory);
         setupLoadStateObserver(dataSourceFactory);
     }
 
-    protected abstract WineListView getView();
+    protected abstract ListView<Wine> getView();
 
     private void setupLiveWineData(LoadStateObservableFactory dataSourceFactory) {
         PagedList.Config config =

@@ -11,6 +11,9 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.WineScoreApplication;
+
 public class FirebaseRecyclerViewAdapter<T1, T2 extends BaseViewHolder<T1>> extends FirestorePagingAdapter<T1, T2> {
 
     public static final int PAGE_SIZE = 20;
@@ -57,7 +60,7 @@ public class FirebaseRecyclerViewAdapter<T1, T2 extends BaseViewHolder<T1>> exte
                 break;
             case ERROR:
                 mView.hideLoading();
-                mView.showError();
+                mView.showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
                 break;
         }
     }

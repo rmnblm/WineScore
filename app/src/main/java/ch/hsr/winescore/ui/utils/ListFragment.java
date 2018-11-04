@@ -64,8 +64,8 @@ public abstract class ListFragment<T> extends Fragment implements ListView<T> {
     }
 
     @Override
-    public void showError() {
-        Snackbar snackbar = Snackbar.make(layout, getString(R.string.dataload_error_message), Snackbar.LENGTH_INDEFINITE)
+    public void showError(String errorMessage) {
+        Snackbar snackbar = Snackbar.make(layout, errorMessage, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.dataload_error_retry, v -> adapter.retry());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(ContextCompat.getColor(getContext(), android.R.color.white));

@@ -25,9 +25,10 @@ import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
+import ch.hsr.winescore.ui.utils.ListView;
 
 @SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
-public class SearchActivity extends AppCompatActivity implements SearchView {
+public class SearchActivity extends AppCompatActivity implements ListView<Wine> {
 
     @BindView(R.id.searchEditText) EditText inputSearch;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;

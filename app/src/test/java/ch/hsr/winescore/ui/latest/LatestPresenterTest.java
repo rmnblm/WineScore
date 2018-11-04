@@ -1,15 +1,16 @@
 package ch.hsr.winescore.ui.latest;
 
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
-import android.view.ContextThemeWrapper;
 import android.view.View;
-import ch.hsr.winescore.domain.models.Wine;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import ch.hsr.winescore.domain.models.Wine;
+import ch.hsr.winescore.ui.utils.ListView;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -52,7 +53,7 @@ public class LatestPresenterTest {
         assertTrue(view.navigateToDetailScreenCalled);
     }
 
-    private class LatestViewMock implements LatestView {
+    private class LatestViewMock implements ListView<Wine> {
 
         boolean showLoadingCalled = false;
         boolean hideLoadingCalled = false;

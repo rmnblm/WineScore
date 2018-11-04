@@ -19,8 +19,9 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
+import ch.hsr.winescore.ui.utils.ListView;
 
-public class LatestFragment extends Fragment implements LatestView {
+public class LatestFragment extends Fragment implements ListView<Wine> {
 
     @BindView(R.id.layout) View layout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
@@ -63,7 +64,7 @@ public class LatestFragment extends Fragment implements LatestView {
     @Override
     public void showError(String errorMessage) {
         Snackbar snackbar = Snackbar.make(layout, errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", v -> presenter.refreshData());
+                .setAction(R.string.dataload_error_retry, v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         snackbar.show();
