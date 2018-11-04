@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import ch.hsr.winescore.ui.utils.ListFragment;
+import ch.hsr.winescore.ui.utils.FirebaseListFragment;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.firestore.Query;
 
@@ -15,7 +15,7 @@ import ch.hsr.winescore.ui.utils.BaseViewHolder;
 import ch.hsr.winescore.ui.utils.FirebaseRecyclerViewAdapter;
 import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
 
-public class CommentsFragment extends ListFragment<Comment> {
+public class CommentsFragment extends FirebaseListFragment<Comment> {
 
     public static final String ARGUMENT_WINE = "wine";
     private Wine mWine;

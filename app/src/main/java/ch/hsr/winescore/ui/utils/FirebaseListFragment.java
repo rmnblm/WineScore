@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 
-public abstract class ListFragment<T> extends Fragment implements ListView<T> {
+public abstract class FirebaseListFragment<T> extends Fragment implements ListView<T> {
 
     @BindView(R.id.layout) View layout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;

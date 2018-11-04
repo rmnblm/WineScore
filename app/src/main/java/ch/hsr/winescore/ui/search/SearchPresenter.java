@@ -17,6 +17,7 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> {
         this.sharedPreferences = WineScoreApplication.getSharedPreferences();
     }
 
+    @Override
     public void attachView(ListView<Wine> view) {
         super.attachView(view);
         this.view = view;

@@ -12,6 +12,7 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> {
         super(new LatestDataSourceFactory());
     }
 
+    @Override
     public void attachView(ListView<Wine> view) {
         super.attachView(view);
         this.view = view;
