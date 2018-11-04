@@ -2,10 +2,6 @@ package ch.hsr.winescore.ui.utils;
 
 import android.arch.paging.PagedList;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,12 +15,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 
-public abstract class FirebaseListFragment<T> extends Fragment implements ListView<T> {
+public abstract class FirebaseListFragment<T> extends ListFragment<T> {
 
-    @BindView(R.id.layout) View layout;
-    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.recyclerView) RecyclerView rvItemsList;
-    @BindView(R.id.emptyDataStore) View viewEmptyData;
 
     private FirebaseRecyclerViewAdapter<T, BaseViewHolder<T>> adapter;
 
@@ -39,39 +32,13 @@ public abstract class FirebaseListFragment<T> extends Fragment implements ListVi
 
         setupAdapter();
         setupRecyclerView();
-
         return rootView;
     }
 
     @Override
-    public void showLoading() {
-        swipeContainer.setRefreshing(true);
+    protected void onClickErrorAction() {
+        adapter.retry();
     }
-
-    @Override
-    public void hideLoading() {
-        swipeContainer.setRefreshing(false);
-    }
-
-    @Override
-    public void showEmptyState() {
-        viewEmptyData.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideEmptyState() {
-        viewEmptyData.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showError(String errorMessage) {
-        Snackbar snackbar = Snackbar.make(layout, errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.dataload_error_retry, v -> adapter.retry());
-        snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
-        snackbar.setActionTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
-        snackbar.show();
-    }
-
 
     private void setupAdapter() {
         PagedList.Config config = new PagedList.Config.Builder()
