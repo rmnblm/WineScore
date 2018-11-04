@@ -13,19 +13,19 @@ public class Wine implements Serializable {
 
     @SerializedName("wine")
     @Expose
-    private String name;
+    private String name = "";
 
     @SerializedName("wine_id")
     @Expose
-    private String wineId;
+    private String wineId = "";
 
     @SerializedName("lwin_11")
     @Expose
-    private String lwin_11;
+    private String lwin_11 = "";
 
     @SerializedName("country")
     @Expose
-    private String country;
+    private String country = "";
 
     @SerializedName("regions")
     @Expose
@@ -33,37 +33,39 @@ public class Wine implements Serializable {
 
     @SerializedName("appellation")
     @Expose
-    private String appellation;
+    private String appellation = "";
 
     @SerializedName("vintage")
     @Expose
-    private String vintage;
+    private String vintage = "";
 
     @SerializedName("color")
     @Expose
-    private WineColor color;
+    private WineColor color = WineColor.RED;
 
     @SerializedName("wine_type")
     @Expose
-    private WineType type;
+    private WineType type = WineType.NONE;
 
     @SerializedName("score")
     @Expose
-    private Double score;
+    private Double score = 0.0;
 
     @SerializedName("confidence_index")
     @Expose
-    private String confidenceIndex;
+    private String confidenceIndex = "";
 
     private String shortName;
     private String winery;
 
-    public Wine() { }
+    public Wine() {
+        this.regions = new ArrayList<>();
+    }
 
     public Wine(String name, String wineId) {
+        this();
         this.name = name;
         this.wineId = wineId;
-        this.regions = new ArrayList<>();
     }
 
     public String getWinery() {
@@ -142,7 +144,7 @@ public class Wine implements Serializable {
         if (nameParts.length >= 1) {
             winery = nameParts[0];
 
-            if (nameParts.length >= 2) {
+            if (nameParts.length > 2) {
                 shortName = nameParts[1];
             } else {
                 shortName = nameParts[0];

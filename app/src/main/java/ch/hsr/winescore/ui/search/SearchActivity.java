@@ -1,6 +1,7 @@
 package ch.hsr.winescore.ui.search;
 
 import android.app.SearchManager;
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
+import ch.hsr.winescore.ui.wine.WineRecyclerViewAdapter;
 
 public class SearchActivity extends AppCompatActivity implements SearchView {
 
@@ -33,6 +35,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @BindView(R.id.wineList) RecyclerView wineList;
 
     private SearchPresenter presenter;
+    private WineRecyclerViewAdapter adapter;
     private BottomSheetDialog filterDialog;
     private boolean didFirstSearch = false;
 
@@ -51,24 +54,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         }
 
         setupPresenter();
+        setupAdapter();
         setupSearchbox();
         setupRecyclerView();
         setupFilterDialog();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_filter) {
-            filterDialog.show();
-            return true;
-        }
-        return false;
+    private void setupAdapter() {
+        this.adapter = new WineRecyclerViewAdapter(presenter::listItemClicked);
     }
 
     private void setupPresenter() {
@@ -80,7 +73,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     private void setupRecyclerView() {
         wineList.setLayoutManager(new LinearLayoutManager(this));
         wineList.setHasFixedSize(true);
-        wineList.setAdapter(presenter.getAdapter());
+        wineList.setAdapter(adapter);
         wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -110,15 +103,19 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         filterDialog.setOnDismissListener(dialog -> presenter.refreshData());
     }
 
-    private void handleSearch(String query) {
-        presenter.setSearchQuery(query);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        if (didFirstSearch) {
-            presenter.refreshData();
-        } else {
-            presenter.bindWines(this);
-            didFirstSearch = true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            filterDialog.show();
+            return true;
         }
+        return false;
     }
 
     @OnClick(R.id.clearSearchButton)
@@ -151,5 +148,21 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra("wine", wine);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void winesUpdated(PagedList<Wine> wines) {
+        adapter.submitList(wines);
+    }
+
+    private void handleSearch(String query) {
+        presenter.setSearchQuery(query);
+
+        if (didFirstSearch) {
+            presenter.refreshData();
+        } else {
+            presenter.bindWines(this);
+            didFirstSearch = true;
+        }
     }
 }

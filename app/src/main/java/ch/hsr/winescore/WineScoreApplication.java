@@ -29,21 +29,11 @@ public class WineScoreApplication extends Application {
         return instance;
     }
 
-    public static boolean hasNetwork() {
-        return instance.isNetworkAvailable();
-    }
-
     public static SharedPreferences getSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(instance.getBaseContext());
     }
 
     public static String getResourcesString(int resId) {
         return instance.getString(resId);
-    }
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return (activeNetworkInfo != null) && activeNetworkInfo.isConnected();
     }
 }

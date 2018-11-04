@@ -18,22 +18,23 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
     protected LiveData<PagedList<Wine>> wines;
     protected final LoadStateObservableFactory<T> dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
-    private WineRecyclerViewAdapter adapter;
+    private WineListView view;
 
     public WineListPresenter(LoadStateObservableFactory<T> dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
         this.loadState = new MutableLiveData<>();
-        this.adapter = new WineRecyclerViewAdapter(this::listItemClicked);
     }
 
     protected void attachView(WineListView view) {
-        setupLiveWineData(dataSourceFactory);
-        setupLoadStateObserver(dataSourceFactory);
+        this.view = view;
+
+        setupLiveWineData();
+        setupLoadStateObserver();
     }
 
     protected abstract WineListView getView();
 
-    private void setupLiveWineData(LoadStateObservableFactory dataSourceFactory) {
+    private void setupLiveWineData() {
         PagedList.Config config =
                 new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
@@ -43,7 +44,7 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
         wines = new LivePagedListBuilder(dataSourceFactory, config).build();
     }
 
-    private void setupLoadStateObserver(LoadStateObservableFactory dataSourceFactory) {
+    private void setupLoadStateObserver() {
         dataSourceFactory.setDataLoadStateObserver(this.loadState::postValue);
 
     }
@@ -54,30 +55,32 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
     }
 
     public void bindWines(LifecycleOwner owner) {
-        wines.observe(owner, wines -> adapter.submitList(wines));
+        wines.observe(owner, wines -> view.winesUpdated(wines));
     }
 
     public void bindLoadState(LifecycleOwner owner) {
         loadState.observe(owner, loadState -> {
-            switch (loadState) {
-                case INITIAL_LOADING:
-                    getView().showLoading();
-                    break;
-                case LOADED:
-                    getView().hideLoading();
-                    break;
-                case FAILED:
-                    getView().showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
-                    break;
+            if (loadState != null) {
+                switch (loadState) {
+                    case INITIAL_LOADING:
+                        getView().showLoading();
+                        break;
+                    case LOADED:
+                        getView().hideLoading();
+                        break;
+                    case FAILED:
+                        getView().showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
+                        break;
+                }
             }
         });
     }
 
-    public void refreshData() {
-        dataSourceFactory.invalidateDataSource();
+    public DataLoadState getLoadState() {
+        return loadState.getValue();
     }
 
-    public WineRecyclerViewAdapter getAdapter() {
-        return adapter;
+    public void refreshData() {
+        dataSourceFactory.invalidateDataSource();
     }
 }

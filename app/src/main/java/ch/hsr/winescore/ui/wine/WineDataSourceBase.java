@@ -8,6 +8,7 @@ import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadStateObserver;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -35,35 +36,49 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
     public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.INITIAL_LOADING);
 
-        final Call<WineResponse> wineListCall = getLoadInitialCall(params);
+        final Call<WineResponse> call = getLoadInitialCall(params);
 
-        try {
-            // Execute call synchronously since function is called on a background thread
-            Response<WineResponse> response = wineListCall.execute();
-            totalCount = response.body().getCount();
-            callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
-            observer.onDataLoadStateChanged(DataLoadState.LOADED);
-        } catch (IOException e) {
-            e.printStackTrace();
-            observer.onDataLoadStateChanged(DataLoadState.FAILED);
-        }
+        call.enqueue(new Callback<WineResponse>() {
+            @Override
+            public void onResponse(Call<WineResponse> call, Response<WineResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    totalCount = response.body().getCount();
+                    callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
+                    observer.onDataLoadStateChanged(DataLoadState.LOADED);
+                } else {
+                    observer.onDataLoadStateChanged(DataLoadState.FAILED);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WineResponse> call, Throwable t) {
+                observer.onDataLoadStateChanged(DataLoadState.FAILED);
+            }
+        });
     }
 
     @Override
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Wine> callback) {
         observer.onDataLoadStateChanged(DataLoadState.LOADING);
 
-        final Call<WineResponse> wineListCall = getLoadRangeCall(params);
+        final Call<WineResponse> call = getLoadRangeCall(params);
 
-        try {
-            // Execute call synchronously since function is called on a background thread
-            Response<WineResponse> response = wineListCall.execute();
-            callback.onResult(response.body().getWines());
-            observer.onDataLoadStateChanged(DataLoadState.LOADED);
-        } catch (IOException e) {
-            e.printStackTrace();
-            observer.onDataLoadStateChanged(DataLoadState.FAILED);
-        }
+        call.enqueue(new Callback<WineResponse>() {
+            @Override
+            public void onResponse(Call<WineResponse> call, Response<WineResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.onResult(response.body().getWines());
+                    observer.onDataLoadStateChanged(DataLoadState.LOADED);
+                } else {
+                    observer.onDataLoadStateChanged(DataLoadState.FAILED);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<WineResponse> call, Throwable t) {
+                observer.onDataLoadStateChanged(DataLoadState.FAILED);
+            }
+        });
     }
 
 }

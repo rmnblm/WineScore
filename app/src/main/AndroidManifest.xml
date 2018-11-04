@@ -38,7 +38,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.hsr.winescore.ui.MainActivity" />
         </activity>
-        <activity android:name=".ui.search.SearchActivity" >
+        <activity android:name=".ui.search.SearchActivity" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

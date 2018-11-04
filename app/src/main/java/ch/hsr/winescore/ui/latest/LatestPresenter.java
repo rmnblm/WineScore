@@ -23,7 +23,7 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> impleme
     }
 
     @Override
-    protected WineListView getView() {
+    public WineListView getView() {
         return view;
     }
 }
