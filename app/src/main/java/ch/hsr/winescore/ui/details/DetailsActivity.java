@@ -3,6 +3,7 @@ package ch.hsr.winescore.ui.details;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.toolbar_bgimage) ImageView tbl_bgimage;
     @BindView(R.id.detail_toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton floatingActionButton;
+    @BindView(R.id.wine_detail_container) View detailContainer;
 
     @BindView(R.id.appellation) TextView tv_appellation;
     @BindView(R.id.regions) TextView tv_regions;
@@ -167,12 +169,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
                 if (mIsFavorite) {
                     FavoritesFirebaseRepository.delete(wine, result -> {
                         updateFavorite(result != null);
-                        floatingActionButton.setEnabled(true);
+                        if (result == null) {
+                            Snackbar.make(detailContainer, R.string.favorite_removed, Snackbar.LENGTH_LONG).show();
+                        }
                     });
                 } else {
                     FavoritesFirebaseRepository.set(wine, result -> {
                         updateFavorite(result != null);
-                        floatingActionButton.setEnabled(true);
+                        if (result != null) {
+                            Snackbar.make(detailContainer, R.string.favorite_added, Snackbar.LENGTH_LONG).show();
+                        }
                     });
                 }
             });
@@ -226,6 +232,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private void updateFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;
         floatingActionButton.setImageResource(mIsFavorite ? R.drawable.ic_unfavorite_black_24dp : R.drawable.ic_favorite_black_24dp);
+        floatingActionButton.setEnabled(true);
     }
 
     private void refreshRatingList() {

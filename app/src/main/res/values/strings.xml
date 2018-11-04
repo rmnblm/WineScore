@@ -57,4 +57,6 @@
     <string name="last_comment">Latest comment</string>
     <string name="comments_view_all">View all</string>
     <string name="comments_citation">\"%1$s\"</string>
+    <string name="favorite_added">The wine has been added to your favorites.</string>
+    <string name="favorite_removed">The wine has been removed from your favorites.</string>
 </resources>
