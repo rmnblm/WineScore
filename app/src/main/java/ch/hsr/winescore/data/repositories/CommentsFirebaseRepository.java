@@ -20,12 +20,17 @@ public class CommentsFirebaseRepository extends FirebaseRepository {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    String userName = user.getDisplayName() != null && !user.getDisplayName().equals("")
-                            ? user.getDisplayName() : ANONYMOUS;
-                    Comment comment = new Comment(user.getUid(), userName, wine.getId(), content);
-                    FirebaseFirestore.getInstance().collection(COLLECTION).add(comment)
-                            .addOnSuccessListener(x -> callback.onCallback(comment))
-                            .addOnFailureListener(e -> callback.onCallback(null));
+                    if (user != null) {
+                        String userName = user.getDisplayName() != null && !user.getDisplayName().equals("")
+                                ? user.getDisplayName() : ANONYMOUS;
+                        Comment comment = new Comment(user.getUid(), userName, wine.getId(), content);
+                        FirebaseFirestore.getInstance().collection(COLLECTION).add(comment)
+                                .addOnSuccessListener(x -> callback.onCallback(comment))
+                                .addOnFailureListener(e -> callback.onCallback(null));
+                    } else {
+                        callback.onCallback(null);
+                    }
+
                 })
                 .addOnFailureListener(e -> callback.onCallback(null));
     }

@@ -46,7 +46,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
         CommentsFirebaseRepository.add(mWine, mComment, result -> dismiss());
     }
 
-    public static CommentsBottomDialogFragment newInstane(Wine wine) {
+    public static CommentsBottomDialogFragment newInstance(Wine wine) {
         CommentsBottomDialogFragment fragment = new CommentsBottomDialogFragment();
         Bundle arguments = new Bundle();
         arguments.putSerializable(CommentsFragment.ARGUMENT_WINE, wine);

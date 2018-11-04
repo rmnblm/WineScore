@@ -201,7 +201,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     private void setupComments() {
         viewLastComment.setVisibility(View.GONE);
         loadLastComment();
-        mDialogFragment = CommentsBottomDialogFragment.newInstane(wine);
+        mDialogFragment = CommentsBottomDialogFragment.newInstance(wine);
     }
 
     private void loadLastComment() {

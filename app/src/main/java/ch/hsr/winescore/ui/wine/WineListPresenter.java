@@ -21,7 +21,7 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
     protected LiveData<PagedList<Wine>> wines;
     protected final LoadStateObservableFactory<T> dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
-    private WineRecyclerViewAdapter adapter;
+    private final WineRecyclerViewAdapter adapter;
 
     public WineListPresenter(LoadStateObservableFactory<T> dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
@@ -36,14 +36,14 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
 
     protected abstract ListView<Wine> getView();
 
-    private void setupLiveWineData(LoadStateObservableFactory dataSourceFactory) {
+    private void setupLiveWineData(LoadStateObservableFactory<T> dataSourceFactory) {
         PagedList.Config config =
                 new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
                         .setPageSize(PAGE_SIZE)
                         .build();
 
-        wines = new LivePagedListBuilder(dataSourceFactory, config).build();
+        wines = new LivePagedListBuilder<>(dataSourceFactory, config).build();
     }
 
     private void setupLoadStateObserver(LoadStateObservableFactory dataSourceFactory) {
@@ -69,18 +69,20 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
 
     public void bindLoadState(LifecycleOwner owner) {
         loadState.observe(owner, observedLoadState -> {
-            switch (observedLoadState) {
-                case INITIAL_LOADING:
-                    getView().showLoading();
-                    break;
-                case LOADED:
-                    getView().hideLoading();
-                    break;
-                case FAILED:
-                    getView().showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
-                    break;
-                default:
-                    break;
+            if (observedLoadState != null) {
+                switch (observedLoadState) {
+                    case INITIAL_LOADING:
+                        getView().showLoading();
+                        break;
+                    case LOADED:
+                        getView().hideLoading();
+                        break;
+                    case FAILED:
+                        getView().showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
+                        break;
+                    default:
+                        break;
+                }
             }
         });
     }

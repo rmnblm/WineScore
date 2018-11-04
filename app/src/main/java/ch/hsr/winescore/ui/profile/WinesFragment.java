@@ -45,7 +45,7 @@ public class WinesFragment extends FirebaseListFragment<Wine> {
     @Override
     protected Query getQuery() {
         return FirebaseFirestore.getInstance().collection(WinesFirebaseRepository.COLLECTION)
-                .whereArrayContains(mQueryField, FirebaseAuth.getInstance().getUid());
+                .whereArrayContains(mQueryField, FirebaseAuth.getInstance().getUid() != null ? FirebaseAuth.getInstance().getUid() : "");
     }
 
     @Override

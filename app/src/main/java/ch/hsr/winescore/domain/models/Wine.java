@@ -1,5 +1,6 @@
 package ch.hsr.winescore.domain.models;
 
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -177,7 +178,7 @@ public class Wine implements Serializable {
                     return oldItem.getId().equals(newItem.getId());
                 }
                 @Override
-                public boolean areContentsTheSame(Wine oldItem, Wine newItem) {
+                public boolean areContentsTheSame(Wine oldItem, @NonNull Wine newItem) {
                     return oldItem.equals(newItem);
                 }
             };

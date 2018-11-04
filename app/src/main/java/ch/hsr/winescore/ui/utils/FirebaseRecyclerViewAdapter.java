@@ -21,7 +21,7 @@ public class FirebaseRecyclerViewAdapter<T1, T2 extends BaseViewHolder<T1>> exte
     private final int mListEntryLayout;
     private final ViewHolderCreator<T2> mViewHolderCreator;
 
-    public FirebaseRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<T1> options, int listEntryLayout, ViewHolderCreator<T2> creator) {
+    public FirebaseRecyclerViewAdapter(ListView<T1> view, @NonNull FirestorePagingOptions<T1> options, int listEntryLayout, ViewHolderCreator<T2> creator) {
         super(options);
         this.mView = view;
         this.mListEntryLayout = listEntryLayout;

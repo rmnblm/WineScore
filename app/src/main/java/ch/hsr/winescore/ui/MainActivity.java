@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         selectedFragmentId = item.getItemId();
 
-        Fragment selectedFragment = null;
+        Fragment selectedFragment;
         switch (selectedFragmentId) {
             case R.id.search:
                 selectedFragment = new SearchFragment();

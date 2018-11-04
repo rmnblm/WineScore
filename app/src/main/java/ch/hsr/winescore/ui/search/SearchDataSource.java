@@ -12,7 +12,7 @@ import retrofit2.Call;
 
 public class SearchDataSource extends WineDataSourceBase {
 
-    private SharedPreferences preferences;
+    private final SharedPreferences preferences;
 
     private String query;
     private String color;

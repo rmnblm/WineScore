@@ -35,7 +35,7 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> {
 
     public void scrollStateChanged(boolean canScrollVertically) {
         if (canScrollVertically) { return; }
-        int wineCount = wines.getValue().size();
+        int wineCount = wines.getValue() != null ? wines.getValue().size() : 0;
         int totalWineCount = dataSourceFactory.getTotalCountOfCurrentDataSource();
         if (wineCount < totalWineCount) {
             view.showLoading();

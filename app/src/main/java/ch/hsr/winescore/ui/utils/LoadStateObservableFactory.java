@@ -23,11 +23,13 @@ public abstract class LoadStateObservableFactory<T extends WineDataSourceBase>
 
 
     public int getTotalCountOfCurrentDataSource() {
-        return liveWineData.getValue().getTotalCount();
+        return liveWineData.getValue() != null ? liveWineData.getValue().getTotalCount() : 0;
     }
 
     public void invalidateDataSource() {
-        liveWineData.getValue().invalidate();
+        if (liveWineData.getValue() != null) {
+            liveWineData.getValue().invalidate();
+        }
     }
 
     protected abstract DataSource<Integer, Wine> createDataSource();

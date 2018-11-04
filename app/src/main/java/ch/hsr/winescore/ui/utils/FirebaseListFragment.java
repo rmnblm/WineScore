@@ -2,6 +2,7 @@ package ch.hsr.winescore.ui.utils;
 
 import android.arch.paging.PagedList;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ public abstract class FirebaseListFragment<T> extends ListFragment<T> {
     protected abstract FirebaseRecyclerViewAdapter<T, BaseViewHolder<T>> createAdapter(FirestorePagingOptions<T> options);
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
 

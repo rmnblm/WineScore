@@ -3,6 +3,7 @@ package ch.hsr.winescore.ui.profile;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -87,12 +88,8 @@ public class ProfileFragment extends Fragment {
         onSignedOut();
     }
 
-    public static ProfileFragment newInstance() {
-        return new ProfileFragment();
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, rootView);
@@ -117,7 +114,9 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                onSignedIn(mAuth.getCurrentUser());
+                if (mAuth.getCurrentUser() != null) {
+                    onSignedIn(mAuth.getCurrentUser());
+                }
             } else {
                 IdpResponse response = IdpResponse.fromResultIntent(data);
                 if (response == null) {
@@ -125,7 +124,7 @@ public class ProfileFragment extends Fragment {
                 }
                 Snackbar snackbar = Snackbar.make(
                         layout,
-                        response.getError().getErrorCode() == ErrorCodes.NO_NETWORK ? errorNoInternetConnection : errorUnknown,
+                        response.getError() != null && response.getError().getErrorCode() == ErrorCodes.NO_NETWORK ? errorNoInternetConnection : errorUnknown,
                         Snackbar.LENGTH_INDEFINITE);
                 snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
                 snackbar.show();
@@ -137,7 +136,9 @@ public class ProfileFragment extends Fragment {
         Intent intent = new Intent(getContext(), ListActivity.class);
         intent.putExtra(ListActivity.TITLE, title);
         intent.putExtra(WinesFragment.ARGUMENT_QUERY_FIELD, queryField);
-        getActivity().startActivity(intent);
+        if (getActivity() != null) {
+            getActivity().startActivity(intent);
+        }
     }
 
     private void onSignedIn(FirebaseUser user) {
