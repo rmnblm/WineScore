@@ -28,6 +28,10 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
         editor.apply();
     }
 
+    public void clearPreferences() {
+        sharedPreferences.edit().clear().apply();
+    }
+
     public void scrollStateChanged(boolean canScrollVertically) {
         if (canScrollVertically) { return; }
         int wineCount = wines.getValue().size();

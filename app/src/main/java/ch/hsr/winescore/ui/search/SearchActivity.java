@@ -72,6 +72,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        presenter.clearPreferences();
+        super.onDestroy();
+    }
+
     private void setupPresenter() {
         presenter = new SearchPresenter();
         presenter.attachView(this);
