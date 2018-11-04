@@ -28,7 +28,7 @@ public class SearchDataSource extends WineDataSourceBase {
     @Override
     protected Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params) {
         refreshParameters();
-        return apiService.searchBy(query, color, country, vintage, ordering, params.pageSize, params.requestedStartPosition);
+        return apiService.searchBy(query, color, country, vintage, ordering, params.pageSize, 0);
     }
 
     @Override

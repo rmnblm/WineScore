@@ -139,7 +139,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
     @Override
     public void showEmptyState() {
-        emptyDataView.setVisibility(View.VISIBLE);
+        if (didFirstSearch) {
+            emptyDataView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -150,7 +152,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     @Override
     public void showError(String errorMessage) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", v -> presenter.refreshData());
+                .setAction(R.string.dataload_error_retry, v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
         snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
         snackbar.show();

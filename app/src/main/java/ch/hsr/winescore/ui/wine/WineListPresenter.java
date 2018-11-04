@@ -6,10 +6,11 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.view.View;
+
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.WineScoreApplication;
-import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.domain.models.Wine;
+import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.ui.utils.LoadStateObservableFactory;
 
 public abstract class WineListPresenter<T extends WineDataSourceBase> {
@@ -69,6 +70,13 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> {
                 case FAILED:
                     getView().showError(WineScoreApplication.getResourcesString(R.string.dataload_error_message));
                     break;
+            }
+        });
+        wines.observe(owner, wines -> {
+            if (wines != null && wines.isEmpty()) {
+                getView().showEmptyState();
+            } else {
+                getView().hideEmptyState();
             }
         });
     }
