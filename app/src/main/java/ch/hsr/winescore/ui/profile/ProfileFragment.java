@@ -14,13 +14,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Arrays;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -28,16 +24,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
-import ch.hsr.winescore.data.repositories.FavoritesFirebaseRepository;
-import ch.hsr.winescore.data.repositories.RatingsFirebaseRepository;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ProfileView {
 
     private static final int RC_SIGN_IN = 100;
-    private FirebaseAuth mAuth;
+
+    private ProfilePresenter presenter;
 
     @BindView(R.id.layout) View layout;
     @BindView(R.id.layout_sign_in) View viewSignIn;
@@ -55,16 +49,7 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.button_sign_in)
     public void onClickSignIn(View v) {
-        startActivityForResult(
-                AuthUI.getInstance().createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(
-                                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                                new AuthUI.IdpConfig.EmailBuilder().build(),
-                                new AuthUI.IdpConfig.AnonymousBuilder().build()
-                        ))
-                        .setIsSmartLockEnabled(false)
-                        .build(),
-                RC_SIGN_IN);
+        startActivityForResult(presenter.getSignInIntent(), RC_SIGN_IN);
     }
 
     @OnClick(R.id.layout_favorites)
@@ -84,29 +69,24 @@ public class ProfileFragment extends Fragment {
 
     @OnClick(R.id.button_sign_out)
     public void onClickSignOut(View v) {
-        mAuth.signOut();
-        onSignedOut();
+        presenter.signOut();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, rootView);
+
         viewSignIn.setVisibility(View.GONE);
         viewMenu.setVisibility(View.GONE);
+        setupPresenter();
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            onSignedIn(currentUser);
-        } else {
-            onSignedOut();
-        }
+        presenter.checkAuthentication();
     }
 
     @Override
@@ -114,9 +94,7 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
-                if (mAuth.getCurrentUser() != null) {
-                    onSignedIn(mAuth.getCurrentUser());
-                }
+                presenter.checkAuthentication();
             } else {
                 IdpResponse response = IdpResponse.fromResultIntent(data);
                 if (response == null) {
@@ -141,31 +119,47 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void onSignedIn(FirebaseUser user) {
+    @Override
+    public void onSignedIn(FirebaseUser user) {
         if (user.getPhotoUrl() != null) {
             Glide.with(this).load(user.getPhotoUrl()).apply(new RequestOptions().circleCrop()).into(ivProfilePicture);
         }
+        presenter.loadCounts();
         viewSignIn.setVisibility(View.GONE);
         viewMenu.setVisibility(View.VISIBLE);
         tvDisplayName.setText(user.isAnonymous() ? displayNameAnonymous : user.getDisplayName());
-        loadCounts();
     }
 
-    private void onSignedOut() {
+    @Override
+    public void onSignedOut() {
         tvDisplayName.setText(R.string.profile_welcome);
         ivProfilePicture.setImageDrawable(drawWineIcon);
         viewMenu.setVisibility(View.GONE);
         viewSignIn.setVisibility(View.VISIBLE);
     }
 
-    private void loadCounts() {
-        FavoritesFirebaseRepository.getCount(count -> setCount(tvFavoritesCount, count));
-        RatingsFirebaseRepository.getCount(count -> setCount(tvRatingsCount, count));
-        CommentsFirebaseRepository.getCount(count -> setCount(tvCommentsCount, count));
+    @Override
+    public void refreshFavoritesCount(int count) {
+        setCount(tvFavoritesCount, count);
+    }
+
+    @Override
+    public void refreshRatingsCount(int count) {
+        setCount(tvRatingsCount, count);
+    }
+
+    @Override
+    public void refreshCommentsCount(int count) {
+        setCount(tvCommentsCount, count);
     }
 
     private void setCount(TextView view, Integer count) {
         view.setText(count.toString());
         view.setVisibility(View.VISIBLE);
+    }
+
+    private void setupPresenter() {
+        presenter = new ProfilePresenter();
+        presenter.attachView(this);
     }
 }
