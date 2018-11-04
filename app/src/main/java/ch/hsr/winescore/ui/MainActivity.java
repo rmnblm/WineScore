@@ -12,6 +12,7 @@ import ch.hsr.winescore.ui.latest.LatestFragment;
 import ch.hsr.winescore.ui.profile.ProfileFragment;
 import ch.hsr.winescore.ui.search.SearchFragment;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
@@ -38,16 +39,16 @@ public class MainActivity extends AppCompatActivity {
 
         selectedFragmentId = item.getItemId();
 
-        Fragment selectedFragment = null;
+        Fragment selectedFragment;
         switch (selectedFragmentId) {
-            case R.id.latest:
-                selectedFragment = new LatestFragment();
-                break;
             case R.id.search:
                 selectedFragment = new SearchFragment();
                 break;
             case R.id.profile:
                 selectedFragment = new ProfileFragment();
+                break;
+            default:
+                selectedFragment = new LatestFragment();
                 break;
         }
 

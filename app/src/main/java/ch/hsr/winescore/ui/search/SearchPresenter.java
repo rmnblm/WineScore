@@ -1,14 +1,15 @@
 package ch.hsr.winescore.ui.search;
 
 import android.content.SharedPreferences;
+
 import ch.hsr.winescore.WineScoreApplication;
-import ch.hsr.winescore.ui.utils.Presenter;
+import ch.hsr.winescore.domain.models.Wine;
+import ch.hsr.winescore.ui.utils.ListView;
 import ch.hsr.winescore.ui.wine.WineListPresenter;
-import ch.hsr.winescore.ui.wine.WineListView;
 
-public class SearchPresenter extends WineListPresenter<SearchDataSource> implements Presenter<SearchView> {
+public class SearchPresenter extends WineListPresenter<SearchDataSource> {
 
-    private SearchView view;
+    private ListView<Wine> view;
     private final SharedPreferences sharedPreferences;
 
     public SearchPresenter() {
@@ -17,14 +18,9 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
     }
 
     @Override
-    public void attachView(SearchView view) {
+    public void attachView(ListView<Wine> view) {
+        super.attachView(view);
         this.view = view;
-        setupLiveWineData(dataSourceFactory);
-        setupLoadStateObserver(dataSourceFactory);
-    }
-
-    public void refreshData() {
-        dataSourceFactory.invalidateDataSource();
     }
 
     public void setSearchQuery(String query) {
@@ -33,9 +29,13 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
         editor.apply();
     }
 
-    public void reachedEndOfList(boolean canScrollVertically) {
+    public void clearPreferences() {
+        sharedPreferences.edit().clear().apply();
+    }
+
+    public void scrollStateChanged(boolean canScrollVertically) {
         if (canScrollVertically) { return; }
-        int wineCount = wines.getValue().size();
+        int wineCount = wines.getValue() != null ? wines.getValue().size() : 0;
         int totalWineCount = dataSourceFactory.getTotalCountOfCurrentDataSource();
         if (wineCount < totalWineCount) {
             view.showLoading();
@@ -43,7 +43,7 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
     }
 
     @Override
-    protected WineListView getView() {
+    protected ListView<Wine> getView() {
         return view;
     }
 }

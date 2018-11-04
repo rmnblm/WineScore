@@ -13,9 +13,9 @@ import ch.hsr.winescore.ui.utils.BaseViewHolder;
 public class CommentViewHolder extends BaseViewHolder<Comment> {
 
     @BindView(R.id.constraintLayout) View layout;
-    @BindView(R.id.date) TextView textViewDate;
-    @BindView(R.id.user) TextView textViewUser;
-    @BindView(R.id.content) TextView textViewContent;
+    @BindView(R.id.date) TextView tvDate;
+    @BindView(R.id.user) TextView tvUser;
+    @BindView(R.id.content) TextView tvContent;
 
     public CommentViewHolder(View itemView) {
         super(itemView);
@@ -28,11 +28,11 @@ public class CommentViewHolder extends BaseViewHolder<Comment> {
 
     @Override
     public void bindTo(Comment comment) {
-        textViewDate.setText(DateUtils.getRelativeTimeSpanString(
+        tvDate.setText(DateUtils.getRelativeTimeSpanString(
                 comment.getTimestamp().toDate().getTime(),
                 System.currentTimeMillis(),
                 DateUtils.DAY_IN_MILLIS));
-        textViewUser.setText(comment.getUserName());
-        textViewContent.setText(comment.getContent());
+        tvUser.setText(comment.getUserName());
+        tvContent.setText(comment.getContent());
     }
 }

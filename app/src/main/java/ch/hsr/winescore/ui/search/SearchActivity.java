@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,13 +25,16 @@ import butterknife.OnClick;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
+import ch.hsr.winescore.ui.utils.ListView;
 
-public class SearchActivity extends AppCompatActivity implements SearchView {
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
+public class SearchActivity extends AppCompatActivity implements ListView<Wine> {
 
-    @BindView(R.id.searchEditText) EditText searchEditText;
+    @BindView(R.id.searchEditText) EditText inputSearch;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
-    @BindView(R.id.wineList) RecyclerView wineList;
+    @BindView(R.id.wineList) RecyclerView rvWineList;
+    @BindView(R.id.emptyDataStore) View viewEmptyData;
 
     private SearchPresenter presenter;
     private BottomSheetDialog filterDialog;
@@ -71,6 +75,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        presenter.clearPreferences();
+        super.onDestroy();
+    }
+
     private void setupPresenter() {
         presenter = new SearchPresenter();
         presenter.attachView(this);
@@ -78,14 +88,14 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     }
 
     private void setupRecyclerView() {
-        wineList.setLayoutManager(new LinearLayoutManager(this));
-        wineList.setHasFixedSize(true);
-        wineList.setAdapter(presenter.getAdapter());
-        wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvWineList.setLayoutManager(new LinearLayoutManager(this));
+        rvWineList.setHasFixedSize(true);
+        rvWineList.setAdapter(presenter.getAdapter());
+        rvWineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                presenter.reachedEndOfList(recyclerView.canScrollVertically(1));
+                presenter.scrollStateChanged(recyclerView.canScrollVertically(1));
             }
         });
 
@@ -94,9 +104,9 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     }
 
     private void setupSearchbox() {
-        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+        inputSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                String query = searchEditText.getText().toString();
+                String query = inputSearch.getText().toString();
                 handleSearch(query);
             }
             return false;
@@ -123,7 +133,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
     @OnClick(R.id.clearSearchButton)
     public void clearSearch(View animationSource) {
-        searchEditText.setText("");
+        inputSearch.setText("");
     }
 
     @Override
@@ -137,11 +147,23 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     }
 
     @Override
+    public void showEmptyState() {
+        if (didFirstSearch) {
+            viewEmptyData.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideEmptyState() {
+        viewEmptyData.setVisibility(View.GONE);
+    }
+
+    @Override
     public void showError(String errorMessage) {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction("RETRY", v -> presenter.refreshData());
+                .setAction(R.string.dataload_error_retry, v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
-        snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
+        snackbar.setActionTextColor(ContextCompat.getColor(this, android.R.color.white));
         snackbar.show();
     }
 
