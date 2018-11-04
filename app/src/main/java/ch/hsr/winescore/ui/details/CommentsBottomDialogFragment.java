@@ -32,12 +32,9 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
     private String mComment;
     private DetailsView mDetailsView;
 
-    @BindView(R.id.addCommentLayout)
-    View mLayoutAddComment;
-    @BindView(R.id.input_comment)
-    TextInputEditText mInputAddComment;
-    @BindView(R.id.button_add_comment)
-    ImageButton mButtonAddComment;
+    @BindView(R.id.addCommentLayout) View viewAddComment;
+    @BindView(R.id.input_comment) TextInputEditText inputAddComment;
+    @BindView(R.id.button_add_comment) ImageButton btnAddComment;
 
     @OnClick(R.id.button_close)
     public void onClose(View v) {
@@ -76,14 +73,14 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
                 .replace(R.id.frame_layout, CommentsFragment.newInstance(mWine))
                 .commit();
         getDialog().setOnShowListener(dialog -> {
-            mInputAddComment.setText("");
+            inputAddComment.setText("");
             BottomSheetBehavior behavior = BottomSheetBehavior.from((View) view.getParent());
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
-        mLayoutAddComment.setVisibility(FirebaseAuth.getInstance().getCurrentUser() != null ? View.VISIBLE : View.GONE);
-        mButtonAddComment.setEnabled(false);
-        mInputAddComment.addTextChangedListener(mCommentTextWatcher);
+        viewAddComment.setVisibility(FirebaseAuth.getInstance().getCurrentUser() != null ? View.VISIBLE : View.GONE);
+        btnAddComment.setEnabled(false);
+        inputAddComment.addTextChangedListener(mCommentTextWatcher);
         return view;
     }
 
@@ -114,7 +111,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
         @Override
         public void afterTextChanged(Editable s) {
             mComment = s.toString();
-            mButtonAddComment.setEnabled(!TextUtils.isEmpty(s));
+            btnAddComment.setEnabled(!TextUtils.isEmpty(s));
         }
     };
 }

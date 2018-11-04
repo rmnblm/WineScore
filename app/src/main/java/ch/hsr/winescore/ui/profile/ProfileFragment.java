@@ -39,31 +39,19 @@ public class ProfileFragment extends Fragment {
     private static final int RC_SIGN_IN = 100;
     private FirebaseAuth mAuth;
 
-    @BindView(R.id.layout)
-    View mLayout;
-    @BindView(R.id.layout_sign_in)
-    View mLayoutSignIn;
-    @BindView(R.id.layout_menu)
-    View mLayoutMenu;
-    @BindView(R.id.img_profile_picture)
-    ImageView mProfilePicture;
-    @BindView(R.id.tv_displayname)
-    TextView mDisplayName;
-    @BindView(R.id.favorites_count)
-    TextView mFavoritesCount;
-    @BindView(R.id.ratings_count)
-    TextView mRatingsCount;
-    @BindView(R.id.comments_count)
-    TextView mCommentsCount;
+    @BindView(R.id.layout) View layout;
+    @BindView(R.id.layout_sign_in) View viewSignIn;
+    @BindView(R.id.layout_menu) View viewMenu;
+    @BindView(R.id.img_profile_picture) ImageView ivProfilePicture;
+    @BindView(R.id.tv_displayname) TextView tvDisplayName;
+    @BindView(R.id.favorites_count) TextView tvFavoritesCount;
+    @BindView(R.id.ratings_count) TextView tvRatingsCount;
+    @BindView(R.id.comments_count) TextView tvCommentsCount;
 
-    @BindDrawable(R.drawable.ic_wine_red)
-    Drawable mWineIcon;
-    @BindString(R.string.anonymous)
-    String mDisplayNameAnonymous;
-    @BindString(R.string.error_no_internet_connection)
-    String mErrorNoInternetConnection;
-    @BindString(R.string.error_unknown)
-    String mErrorUnknown;
+    @BindDrawable(R.drawable.ic_wine_red) Drawable drawWineIcon;
+    @BindString(R.string.anonymous) String displayNameAnonymous;
+    @BindString(R.string.error_no_internet_connection) String errorNoInternetConnection;
+    @BindString(R.string.error_unknown) String errorUnknown;
 
     @OnClick(R.id.button_sign_in)
     public void onClickSignIn(View v) {
@@ -109,8 +97,8 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, rootView);
-        mLayoutSignIn.setVisibility(View.GONE);
-        mLayoutMenu.setVisibility(View.GONE);
+        viewSignIn.setVisibility(View.GONE);
+        viewMenu.setVisibility(View.GONE);
         return rootView;
     }
 
@@ -137,8 +125,8 @@ public class ProfileFragment extends Fragment {
                     return; // User left auth activity by back button
                 }
                 Snackbar snackbar = Snackbar.make(
-                        mLayout,
-                        response.getError().getErrorCode() == ErrorCodes.NO_NETWORK ? mErrorNoInternetConnection : mErrorUnknown,
+                        layout,
+                        response.getError().getErrorCode() == ErrorCodes.NO_NETWORK ? errorNoInternetConnection : errorUnknown,
                         Snackbar.LENGTH_INDEFINITE);
                 snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
                 snackbar.show();
@@ -155,25 +143,25 @@ public class ProfileFragment extends Fragment {
 
     private void onSignedIn(FirebaseUser user) {
         if (user.getPhotoUrl() != null) {
-            Glide.with(this).load(user.getPhotoUrl()).apply(new RequestOptions().circleCrop()).into(mProfilePicture);
+            Glide.with(this).load(user.getPhotoUrl()).apply(new RequestOptions().circleCrop()).into(ivProfilePicture);
         }
-        mLayoutSignIn.setVisibility(View.GONE);
-        mLayoutMenu.setVisibility(View.VISIBLE);
-        mDisplayName.setText(user.isAnonymous() ? mDisplayNameAnonymous : user.getDisplayName());
+        viewSignIn.setVisibility(View.GONE);
+        viewMenu.setVisibility(View.VISIBLE);
+        tvDisplayName.setText(user.isAnonymous() ? displayNameAnonymous : user.getDisplayName());
         loadCounts();
     }
 
     private void onSignedOut() {
-        mDisplayName.setText(R.string.profile_welcome);
-        mProfilePicture.setImageDrawable(mWineIcon);
-        mLayoutMenu.setVisibility(View.GONE);
-        mLayoutSignIn.setVisibility(View.VISIBLE);
+        tvDisplayName.setText(R.string.profile_welcome);
+        ivProfilePicture.setImageDrawable(drawWineIcon);
+        viewMenu.setVisibility(View.GONE);
+        viewSignIn.setVisibility(View.VISIBLE);
     }
 
     private void loadCounts() {
-        FavoritesFirebaseRepository.getCount(count -> setCount(mFavoritesCount, count));
-        RatingsFirebaseRepository.getCount(count -> setCount(mRatingsCount, count));
-        CommentsFirebaseRepository.getCount(count -> setCount(mCommentsCount, count));
+        FavoritesFirebaseRepository.getCount(count -> setCount(tvFavoritesCount, count));
+        RatingsFirebaseRepository.getCount(count -> setCount(tvRatingsCount, count));
+        CommentsFirebaseRepository.getCount(count -> setCount(tvCommentsCount, count));
     }
 
     private void setCount(TextView view, Integer count) {

@@ -4,6 +4,7 @@ import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,20 +18,13 @@ import com.google.firebase.firestore.Query;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.ui.utils.BaseViewHolder;
-import ch.hsr.winescore.ui.utils.FirebaseRecyclerViewAdapter;
-import ch.hsr.winescore.ui.utils.ListView;
 
 public abstract class ListFragment<T> extends Fragment implements ListView<T> {
 
-    @BindView(R.id.layout)
-    View layout;
-    @BindView(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.emptyDataStore)
-    View emptyDataView;
+    @BindView(R.id.layout) View layout;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.recyclerView) RecyclerView rvItemsList;
+    @BindView(R.id.emptyDataStore) View viewEmptyData;
 
     private FirebaseRecyclerViewAdapter<T, BaseViewHolder<T>> adapter;
 
@@ -61,12 +55,12 @@ public abstract class ListFragment<T> extends Fragment implements ListView<T> {
 
     @Override
     public void showEmptyState() {
-        emptyDataView.setVisibility(View.VISIBLE);
+        viewEmptyData.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyState() {
-        emptyDataView.setVisibility(View.GONE);
+        viewEmptyData.setVisibility(View.GONE);
     }
 
     @Override
@@ -74,7 +68,7 @@ public abstract class ListFragment<T> extends Fragment implements ListView<T> {
         Snackbar snackbar = Snackbar.make(layout, getString(R.string.dataload_error_message), Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.dataload_error_retry, v -> adapter.retry());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
-        snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
+        snackbar.setActionTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         snackbar.show();
     }
 
@@ -92,8 +86,8 @@ public abstract class ListFragment<T> extends Fragment implements ListView<T> {
     }
 
     private void setupRecyclerView() {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
+        rvItemsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvItemsList.setAdapter(adapter);
         swipeContainer.setOnRefreshListener(() -> adapter.refresh());
     }
 

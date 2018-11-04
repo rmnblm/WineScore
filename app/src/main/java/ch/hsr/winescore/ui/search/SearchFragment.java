@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.ui.search.SearchActivity;
 
 public class SearchFragment extends Fragment {
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +24,8 @@ public class LatestFragment extends Fragment implements LatestView {
 
     @BindView(R.id.layout) View layout;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
-    @BindView(R.id.recyclerView) RecyclerView wineList;
-    @BindView(R.id.emptyDataStore)
-    View emptyDataView;
+    @BindView(R.id.recyclerView) RecyclerView rvWineList;
+    @BindView(R.id.emptyDataStore) View viewEmptyData;
 
     private LatestPresenter presenter;
 
@@ -52,12 +52,12 @@ public class LatestFragment extends Fragment implements LatestView {
 
     @Override
     public void showEmptyState() {
-        emptyDataView.setVisibility(View.VISIBLE);
+        viewEmptyData.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideEmptyState() {
-        emptyDataView.setVisibility(View.GONE);
+        viewEmptyData.setVisibility(View.GONE);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class LatestFragment extends Fragment implements LatestView {
         Snackbar snackbar = Snackbar.make(layout, errorMessage, Snackbar.LENGTH_INDEFINITE)
                 .setAction("RETRY", v -> presenter.refreshData());
         snackbar.getView().setBackgroundResource(R.color.colorErrorMessage);
-        snackbar.setActionTextColor(getResources().getColor(android.R.color.white));
+        snackbar.setActionTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
         snackbar.show();
     }
 
@@ -78,10 +78,10 @@ public class LatestFragment extends Fragment implements LatestView {
     }
 
     private void setupRecyclerView() {
-        wineList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        wineList.setHasFixedSize(true);
-        wineList.setAdapter(presenter.getAdapter());
-        wineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvWineList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvWineList.setHasFixedSize(true);
+        rvWineList.setAdapter(presenter.getAdapter());
+        rvWineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
