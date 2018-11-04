@@ -40,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment selectedFragment = null;
         switch (selectedFragmentId) {
-            case R.id.latest:
-                selectedFragment = new LatestFragment();
-                break;
             case R.id.search:
                 selectedFragment = new SearchFragment();
                 break;
             case R.id.profile:
                 selectedFragment = new ProfileFragment();
+                break;
+            default:
+                selectedFragment = new LatestFragment();
                 break;
         }
 

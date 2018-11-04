@@ -92,6 +92,7 @@ public class Wine implements Serializable {
         return wineId;
     }
 
+    @SuppressWarnings("squid:S00100") // Method name must be like this because of Firestore
     public String getLwin_11() {
         return lwin_11;
     }

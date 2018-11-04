@@ -1,10 +1,9 @@
 package ch.hsr.winescore.ui.latest;
 
-import ch.hsr.winescore.ui.utils.Presenter;
 import ch.hsr.winescore.ui.wine.WineListPresenter;
 import ch.hsr.winescore.ui.wine.WineListView;
 
-public class LatestPresenter extends WineListPresenter<LatestDataSource> implements Presenter<LatestView> {
+public class LatestPresenter extends WineListPresenter<LatestDataSource> {
 
     private LatestView view;
 
@@ -12,7 +11,6 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> impleme
         super(new LatestDataSourceFactory());
     }
 
-    @Override
     public void attachView(LatestView view) {
         super.attachView(view);
         this.view = view;

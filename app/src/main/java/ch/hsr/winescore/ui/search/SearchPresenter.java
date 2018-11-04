@@ -1,12 +1,12 @@
 package ch.hsr.winescore.ui.search;
 
 import android.content.SharedPreferences;
+
 import ch.hsr.winescore.WineScoreApplication;
-import ch.hsr.winescore.ui.utils.Presenter;
 import ch.hsr.winescore.ui.wine.WineListPresenter;
 import ch.hsr.winescore.ui.wine.WineListView;
 
-public class SearchPresenter extends WineListPresenter<SearchDataSource> implements Presenter<SearchView> {
+public class SearchPresenter extends WineListPresenter<SearchDataSource> {
 
     private SearchView view;
     private final SharedPreferences sharedPreferences;
@@ -16,7 +16,6 @@ public class SearchPresenter extends WineListPresenter<SearchDataSource> impleme
         this.sharedPreferences = WineScoreApplication.getSharedPreferences();
     }
 
-    @Override
     public void attachView(SearchView view) {
         super.attachView(view);
         this.view = view;

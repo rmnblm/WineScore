@@ -11,14 +11,14 @@ import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-public class FirebaseRecyclerViewAdapter<TElement, TViewHolder extends BaseViewHolder<TElement>> extends FirestorePagingAdapter<TElement, TViewHolder> {
+public class FirebaseRecyclerViewAdapter<T1, T2 extends BaseViewHolder<T1>> extends FirestorePagingAdapter<T1, T2> {
 
     public static final int PAGE_SIZE = 20;
-    private final ListView<TElement> mView;
+    private final ListView<T1> mView;
     private final int mListEntryLayout;
-    private final ViewHolderCreator<TViewHolder> mViewHolderCreator;
+    private final ViewHolderCreator<T2> mViewHolderCreator;
 
-    public FirebaseRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<TElement> options, int listEntryLayout, ViewHolderCreator<TViewHolder> creator) {
+    public FirebaseRecyclerViewAdapter(ListView view, @NonNull FirestorePagingOptions<T1> options, int listEntryLayout, ViewHolderCreator<T2> creator) {
         super(options);
         this.mView = view;
         this.mListEntryLayout = listEntryLayout;
@@ -27,14 +27,14 @@ public class FirebaseRecyclerViewAdapter<TElement, TViewHolder extends BaseViewH
 
     @NonNull
     @Override
-    public TViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+    public T2 onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(mListEntryLayout, parent, false);
         return mViewHolderCreator.createViewHolder(itemView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull TViewHolder holder, int position, @NonNull TElement model) {
+    protected void onBindViewHolder(@NonNull T2 holder, int position, @NonNull T1 model) {
         holder.bindTo(model);
         holder.itemView.setOnClickListener(v -> mView.navigateToDetailScreen(v, model));
     }

@@ -4,6 +4,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -143,21 +144,21 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
             case WHITE: colorResID = R.color.colorWineWhite; break;
             case PINK: colorResID = R.color.colorWinePink; break;
         }
-
-        floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        pb_score.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_1.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_1.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_2.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_2.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_3.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_3.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_4.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_4.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_5.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_ratings_5.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
-        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(getResources().getColor(colorResID)));
+        int color = ContextCompat.getColor(this, colorResID);
+        floatingActionButton.setBackgroundTintList(ColorStateList.valueOf(color));
+        pb_score.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_1.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_1.setSecondaryProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_2.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_2.setSecondaryProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_3.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_3.setSecondaryProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_4.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_4.setSecondaryProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_5.setProgressTintList(ColorStateList.valueOf(color));
+        rb_ratings_5.setSecondaryProgressTintList(ColorStateList.valueOf(color));
+        rb_my_rating.setProgressTintList(ColorStateList.valueOf(color));
+        rb_my_rating.setSecondaryProgressTintList(ColorStateList.valueOf(color));
 
         int countryResID;
         switch(wine.getCountry().toLowerCase()) {
@@ -185,11 +186,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
             view_my_ratings.setVisibility(View.GONE);
         } else {
             presenter.loadMyRating(wine);
-            rb_my_rating.setOnRatingBarChangeListener(this::onRatingChanged);
+            rb_my_rating.setOnRatingBarChangeListener((rb, rating, fromUser) -> onRatingChanged(rating, fromUser));
         }
     }
 
-    private void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+    private void onRatingChanged(float rating, boolean fromUser) {
         if (fromUser) {
             presenter.setMyRating(wine, (int) rating);
             btn_remove_rating.setVisibility(View.VISIBLE);

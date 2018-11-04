@@ -16,10 +16,6 @@ public class CommentsFirebaseRepository extends FirebaseRepository {
     private static final String FIELD_TIMESTAMP = "timestamp";
     private static final String ANONYMOUS = "Anonymous";
 
-    private CommentsFirebaseRepository() {
-        throw new IllegalStateException("Static class");
-    }
-
     public static void add(Wine wine, String content, IFirebaseCallback<Comment> callback) {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {

@@ -58,6 +58,8 @@ public class LatestPresenterTest {
         boolean hideLoadingCalled = false;
         boolean showErrorCalled = false;
         boolean navigateToDetailScreenCalled = false;
+        boolean showEmptyStateCalled = false;
+        boolean hideEmptyStateCalled = false;
 
         @Override
         public void showLoading() {
@@ -67,6 +69,16 @@ public class LatestPresenterTest {
         @Override
         public void hideLoading() {
             hideLoadingCalled = true;
+        }
+
+        @Override
+        public void showEmptyState() {
+            showEmptyStateCalled = true;
+        }
+
+        @Override
+        public void hideEmptyState() {
+            hideEmptyStateCalled = true;
         }
 
         @Override

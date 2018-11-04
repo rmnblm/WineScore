@@ -24,8 +24,6 @@ public class SearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, rootView);
 
-        //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         return rootView;
     }
 

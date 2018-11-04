@@ -2,6 +2,7 @@ package ch.hsr.winescore.ui.wine;
 
 import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -14,6 +15,8 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
+
+    public static final String TAG = WineDataSourceBase.class.getSimpleName();
 
     protected final GWSService apiService;
     protected final DataLoadStateObserver observer;
@@ -48,7 +51,7 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
             callback.onResult(response.body().getWines(), 0, totalCount);
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error on loadInitial", e);
             observer.onDataLoadStateChanged(DataLoadState.FAILED);
         }
     }
@@ -68,7 +71,7 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
             callback.onResult(response.body().getWines());
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error on loadRange", e);
             observer.onDataLoadStateChanged(DataLoadState.FAILED);
         }
     }

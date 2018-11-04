@@ -6,6 +6,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public abstract class FirebaseRepository {
     private static final String FIELD_USER_ID = "userId";
 
+    protected FirebaseRepository() {
+        throw new IllegalStateException("Static class");
+    }
+
     public static void countCollectionItemsByUser(String collection, IFirebaseCallback<Integer> callback) {
         FirebaseFirestore.getInstance().collection(collection)
                 .whereEqualTo(FIELD_USER_ID, FirebaseAuth.getInstance().getUid())
