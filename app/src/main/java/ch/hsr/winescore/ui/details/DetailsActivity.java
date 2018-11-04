@@ -30,6 +30,7 @@ import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Comment;
 import ch.hsr.winescore.domain.models.Wine;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class DetailsActivity extends AppCompatActivity implements DetailsView {
 
     public static final String ARGUMENT_WINE = "wine";

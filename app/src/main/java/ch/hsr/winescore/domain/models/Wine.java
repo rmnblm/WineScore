@@ -19,6 +19,7 @@ public class Wine implements Serializable {
     @Expose
     private String wineId;
 
+    @SuppressWarnings("squid:S00116") // Field name must be like this because of Firestore
     @SerializedName("lwin_11")
     @Expose
     private String lwin_11;

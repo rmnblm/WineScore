@@ -9,6 +9,7 @@ import butterknife.ButterKnife;
 import ch.hsr.winescore.R;
 import ch.hsr.winescore.ui.wine.WinesFragment;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class ListActivity extends AppCompatActivity {
 
     public static final String TITLE = "title";

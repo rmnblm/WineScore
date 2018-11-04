@@ -26,6 +26,7 @@ import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class SearchActivity extends AppCompatActivity implements SearchView {
 
     @BindView(R.id.searchEditText) EditText inputSearch;

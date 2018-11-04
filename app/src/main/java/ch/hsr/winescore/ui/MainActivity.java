@@ -12,6 +12,7 @@ import ch.hsr.winescore.ui.latest.LatestFragment;
 import ch.hsr.winescore.ui.profile.ProfileFragment;
 import ch.hsr.winescore.ui.search.SearchFragment;
 
+@SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
