@@ -27,7 +27,7 @@ public abstract class LoadStateObservableFactory<T extends WineDataSourceBase>
     }
 
     public void invalidateDataSource() {
-        if (liveWineData.getValue() != null) {
+        if (liveWineData != null && liveWineData.getValue() != null) {
             liveWineData.getValue().invalidate();
         }
     }
