@@ -2,15 +2,16 @@ package ch.hsr.winescore.ui.wine;
 
 import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
+
+import java.io.IOException;
+
 import ch.hsr.winescore.data.api.GWSService;
 import ch.hsr.winescore.data.api.responses.WineResponse;
-import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.domain.models.Wine;
+import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.domain.utils.DataLoadStateObserver;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import java.io.IOException;
 
 public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
 
@@ -40,6 +41,9 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
         try {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
+            if (response.body() == null) {
+                throw new IOException();
+            }
             totalCount = response.body().getCount();
             callback.onResult(response.body().getWines(), 0, totalCount);
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
@@ -58,6 +62,9 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
         try {
             // Execute call synchronously since function is called on a background thread
             Response<WineResponse> response = wineListCall.execute();
+            if (response.body() == null) {
+                throw new IOException();
+            }
             callback.onResult(response.body().getWines());
             observer.onDataLoadStateChanged(DataLoadState.LOADED);
         } catch (IOException e) {
