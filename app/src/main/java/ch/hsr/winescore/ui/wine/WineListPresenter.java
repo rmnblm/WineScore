@@ -60,18 +60,14 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
 
     public void bindWines(LifecycleOwner owner) {
         wines.observe(owner, observedWines -> {
-            view.winesUpdated(observedWines);
-            if (observedWines != null && observedWines.isEmpty()) {
-                getView().showEmptyState();
-            } else {
-                getView().hideEmptyState();
-            }
+            getView().winesUpdated(observedWines);
         });
     }
 
     public void bindLoadState(LifecycleOwner owner) {
         loadState.observe(owner, observedLoadState -> {
             if (observedLoadState != null) {
+                refreshEmptyState();
                 switch (observedLoadState) {
                     case INITIAL_LOADING:
                         getView().showLoading();
@@ -87,6 +83,14 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
                 }
             }
         });
+    }
+
+    private void refreshEmptyState() {
+        if (wines.getValue() != null && wines.getValue().isEmpty()) {
+            getView().showEmptyState();
+        } else {
+            getView().hideEmptyState();
+        }
     }
 
     public DataLoadState getLoadState() {

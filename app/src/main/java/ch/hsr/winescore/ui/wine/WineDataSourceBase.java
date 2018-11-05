@@ -47,7 +47,7 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
             public void onResponse(Call<WineResponse> call, Response<WineResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     totalCount = response.body().getCount();
-                    callback.onResult(response.body().getWines(), params.requestedStartPosition, response.body().getCount());
+                    callback.onResult(response.body().getWines(), 0, response.body().getCount());
                     observer.onDataLoadStateChanged(DataLoadState.LOADED);
                 } else {
                     Log.e(TAG, "Error on loadInitial");
