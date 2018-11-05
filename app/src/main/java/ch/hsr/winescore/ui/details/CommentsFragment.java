@@ -1,5 +1,6 @@
 package ch.hsr.winescore.ui.details;
 
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -53,6 +54,11 @@ public class CommentsFragment extends FirebaseListFragment<Comment> {
 
     @Override
     public void navigateToDetailScreen(View view, Comment item) {
+        // empty
+    }
+
+    @Override
+    public void winesUpdated(PagedList<Wine> wines) {
         // empty
     }
 }

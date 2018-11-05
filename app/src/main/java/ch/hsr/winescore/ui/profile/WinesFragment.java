@@ -1,5 +1,6 @@
 package ch.hsr.winescore.ui.profile;
 
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -64,5 +65,10 @@ public class WinesFragment extends FirebaseListFragment<Wine> {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(DetailsActivity.ARGUMENT_WINE, item);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void winesUpdated(PagedList<Wine> wines) {
+        // empty
     }
 }

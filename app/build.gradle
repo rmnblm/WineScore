@@ -48,12 +48,21 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.12'
+    testImplementation "android.arch.core:core-testing:1.1.1"
+    testImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
+    testImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
+    testImplementation('com.squareup.okhttp:mockwebserver:2.7.0')
+    
+    androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
     androidTestImplementation('com.squareup.okhttp:mockwebserver:2.7.0')
+    androidTestImplementation 'com.21buttons:fragment-test-rule:1.1.0'
+
+    debugImplementation 'com.21buttons:fragment-test-rule-extras:1.1.0'
 
     // Butterknife
     implementation 'com.jakewharton:butterknife:8.4.0'

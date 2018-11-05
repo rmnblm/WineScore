@@ -1,5 +1,6 @@
 package ch.hsr.winescore.ui.latest;
 
+import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +17,14 @@ import ch.hsr.winescore.R;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.details.DetailsActivity;
 import ch.hsr.winescore.ui.utils.ListFragment;
+import ch.hsr.winescore.ui.wine.WineRecyclerViewAdapter;
 
 public class LatestFragment extends ListFragment<Wine> {
 
     @BindView(R.id.recyclerView) RecyclerView rvWineList;
 
     private LatestPresenter presenter;
+    private WineRecyclerViewAdapter adapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,8 +32,39 @@ public class LatestFragment extends ListFragment<Wine> {
         ButterKnife.bind(this, rootView);
 
         setupPresenter();
+        setupAdapter();
         setupRecyclerView();
         return rootView;
+    }
+
+    private void setupAdapter() {
+        this.adapter = new WineRecyclerViewAdapter(presenter::listItemClicked);
+    }
+
+    private void setupRecyclerView() {
+        rvWineList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rvWineList.setHasFixedSize(true);
+        rvWineList.setAdapter(adapter);
+        rvWineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                presenter.scrollStateChanged(recyclerView.canScrollVertically(1));
+            }
+        });
+
+        swipeContainer.setOnRefreshListener(() -> presenter.refreshData());
+    }
+
+    private void setupPresenter() {
+        presenter = getPresenter();
+        presenter.attachView(this);
+        presenter.bindLoadState(this);
+        presenter.bindWines(this);
+    }
+
+    protected LatestPresenter getPresenter() {
+        return new LatestPresenter();
     }
 
     @Override
@@ -46,25 +80,8 @@ public class LatestFragment extends ListFragment<Wine> {
         context.startActivity(intent);
     }
 
-    private void setupRecyclerView() {
-        rvWineList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvWineList.setHasFixedSize(true);
-        rvWineList.setAdapter(presenter.getAdapter());
-        rvWineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                presenter.scrollStateChanged(recyclerView.canScrollVertically(1));
-            }
-        });
-
-        swipeContainer.setOnRefreshListener(() -> presenter.refreshData());
-    }
-
-    private void setupPresenter() {
-        presenter = new LatestPresenter();
-        presenter.attachView(this);
-        presenter.bindLoadState(this);
-        presenter.bindWines(this);
+    @Override
+    public void winesUpdated(PagedList<Wine> wines) {
+        adapter.submitList(wines);
     }
 }

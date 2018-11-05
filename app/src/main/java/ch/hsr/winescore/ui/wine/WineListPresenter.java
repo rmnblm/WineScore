@@ -21,22 +21,24 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
     protected LiveData<PagedList<Wine>> wines;
     protected final LoadStateObservableFactory<T> dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
-    private final WineRecyclerViewAdapter adapter;
+
+    private ListView<Wine> view;
 
     public WineListPresenter(LoadStateObservableFactory<T> dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
         this.loadState = new MutableLiveData<>();
-        this.adapter = new WineRecyclerViewAdapter(this::listItemClicked);
     }
 
     public void attachView(ListView<Wine> view) {
-        setupLiveWineData(dataSourceFactory);
-        setupLoadStateObserver(dataSourceFactory);
+        this.view = view;
+
+        setupLiveWineData();
+        setupLoadStateObserver();
     }
 
     protected abstract ListView<Wine> getView();
 
-    private void setupLiveWineData(LoadStateObservableFactory<T> dataSourceFactory) {
+    private void setupLiveWineData() {
         PagedList.Config config =
                 new PagedList.Config.Builder()
                         .setEnablePlaceholders(false)
@@ -46,7 +48,7 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
         wines = new LivePagedListBuilder<>(dataSourceFactory, config).build();
     }
 
-    private void setupLoadStateObserver(LoadStateObservableFactory dataSourceFactory) {
+    private void setupLoadStateObserver() {
         dataSourceFactory.setDataLoadStateObserver(this.loadState::postValue);
 
     }
@@ -58,7 +60,7 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
 
     public void bindWines(LifecycleOwner owner) {
         wines.observe(owner, observedWines -> {
-            adapter.submitList(observedWines);
+            view.winesUpdated(observedWines);
             if (observedWines != null && observedWines.isEmpty()) {
                 getView().showEmptyState();
             } else {
@@ -87,11 +89,11 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
         });
     }
 
-    public void refreshData() {
-        dataSourceFactory.invalidateDataSource();
+    public DataLoadState getLoadState() {
+        return loadState.getValue();
     }
 
-    public WineRecyclerViewAdapter getAdapter() {
-        return adapter;
+    public void refreshData() {
+        dataSourceFactory.invalidateDataSource();
     }
 }

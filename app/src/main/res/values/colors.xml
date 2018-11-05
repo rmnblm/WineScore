@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorActionBar">#D0B58A</color>
-    <color name="colorActionBarDark">#bba27c</color>
-    <color name="colorActionBarAccent">#C8BFA7</color>
-    <color name="colorActionbarText">#1f1f1f</color>
+    <color name="colorActionBar">#421335</color>
+    <color name="colorActionBarDark">#270b1f</color>
+    <color name="colorActionBarAccent">#FAE0AD</color>
+    <color name="colorActionbarText">#FAE0AD</color>
 
-    <color name="colorPrimary">#bba27c</color>
-    <color name="colorPrimaryDark">#917e60</color>
-    <color name="colorPrimaryText">#1f1f1f</color>
-    <color name="colorSecondaryText">#534837</color>
+    <color name="colorPrimary">#421335</color>
+    <color name="colorPrimaryDark">#270b1f</color>
+    <color name="colorPrimaryText">#270b1f</color>
+    <color name="colorSecondaryText">#421335</color>
 
     <color name="colorWineGlass">#3a3b3c</color>
     <color name="colorWineWhite">#f3cf14</color>
@@ -16,4 +16,8 @@
     <color name="colorWinePink">#ff8496</color>
 
     <color name="colorErrorMessage">#d10039</color>
+
+    <color name="colorBottomNavigationText">#060105</color>
+    <color name="colorBottomNavigationTint">#060105</color>
+    <color name="colorBottomNavigationTintSelected">#421335</color>
 </resources>
