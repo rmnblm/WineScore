@@ -67,6 +67,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     @BindView(R.id.commentsLastComment) View viewLastComment;
     @BindView(R.id.tv_last_comment) TextView tvLastComment;
 
+    @BindView(R.id.view_confidence_index) View viewConfidenceIndex;
+
     @OnClick(R.id.commentsLayout)
     public void openCommentsDialog(View v) {
         mDialogFragment.show(getSupportFragmentManager(), mDialogFragment.getTag(), this);
@@ -86,6 +88,16 @@ public class DetailsActivity extends AppCompatActivity implements DetailsView {
     public void onClickRemoveRating(View v) {
         rbMyRating.setRating(0);
         presenter.removeMyRating(wine);
+    }
+
+    @OnClick(R.id.cardView_Critics)
+    public void onOpenConfidenceIndex(View v) {
+        viewConfidenceIndex.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.view_confidence_index)
+    public void onCloseConfidenceIndex(View v) {
+        viewConfidenceIndex.setVisibility(View.GONE);
     }
 
     private DetailsPresenter presenter;
