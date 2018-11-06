@@ -15,6 +15,8 @@ import ch.hsr.winescore.ui.search.SearchFragment;
 @SuppressWarnings("squid:MaximumInheritanceDepth") // AppCompatActivity
 public class MainActivity extends AppCompatActivity {
 
+    private static final String SELECTED_FRAGMENT_ID = "selected_fragment_id";
+
     @BindView(R.id.navigation) BottomNavigationView bottomNavigationView;
 
     private int selectedFragmentId;
@@ -26,19 +28,30 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(listener);
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, new LatestFragment());
-        transaction.commit();
-
         selectedFragmentId = R.id.latest;
+        refreshFragment();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt(SELECTED_FRAGMENT_ID, selectedFragmentId);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        bottomNavigationView.setSelectedItemId(savedInstanceState.getInt(SELECTED_FRAGMENT_ID));
     }
 
     private final BottomNavigationView.OnNavigationItemSelectedListener listener = item -> {
         if (selectedFragmentId == item.getItemId()) return false;
-
         selectedFragmentId = item.getItemId();
+        refreshFragment();
+        return true;
+    };
 
+    private void refreshFragment() {
         Fragment selectedFragment;
         switch (selectedFragmentId) {
             case R.id.search:
@@ -55,6 +68,5 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, selectedFragment);
         transaction.commit();
-        return true;
-    };
+    }
 }
