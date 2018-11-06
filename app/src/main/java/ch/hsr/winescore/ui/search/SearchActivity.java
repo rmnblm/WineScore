@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -84,6 +85,7 @@ public class SearchActivity extends AppCompatActivity implements ListView<Wine> 
         rvWineList.setLayoutManager(new LinearLayoutManager(this));
         rvWineList.setHasFixedSize(true);
         rvWineList.setAdapter(adapter);
+        rvWineList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         rvWineList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {

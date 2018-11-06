@@ -66,6 +66,22 @@
         app:layout_constraintTop_toBottomOf="@+id/titleName"
         tools:text="Pomerol, France" />
 
+    <TextView
+        android:id="@+id/labelScore"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:singleLine="true"
+        android:text="@string/score"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/titleOrigin"
+        app:layout_constraintEnd_toEndOf="@+id/score"
+        app:layout_constraintTop_toTopOf="@+id/titleOrigin" />
+
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -79,8 +95,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/colorPrimaryText"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBaseline_toBaselineOf="@+id/titleName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="99.87" />
 </android.support.constraint.ConstraintLayout>

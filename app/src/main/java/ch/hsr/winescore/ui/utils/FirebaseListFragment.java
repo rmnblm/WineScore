@@ -3,6 +3,7 @@ package ch.hsr.winescore.ui.utils;
 import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public abstract class FirebaseListFragment<T> extends ListFragment<T> {
     private void setupRecyclerView() {
         rvItemsList.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvItemsList.setAdapter(adapter);
+        rvItemsList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         swipeContainer.setOnRefreshListener(() -> adapter.refresh());
     }
 

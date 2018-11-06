@@ -59,4 +59,5 @@
     <string name="comments_citation">\"%1$s\"</string>
     <string name="favorite_added">The wine has been added to your favorites.</string>
     <string name="favorite_removed">The wine has been removed from your favorites.</string>
+    <string name="score">Score /100</string>
 </resources>
