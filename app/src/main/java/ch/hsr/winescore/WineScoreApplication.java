@@ -1,10 +1,7 @@
 package ch.hsr.winescore;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,7 +14,7 @@ public class WineScoreApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        setInstance(this);
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder(firestore.getFirestoreSettings())
@@ -35,5 +32,9 @@ public class WineScoreApplication extends Application {
 
     public static String getResourcesString(int resId) {
         return instance.getString(resId);
+    }
+
+    private static void setInstance(WineScoreApplication applicationInstance) {
+        instance = applicationInstance;
     }
 }

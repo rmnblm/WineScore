@@ -4,8 +4,6 @@ import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.io.IOException;
-
 import ch.hsr.winescore.data.api.GWSService;
 import ch.hsr.winescore.data.api.responses.WineResponse;
 import ch.hsr.winescore.domain.models.Wine;

@@ -42,7 +42,7 @@ public class SearchActivityTest {
     public void setUp() throws Exception {
         server = new MockWebServer();
         server.start();
-        WineScoreConstants.ROOT_URL = server.url("/").toString();
+        WineScoreConstants.setRootUrl(server.url("/").toString());
 
         Intents.init();
     }

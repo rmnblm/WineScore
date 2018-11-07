@@ -36,7 +36,7 @@ public class LatestPresenterTest {
     public void setUp() throws IOException {
         server = new MockWebServer();
         server.start();
-        WineScoreConstants.ROOT_URL = server.url("/").toString();
+        WineScoreConstants.setRootUrl(server.url("/").toString());
 
         view = new LatestViewMock();
         presenter = new LatestPresenter();

@@ -22,16 +22,12 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
     protected final LoadStateObservableFactory<T> dataSourceFactory;
     private final MutableLiveData<DataLoadState> loadState;
 
-    private ListView<Wine> view;
-
     public WineListPresenter(LoadStateObservableFactory<T> dataSourceFactory) {
         this.dataSourceFactory = dataSourceFactory;
         this.loadState = new MutableLiveData<>();
     }
 
     public void attachView(ListView<Wine> view) {
-        this.view = view;
-
         setupLiveWineData();
         setupLoadStateObserver();
     }
@@ -59,9 +55,7 @@ public abstract class WineListPresenter<T extends WineDataSourceBase> implements
     }
 
     public void bindWines(LifecycleOwner owner) {
-        wines.observe(owner, observedWines -> {
-            getView().winesUpdated(observedWines);
-        });
+        wines.observe(owner, observedWines -> getView().winesUpdated(observedWines));
     }
 
     public void bindLoadState(LifecycleOwner owner) {

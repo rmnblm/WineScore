@@ -1,15 +1,9 @@
 package ch.hsr.winescore.data.api;
 
-import java.io.File;
-import java.util.UUID;
-
-import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.WineScoreConstants;
-import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -28,7 +22,7 @@ public class GWSClient {
                 .build();
 
         return new Retrofit.Builder()
-                .baseUrl(WineScoreConstants.ROOT_URL)
+                .baseUrl(WineScoreConstants.getRootUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
@@ -47,7 +41,7 @@ public class GWSClient {
         Request originalRequest = chain.request();
         Request.Builder builder = originalRequest
                 .newBuilder()
-                .header("Authorization", "Token " + WineScoreConstants.API_KEY);
+                .header("Authorization", "Token " + WineScoreConstants.getApiKey());
         Request newRequest = builder.build();
         return chain.proceed(newRequest);
     };
