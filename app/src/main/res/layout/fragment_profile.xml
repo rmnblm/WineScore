@@ -91,7 +91,7 @@
                         android:layout_height="32dp"
                         android:contentDescription="@string/favorites_title"
                         android:src="@drawable/ic_favorite_black_24dp"
-                        android:tint="@color/colorPrimaryDark"
+                        android:tint="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -137,7 +137,7 @@
                         android:layout_height="32dp"
                         android:contentDescription="@string/ratings_title"
                         android:src="@drawable/ic_star_black_24dp"
-                        android:tint="@color/colorPrimaryDark"
+                        android:tint="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -183,7 +183,7 @@
                         android:layout_height="32dp"
                         android:contentDescription="@string/comments_title"
                         android:src="@drawable/ic_mode_comment_black_24dp"
-                        android:tint="@color/colorPrimaryDark"
+                        android:tint="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
