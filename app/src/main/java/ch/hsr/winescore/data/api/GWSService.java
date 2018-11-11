@@ -9,6 +9,10 @@ public interface GWSService {
 
     @GET("latest")
     Call<WineResponse> getLatest(
+            @Query("color") String color,
+            @Query("country") String country,
+            @Query("vintage") String vintage,
+            @Query("ordering") String ordering,
             @Query("limit") int limit,
             @Query("offset") int offset
     );
