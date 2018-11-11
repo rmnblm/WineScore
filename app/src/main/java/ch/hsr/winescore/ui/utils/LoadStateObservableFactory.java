@@ -1,5 +1,6 @@
 package ch.hsr.winescore.ui.utils;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import ch.hsr.winescore.data.prefs.IPreferences;
@@ -30,6 +31,9 @@ public abstract class LoadStateObservableFactory<T extends WineDataSourceBase>
 
 
     public int getTotalCountOfCurrentDataSource() {
+        if (liveWineData == null) {
+            return 0;
+        }
         return liveWineData.getValue() != null ? liveWineData.getValue().getTotalCount() : 0;
     }
 

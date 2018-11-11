@@ -48,18 +48,6 @@ public class SearchPresenterTest {
     }
 
     @Test
-    public void whenReachingEndOfList_itCallsShowLoading() {
-        presenter.scrollStateChanged(false);
-        assertTrue(view.showLoadingCalled);
-    }
-
-    @Test
-    public void whenNotReachingEndOfList_itDoesNotCallShowLoading() {
-        presenter.scrollStateChanged(true);
-        assertFalse(view.showLoadingCalled);
-    }
-
-    @Test
     public void whenSettingSearchQuery_itAddsItToPreferences() {
         presenter.setSearchQuery("test");
         assertTrue(preferences.map.containsKey("pref_search_query"));

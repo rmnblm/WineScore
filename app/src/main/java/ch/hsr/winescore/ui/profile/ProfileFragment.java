@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ch.hsr.winescore.domain.auth.IUser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.ErrorCodes;
@@ -120,7 +121,7 @@ public class ProfileFragment extends Fragment implements ProfileView {
     }
 
     @Override
-    public void onSignedIn(FirebaseUser user) {
+    public void onSignedIn(IUser user) {
         if (user.getPhotoUrl() != null) {
             Glide.with(this).load(user.getPhotoUrl()).apply(new RequestOptions().circleCrop()).into(ivProfilePicture);
         }

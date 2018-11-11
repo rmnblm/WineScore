@@ -2,6 +2,10 @@ package ch.hsr.winescore.ui.profile;
 
 import android.content.Intent;
 
+import android.provider.ContactsContract;
+import ch.hsr.winescore.domain.auth.FirebaseAuthWrapper;
+import ch.hsr.winescore.domain.auth.IAuth;
+import ch.hsr.winescore.domain.auth.IUser;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,16 +21,23 @@ import ch.hsr.winescore.ui.utils.Presenter;
 public class ProfilePresenter implements Presenter<ProfileView> {
 
     private ProfileView view;
-    private FirebaseAuth auth;
+    private IAuth auth;
+
+    public ProfilePresenter() {
+        this(new FirebaseAuthWrapper());
+    }
+
+    public ProfilePresenter(IAuth auth) {
+        this.auth = auth;
+    }
 
     @Override
     public void attachView(ProfileView view) {
         this.view = view;
-        this.auth = FirebaseAuth.getInstance();
     }
 
     public void checkAuthentication() {
-        FirebaseUser currentUser = auth.getCurrentUser();
+        IUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             view.onSignedIn(currentUser);
         } else {
