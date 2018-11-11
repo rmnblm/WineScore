@@ -111,11 +111,11 @@
                         android:id="@+id/favorites_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/zero"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         app:layout_constraintBottom_toBottomOf="@+id/favorites_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/favorites_icon"
-                        tools:text="0" />
+                        app:layout_constraintTop_toTopOf="@+id/favorites_icon" />
                 </android.support.constraint.ConstraintLayout>
 
                 <View
@@ -157,11 +157,11 @@
                         android:id="@+id/ratings_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/zero"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         app:layout_constraintBottom_toBottomOf="@+id/ratings_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/ratings_icon"
-                        tools:text="0" />
+                        app:layout_constraintTop_toTopOf="@+id/ratings_icon" />
                 </android.support.constraint.ConstraintLayout>
 
                 <View
@@ -203,11 +203,11 @@
                         android:id="@+id/comments_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@string/zero"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                         app:layout_constraintBottom_toBottomOf="@+id/comments_icon"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/comments_icon"
-                        tools:text="0" />
+                        app:layout_constraintTop_toTopOf="@+id/comments_icon" />
                 </android.support.constraint.ConstraintLayout>
 
                 <View

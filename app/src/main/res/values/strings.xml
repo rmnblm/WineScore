@@ -49,8 +49,8 @@
     <string name="empty_data_title">The wine glass is empty!</string>
     <string name="empty_data_content">There is nothing to show here…</string>
     <string name="title_activity_search">SearchActivity</string>
-    <string name="critics">Critics</string>
-    <string name="users">Users</string>
+    <string name="critics">Critics\n(Confidence Index)</string>
+    <string name="users">Users\n</string>
     <string name="comments_add_title">Add comment</string>
     <string name="button_submit">Submit</string>
     <string name="button_cancel">Cancel</string>
@@ -60,4 +60,5 @@
     <string name="favorite_added">The wine has been added to your favorites.</string>
     <string name="favorite_removed">The wine has been removed from your favorites.</string>
     <string name="score">Score /100</string>
+    <string name="zero">0</string>
 </resources>
