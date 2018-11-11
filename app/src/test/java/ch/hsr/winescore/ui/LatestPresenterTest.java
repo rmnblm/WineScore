@@ -8,6 +8,8 @@ import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.view.View;
 import ch.hsr.winescore.WineScoreConstants;
+import ch.hsr.winescore.data.prefs.IPreferences;
+import ch.hsr.winescore.data.prefs.MockPreferences;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.ui.latest.LatestPresenter;
@@ -28,6 +30,7 @@ public class LatestPresenterTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
+    private MockPreferences preferences;
     private LatestViewMock view;
     private LatestPresenter presenter;
     private MockWebServer server;
@@ -38,8 +41,9 @@ public class LatestPresenterTest {
         server.start();
         WineScoreConstants.setRootUrl(server.url("/").toString());
 
+        preferences = new MockPreferences();
         view = new LatestViewMock();
-        presenter = new LatestPresenter();
+        presenter = new LatestPresenter(preferences);
         presenter.attachView(view);
     }
 
@@ -53,11 +57,6 @@ public class LatestPresenterTest {
     public void whenNotReachingEndOfList_itDoesNotCallShowLoading() {
         presenter.scrollStateChanged(true);
         assertFalse(view.showLoadingCalled);
-    }
-
-    @Test
-    public void whenAttachingView_itEnsuresThatViewIsNotNull() {
-        assertNotNull(presenter.getView());
     }
 
     @Test

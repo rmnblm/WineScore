@@ -27,11 +27,7 @@ public class WineScoreApplication extends Application {
     }
 
     public static SharedPreferences getSharedPreferences() {
-        if (instance != null) {
-            return PreferenceManager.getDefaultSharedPreferences(instance.getBaseContext());
-        }
-
-        return null;
+        return PreferenceManager.getDefaultSharedPreferences(instance.getBaseContext());
     }
 
     public static String getResourcesString(int resId) {

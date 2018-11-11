@@ -2,6 +2,7 @@ package ch.hsr.winescore.ui.utils;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
+import ch.hsr.winescore.data.prefs.IPreferences;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadStateObserver;
 import ch.hsr.winescore.ui.wine.WineDataSourceBase;
@@ -11,6 +12,12 @@ public abstract class LoadStateObservableFactory<T extends WineDataSourceBase>
 
     protected MutableLiveData<T> liveWineData;
     protected DataLoadStateObserver observer;
+
+    protected IPreferences preferences;
+
+    public LoadStateObservableFactory(IPreferences preferences) {
+        this.preferences = preferences;
+    }
 
     public void setDataLoadStateObserver(DataLoadStateObserver observer) {
         this.observer = observer;

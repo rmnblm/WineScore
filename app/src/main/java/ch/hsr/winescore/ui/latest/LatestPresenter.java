@@ -1,8 +1,7 @@
 package ch.hsr.winescore.ui.latest;
 
-import android.content.SharedPreferences;
-
-import ch.hsr.winescore.WineScoreApplication;
+import ch.hsr.winescore.data.prefs.IPreferences;
+import ch.hsr.winescore.data.prefs.SharedPreferencesWrapper;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.utils.ListView;
 import ch.hsr.winescore.ui.wine.WineListPresenter;
@@ -10,11 +9,15 @@ import ch.hsr.winescore.ui.wine.WineListPresenter;
 public class LatestPresenter extends WineListPresenter<LatestDataSource> {
 
     private ListView<Wine> view;
-    private final SharedPreferences sharedPreferences;
+    private IPreferences preferences;
 
     public LatestPresenter() {
-        super(new LatestDataSourceFactory());
-        this.sharedPreferences = WineScoreApplication.getSharedPreferences();
+        this(new SharedPreferencesWrapper());
+    }
+
+    public LatestPresenter(IPreferences preferences) {
+        super(new LatestDataSourceFactory(preferences));
+        this.preferences = preferences;
     }
 
     @Override
@@ -24,9 +27,7 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> {
     }
 
     public void clearPreferences() {
-        if (sharedPreferences != null) {
-            sharedPreferences.edit().clear().apply();
-        }
+        preferences.clear();
     }
 
     public void scrollStateChanged(boolean canScrollVertically) {
@@ -34,7 +35,7 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> {
     }
 
     @Override
-    public ListView<Wine> getView() {
+    protected ListView<Wine> getView() {
         return view;
     }
 }

@@ -1,14 +1,11 @@
 package ch.hsr.winescore.ui.wine;
 
 import android.arch.paging.PositionalDataSource;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
-import ch.hsr.winescore.R;
-import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.data.api.GWSService;
 import ch.hsr.winescore.data.api.responses.WineResponse;
+import ch.hsr.winescore.data.prefs.IPreferences;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.domain.utils.DataLoadStateObserver;
@@ -22,7 +19,7 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
 
     protected final GWSService apiService;
     private final DataLoadStateObserver observer;
-    private final SharedPreferences preferences;
+    private final IPreferences preferences;
 
     protected String query;
     protected String color;
@@ -32,10 +29,10 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
 
     private int totalCount = 0;
 
-    public WineDataSourceBase(GWSService apiService, DataLoadStateObserver observer) {
+    public WineDataSourceBase(GWSService apiService, DataLoadStateObserver observer, IPreferences preferences) {
         this.apiService = apiService;
         this.observer = observer;
-        this.preferences = WineScoreApplication.getSharedPreferences();
+        this.preferences = preferences;
     }
 
     protected abstract Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params);
@@ -99,14 +96,12 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
     }
 
     protected void refreshParameters() {
-        if (preferences != null) {
-            String all = WineScoreApplication.getApplicationInstance().getString(R.string.array_all_value);
-            color = getStringPreference("pref_color", all);
-            country = getStringPreference("pref_country", all);
-            vintage = getStringPreference("pref_vintage", "");
-            ordering = getStringPreference("pref_ordering", "-date");
-            query = getStringPreference("pref_search_query", "");
-        }
+        String all = "_";
+        color = getStringPreference("pref_color", all);
+        country = getStringPreference("pref_country", all);
+        vintage = getStringPreference("pref_vintage", "");
+        ordering = getStringPreference("pref_ordering", "-date");
+        query = getStringPreference("pref_search_query", "");
     }
 
     private String getStringPreference(String key, String defaultValue) {
