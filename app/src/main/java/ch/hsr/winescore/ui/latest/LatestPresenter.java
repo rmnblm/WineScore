@@ -24,7 +24,9 @@ public class LatestPresenter extends WineListPresenter<LatestDataSource> {
     }
 
     public void clearPreferences() {
-        sharedPreferences.edit().clear().apply();
+        if (sharedPreferences != null) {
+            sharedPreferences.edit().clear().apply();
+        }
     }
 
     public void scrollStateChanged(boolean canScrollVertically) {
