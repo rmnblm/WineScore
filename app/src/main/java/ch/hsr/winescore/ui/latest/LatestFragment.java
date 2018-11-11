@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,16 +30,40 @@ public class LatestFragment extends ListFragment<Wine> {
 
     private LatestPresenter presenter;
     private WineRecyclerViewAdapter adapter;
+    private BottomSheetDialog filterDialog;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, rootView);
+        setHasOptionsMenu(true);
 
         setupPresenter();
         setupAdapter();
         setupRecyclerView();
+        setupFilterDialog();
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_filter) {
+            filterDialog.show();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.clearPreferences();
+        super.onDestroy();
     }
 
     private void setupAdapter() {
@@ -85,5 +113,12 @@ public class LatestFragment extends ListFragment<Wine> {
     @Override
     public void winesUpdated(PagedList<Wine> wines) {
         adapter.submitList(wines);
+    }
+
+    private void setupFilterDialog() {
+        View view = getLayoutInflater().inflate(R.layout.fragment_filter_dialog, null);
+        filterDialog = new BottomSheetDialog(getContext());
+        filterDialog.setContentView(view);
+        filterDialog.setOnDismissListener(dialog -> presenter.refreshData());
     }
 }

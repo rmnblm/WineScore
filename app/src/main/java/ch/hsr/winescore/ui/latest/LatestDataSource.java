@@ -16,11 +16,12 @@ public class LatestDataSource extends WineDataSourceBase {
 
     @Override
     protected Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params) {
-        return apiService.getLatest(params.pageSize, params.requestedStartPosition);
+        refreshParameters();
+        return apiService.getLatest(color, country, vintage, ordering, params.pageSize, 0);
     }
 
     @Override
     protected Call<WineResponse> getLoadRangeCall(@NonNull LoadRangeParams params) {
-        return apiService.getLatest(params.loadSize, params.startPosition);
+        return apiService.getLatest(color, country, vintage, ordering, params.loadSize, params.startPosition);
     }
 }

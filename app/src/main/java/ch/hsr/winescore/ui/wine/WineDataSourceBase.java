@@ -1,9 +1,12 @@
 package ch.hsr.winescore.ui.wine;
 
 import android.arch.paging.PositionalDataSource;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import ch.hsr.winescore.R;
+import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.data.api.GWSService;
 import ch.hsr.winescore.data.api.responses.WineResponse;
 import ch.hsr.winescore.domain.models.Wine;
@@ -15,16 +18,24 @@ import retrofit2.Response;
 
 public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
 
-    public static final String TAG = WineDataSourceBase.class.getSimpleName();
+    private static final String TAG = WineDataSourceBase.class.getSimpleName();
 
     protected final GWSService apiService;
     private final DataLoadStateObserver observer;
+    private final SharedPreferences preferences;
+
+    protected String query;
+    protected String color;
+    protected String country;
+    protected String vintage;
+    protected String ordering;
 
     private int totalCount = 0;
 
     public WineDataSourceBase(GWSService apiService, DataLoadStateObserver observer) {
         this.apiService = apiService;
         this.observer = observer;
+        this.preferences = WineScoreApplication.getSharedPreferences();
     }
 
     protected abstract Call<WineResponse> getLoadInitialCall(@NonNull LoadInitialParams params);
@@ -85,6 +96,22 @@ public abstract class WineDataSourceBase extends PositionalDataSource<Wine> {
                 observer.onDataLoadStateChanged(DataLoadState.FAILED);
             }
         });
+    }
+
+    protected void refreshParameters() {
+        if (preferences != null) {
+            String all = WineScoreApplication.getApplicationInstance().getString(R.string.array_all_value);
+            color = getStringPreference("pref_color", all);
+            country = getStringPreference("pref_country", all);
+            vintage = getStringPreference("pref_vintage", "");
+            ordering = getStringPreference("pref_ordering", "-date");
+            query = getStringPreference("pref_search_query", "");
+        }
+    }
+
+    private String getStringPreference(String key, String defaultValue) {
+        String value = preferences.getString(key, defaultValue);
+        return defaultValue.equals(value) ? null : value;
     }
 
 }
