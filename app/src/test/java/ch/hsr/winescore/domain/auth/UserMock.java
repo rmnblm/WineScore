@@ -15,6 +15,11 @@ public class UserMock implements IUser {
     }
 
     @Override
+    public boolean isNull() {
+        return false;
+    }
+
+    @Override
     public Uri getPhotoUrl() {
         return photoUrl;
     }

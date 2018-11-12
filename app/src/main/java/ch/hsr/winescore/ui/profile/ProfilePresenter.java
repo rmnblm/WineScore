@@ -41,10 +41,10 @@ public class ProfilePresenter implements Presenter<ProfileView> {
 
     public void checkAuthentication() {
         IUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            view.onSignedIn(currentUser);
-        } else {
+        if (currentUser.isNull()) {
             view.onSignedOut();
+        } else {
+            view.onSignedIn(currentUser);
         }
     }
 

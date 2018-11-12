@@ -11,6 +11,11 @@ public class FirebaseUserWrapper implements IUser {
         this.user = user;
     }
 
+    @Override
+    public boolean isNull() {
+        return user == null;
+    }
+
     public Uri getPhotoUrl() {
         return user != null ? user.getPhotoUrl() : null;
     }
