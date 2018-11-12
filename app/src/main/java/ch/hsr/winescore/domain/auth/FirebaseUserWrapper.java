@@ -17,12 +17,12 @@ public class FirebaseUserWrapper implements IUser {
 
     @Override
     public String getDisplayName() {
-        return user.getDisplayName();
+        return user != null ? user.getDisplayName() : null;
     }
 
     @Override
     public boolean isAnonymous() {
-        return user.isAnonymous();
+        return user == null || user.isAnonymous();
     }
 
 
