@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ch.hsr.winescore.domain.auth.IUser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindDrawable;
 import butterknife.BindString;
@@ -25,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.domain.auth.IUser;
 
 import static android.app.Activity.RESULT_OK;
 

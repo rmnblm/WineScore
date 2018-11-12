@@ -1,8 +1,5 @@
 package ch.hsr.winescore.ui.search;
 
-import android.content.SharedPreferences;
-
-import ch.hsr.winescore.WineScoreApplication;
 import ch.hsr.winescore.data.prefs.IPreferences;
 import ch.hsr.winescore.data.prefs.SharedPreferencesWrapper;
 import ch.hsr.winescore.domain.models.Wine;

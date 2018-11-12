@@ -1,8 +1,8 @@
 package ch.hsr.winescore.ui.utils;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
+
 import ch.hsr.winescore.data.prefs.IPreferences;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadStateObserver;

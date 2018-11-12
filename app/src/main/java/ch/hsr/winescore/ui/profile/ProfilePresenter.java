@@ -11,6 +11,9 @@ import com.firebase.ui.auth.AuthUI;
 import java.util.Arrays;
 
 import ch.hsr.winescore.R;
+import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
+import ch.hsr.winescore.data.repositories.FavoritesFirebaseRepository;
+import ch.hsr.winescore.data.repositories.RatingsFirebaseRepository;
 import ch.hsr.winescore.ui.utils.Presenter;
 
 public class ProfilePresenter implements Presenter<ProfileView> {
