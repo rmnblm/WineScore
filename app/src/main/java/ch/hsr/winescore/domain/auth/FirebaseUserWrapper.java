@@ -12,7 +12,7 @@ public class FirebaseUserWrapper implements IUser {
     }
 
     public Uri getPhotoUrl() {
-        return user.getPhotoUrl();
+        return user != null ? user.getPhotoUrl() : null;
     }
 
     @Override
