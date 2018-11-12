@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import ch.hsr.winescore.data.repositories.ICommentsRepository;
 import ch.hsr.winescore.ui.utils.FirebaseListFragment;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.firebase.firestore.Query;
@@ -19,7 +20,9 @@ import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
 public class CommentsFragment extends FirebaseListFragment<Comment> {
 
     public static final String ARGUMENT_WINE = "wine";
+
     private Wine mWine;
+    private ICommentsRepository commentsRepo;
 
     public static CommentsFragment newInstance(Wine wine) {
         CommentsFragment fragment = new CommentsFragment();
@@ -34,12 +37,13 @@ public class CommentsFragment extends FirebaseListFragment<Comment> {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mWine = (Wine) getArguments().getSerializable(ARGUMENT_WINE);
+            commentsRepo = new CommentsFirebaseRepository();
         }
     }
 
     @Override
     protected Query getQuery() {
-        return CommentsFirebaseRepository.getListQuery(mWine);
+        return commentsRepo.getListQuery(mWine);
     }
 
     @Override

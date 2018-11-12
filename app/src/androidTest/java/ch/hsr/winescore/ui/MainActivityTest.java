@@ -1,6 +1,5 @@
 package ch.hsr.winescore.ui;
 
-import android.content.Intent;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;

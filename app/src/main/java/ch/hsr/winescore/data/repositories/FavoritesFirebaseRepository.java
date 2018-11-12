@@ -40,7 +40,7 @@ public class FavoritesFirebaseRepository extends FirebaseRepository implements I
         countCollectionItemsByUser(COLLECTION, callback);
     }
 
-    private static DocumentReference getFavoriteReference(Wine wine) {
+    private DocumentReference getFavoriteReference(Wine wine) {
         return FirebaseFirestore.getInstance().collection(COLLECTION).document(wine.getId() + "-" + FirebaseAuth.getInstance().getUid());
     }
 }

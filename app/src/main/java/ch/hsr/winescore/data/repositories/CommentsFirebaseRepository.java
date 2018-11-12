@@ -49,7 +49,7 @@ public class CommentsFirebaseRepository extends FirebaseRepository implements IC
         countCollectionItemsByUser(COLLECTION, callback);
     }
 
-    public static Query getListQuery(Wine wine) {
+    public Query getListQuery(Wine wine) {
         return FirebaseFirestore.getInstance().collection(COLLECTION)
                 .whereEqualTo(FIELD_WINE_ID, wine.getId())
                 .orderBy(FIELD_TIMESTAMP, Query.Direction.DESCENDING);

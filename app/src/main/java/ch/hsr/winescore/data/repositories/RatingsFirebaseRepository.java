@@ -57,7 +57,7 @@ public class RatingsFirebaseRepository extends FirebaseRepository implements IRa
         countCollectionItemsByUser(COLLECTION, callback);
     }
 
-    private static DocumentReference getRatingReference(Wine wine) {
+    private DocumentReference getRatingReference(Wine wine) {
         return FirebaseFirestore.getInstance().collection(COLLECTION).document(wine.getId() + "-" + FirebaseAuth.getInstance().getUid());
     }
 }

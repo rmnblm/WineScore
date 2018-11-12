@@ -1,5 +1,7 @@
 package ch.hsr.winescore.domain.auth;
 
+import android.content.Intent;
+
 public class AuthMock implements IAuth {
 
     public boolean signOutCalled = false;
@@ -13,5 +15,10 @@ public class AuthMock implements IAuth {
     @Override
     public void signOut() {
         signOutCalled = true;
+    }
+
+    @Override
+    public Intent getSignInIntent() {
+        return new Intent();
     }
 }
