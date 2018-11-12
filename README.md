@@ -1,7 +1,7 @@
 # WineScore
 🍷 Use WineScore to search for your favorite wines or discover the best wines from new regions.
 
-A project crafted with :heart: and submitted in fulfillment of the requirements for the degree of Master of Science in Engineering at the University of Applied Sciences in Rapperswil [HSR](https://www.hsr.ch).
+A project crafted with :heart: and submitted in fulfillment of the requirements for the Module [TSM_MobOp](https://www.msengineering.ch/fileadmin/user_upload/customers/msengineering/Modulbeschreibungen/TSM_MobOp_de.pdf) as part of the degree of Master of Science in Engineering at the University of Applied Sciences in Rapperswil [HSR](https://www.hsr.ch).
 
 ## Technology Stack
 * Testing with [Espresso](https://developer.android.com/training/testing/espresso/)
