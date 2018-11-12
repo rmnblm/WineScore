@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import ch.hsr.winescore.data.repositories.ICommentsRepository;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
@@ -31,6 +32,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
     private Wine mWine;
     private String mComment;
     private DetailsView mDetailsView;
+    private final ICommentsRepository commentsRepository = new CommentsFirebaseRepository();
 
     @BindView(R.id.addCommentLayout) View viewAddComment;
     @BindView(R.id.input_comment) TextInputEditText inputAddComment;
@@ -43,7 +45,7 @@ public class CommentsBottomDialogFragment extends BottomSheetDialogFragment {
 
     @OnClick(R.id.button_add_comment)
     public void onAddComment(View v) {
-        CommentsFirebaseRepository.add(mWine, mComment, result -> dismiss());
+        commentsRepository.add(mWine, mComment, result -> dismiss());
     }
 
     public static CommentsBottomDialogFragment newInstance(Wine wine) {

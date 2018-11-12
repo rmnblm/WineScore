@@ -1,14 +1,28 @@
 package ch.hsr.winescore.ui.details;
 
-import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
-import ch.hsr.winescore.data.repositories.FavoritesFirebaseRepository;
-import ch.hsr.winescore.data.repositories.RatingsFirebaseRepository;
+import ch.hsr.winescore.data.repositories.*;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.utils.Presenter;
 
 public class DetailsPresenter implements Presenter<DetailsView> {
 
     private DetailsView view;
+    private ICommentsRepository commentsRepo;
+    private IFavoritesRepository favoritesRepo;
+    private IRatingsRepository ratingsRepo;
+
+    public DetailsPresenter() {
+        this(new CommentsFirebaseRepository(), new FavoritesFirebaseRepository(), new RatingsFirebaseRepository());
+    }
+
+    public DetailsPresenter(
+            ICommentsRepository commentsRepo,
+            IFavoritesRepository favoritesRepo,
+            IRatingsRepository ratingsRepo) {
+        this.commentsRepo = commentsRepo;
+        this.favoritesRepo = favoritesRepo;
+        this.ratingsRepo = ratingsRepo;
+    }
 
     @Override
     public void attachView(DetailsView view) {
@@ -16,11 +30,11 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void isFavorite(Wine wine) {
-        FavoritesFirebaseRepository.get(wine, result -> view.refreshFavoriteButton(result != null));
+        favoritesRepo.get(wine, result -> view.refreshFavoriteButton(result != null));
     }
 
     public void addAsFavorite(Wine wine) {
-        FavoritesFirebaseRepository.set(wine, result -> {
+        favoritesRepo.set(wine, result -> {
             if (result != null) {
                 view.onFavoriteAdded();
             }
@@ -28,7 +42,7 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void removeAsFavorite(Wine wine) {
-        FavoritesFirebaseRepository.delete(wine, result -> {
+        favoritesRepo.delete(wine, result -> {
             if (result == null) {
                 view.onFavoriteRemoved();
             }
@@ -36,11 +50,11 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void loadRatings(Wine wine) {
-        RatingsFirebaseRepository.getRatings(wine, result -> view.refreshRatings(result));
+        ratingsRepo.getRatings(wine, result -> view.refreshRatings(result));
     }
 
     public void loadMyRating(Wine wine) {
-        RatingsFirebaseRepository.get(wine, result -> {
+        ratingsRepo.get(wine, result -> {
             if (result != null) {
                 view.showMyRating(result.getRatingValue());
             } else {
@@ -50,7 +64,7 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void setMyRating(Wine wine, int rating) {
-        RatingsFirebaseRepository.set(wine, rating, result -> {
+        ratingsRepo.set(wine, rating, result -> {
             if (result != null) {
                 loadRatings(wine);
                 view.showMyRating(result.getRatingValue());
@@ -61,7 +75,7 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void removeMyRating(Wine wine) {
-        RatingsFirebaseRepository.delete(wine, result -> {
+        ratingsRepo.delete(wine, result -> {
             if (result == null) {
                 loadRatings(wine);
                 view.hideMyRating();
@@ -70,7 +84,7 @@ public class DetailsPresenter implements Presenter<DetailsView> {
     }
 
     public void loadLastComment(Wine wine) {
-        CommentsFirebaseRepository.getLast(wine, comment -> {
+        commentsRepo.getLast(wine, comment -> {
             if (comment != null) {
                 view.refreshLastComment(comment);
             }

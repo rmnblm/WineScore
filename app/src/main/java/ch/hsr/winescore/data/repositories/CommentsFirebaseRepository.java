@@ -9,14 +9,14 @@ import com.google.firebase.firestore.Query;
 import ch.hsr.winescore.domain.models.Comment;
 import ch.hsr.winescore.domain.models.Wine;
 
-public class CommentsFirebaseRepository extends FirebaseRepository {
+public class CommentsFirebaseRepository extends FirebaseRepository implements ICommentsRepository {
 
     private static final String COLLECTION = "comments";
     private static final String FIELD_WINE_ID = "wineId";
     private static final String FIELD_TIMESTAMP = "timestamp";
     private static final String ANONYMOUS = "Anonymous";
 
-    public static void add(Wine wine, String content, IFirebaseCallback<Comment> callback) {
+    public void add(Wine wine, String content, ICallback<Comment> callback) {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -35,7 +35,7 @@ public class CommentsFirebaseRepository extends FirebaseRepository {
                 .addOnFailureListener(e -> callback.onCallback(null));
     }
 
-    public static void getLast(Wine wine, IFirebaseCallback<Comment> callback) {
+    public void getLast(Wine wine, ICallback<Comment> callback) {
         getListQuery(wine).limit(1).get()
                 .addOnSuccessListener(documentSnapshots -> {
                     for (DocumentSnapshot document : documentSnapshots.getDocuments()) {
@@ -45,7 +45,7 @@ public class CommentsFirebaseRepository extends FirebaseRepository {
                 .addOnFailureListener(e -> callback.onCallback(null));
     }
 
-    public static void getCount(IFirebaseCallback<Integer> callback) {
+    public void getCount(ICallback<Integer> callback) {
         countCollectionItemsByUser(COLLECTION, callback);
     }
 

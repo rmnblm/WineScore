@@ -2,33 +2,42 @@ package ch.hsr.winescore.ui.profile;
 
 import android.content.Intent;
 
-import android.provider.ContactsContract;
+import ch.hsr.winescore.data.repositories.*;
 import ch.hsr.winescore.domain.auth.FirebaseAuthWrapper;
 import ch.hsr.winescore.domain.auth.IAuth;
 import ch.hsr.winescore.domain.auth.IUser;
 import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
 import ch.hsr.winescore.R;
-import ch.hsr.winescore.data.repositories.CommentsFirebaseRepository;
-import ch.hsr.winescore.data.repositories.FavoritesFirebaseRepository;
-import ch.hsr.winescore.data.repositories.RatingsFirebaseRepository;
 import ch.hsr.winescore.ui.utils.Presenter;
 
 public class ProfilePresenter implements Presenter<ProfileView> {
 
     private ProfileView view;
     private IAuth auth;
+    private ICommentsRepository commentsRepo;
+    private IFavoritesRepository favoritesRepo;
+    private IRatingsRepository ratingsRepo;
 
     public ProfilePresenter() {
-        this(new FirebaseAuthWrapper());
+        this(new FirebaseAuthWrapper(),
+                new CommentsFirebaseRepository(),
+                new FavoritesFirebaseRepository(),
+                new RatingsFirebaseRepository());
     }
 
-    public ProfilePresenter(IAuth auth) {
+    public ProfilePresenter(
+            IAuth auth,
+            ICommentsRepository commentsRepo,
+            IFavoritesRepository favoritesRepo,
+            IRatingsRepository ratingsRepo
+    ) {
         this.auth = auth;
+        this.commentsRepo = commentsRepo;
+        this.favoritesRepo = favoritesRepo;
+        this.ratingsRepo = ratingsRepo;
     }
 
     @Override
@@ -63,8 +72,8 @@ public class ProfilePresenter implements Presenter<ProfileView> {
     }
 
     public void loadCounts() {
-        FavoritesFirebaseRepository.getCount(count -> view.refreshFavoritesCount(count));
-        RatingsFirebaseRepository.getCount(count -> view.refreshRatingsCount(count));
-        CommentsFirebaseRepository.getCount(count -> view.refreshCommentsCount(count));
+        favoritesRepo.getCount(count -> view.refreshFavoritesCount(count));
+        ratingsRepo.getCount(count -> view.refreshRatingsCount(count));
+        commentsRepo.getCount(count -> view.refreshCommentsCount(count));
     }
 }

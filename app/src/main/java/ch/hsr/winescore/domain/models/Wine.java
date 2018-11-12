@@ -65,9 +65,16 @@ public class Wine implements Serializable {
     }
 
     public Wine(String name, String wineId) {
+        this(name, wineId, "N.V.");
+        this.name = name;
+        this.wineId = wineId;
+    }
+
+    public Wine(String name, String wineId, String vintage) {
         this();
         this.name = name;
         this.wineId = wineId;
+        this.vintage = vintage;
     }
 
     public String getWinery() {
@@ -89,7 +96,7 @@ public class Wine implements Serializable {
     }
 
     public String getId() {
-        return lwin_11 != null ? lwin_11 : wineId + "-" + vintage;
+        return lwin_11 != null && !lwin_11.isEmpty() ? lwin_11 : wineId + "-" + vintage;
     }
 
     public String getWineId() {

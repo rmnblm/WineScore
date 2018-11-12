@@ -1,29 +1,20 @@
 package ch.hsr.winescore.ui;
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.paging.PagedList;
 import android.net.Uri;
-import android.view.View;
-import ch.hsr.winescore.WineScoreConstants;
-import ch.hsr.winescore.data.prefs.MockPreferences;
+import ch.hsr.winescore.data.repositories.CommentsRepositoryMock;
+import ch.hsr.winescore.data.repositories.FavoritesRepositoryMock;
+import ch.hsr.winescore.data.repositories.RatingsRepositoryMock;
 import ch.hsr.winescore.domain.auth.AuthMock;
 import ch.hsr.winescore.domain.auth.IUser;
 import ch.hsr.winescore.domain.auth.UserMock;
-import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.ui.profile.ProfilePresenter;
 import ch.hsr.winescore.ui.profile.ProfileView;
-import ch.hsr.winescore.ui.search.SearchPresenter;
-import ch.hsr.winescore.ui.utils.ListView;
-import com.google.firebase.auth.FirebaseUser;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -33,14 +24,20 @@ public class ProfilePresenterTest {
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
     private AuthMock auth;
+    private CommentsRepositoryMock commentsRepo;
+    private FavoritesRepositoryMock favoritesRepo;
+    private RatingsRepositoryMock ratingsRepo;
     private ProfileViewMock view;
     private ProfilePresenter presenter;
 
     @Before
     public void setUp() throws IOException {
         auth = new AuthMock();
+        commentsRepo = new CommentsRepositoryMock();
+        favoritesRepo = new FavoritesRepositoryMock();
+        ratingsRepo = new RatingsRepositoryMock();
         view = new ProfileViewMock();
-        presenter = new ProfilePresenter(auth);
+        presenter = new ProfilePresenter(auth, commentsRepo, favoritesRepo, ratingsRepo);
         presenter.attachView(view);
     }
 
@@ -69,37 +66,12 @@ public class ProfilePresenterTest {
         assertTrue(auth.signOutCalled);
     }
 
-    private class ProfileViewMock implements ProfileView {
-
-        public boolean onSignedInCalled = false;
-        public IUser onSignInUser;
-        public boolean onSignedOutCalled = false;
-
-        @Override
-        public void onSignedIn(IUser user) {
-            onSignedInCalled = true;
-            onSignInUser = user;
-        }
-
-        @Override
-        public void onSignedOut() {
-            onSignedOutCalled = true;
-        }
-
-        @Override
-        public void refreshFavoritesCount(int count) {
-
-        }
-
-        @Override
-        public void refreshRatingsCount(int count) {
-
-        }
-
-        @Override
-        public void refreshCommentsCount(int count) {
-
-        }
+    @Test
+    public void whenLoadCountsIsCalled_itRefreshesCommentsFavoritesRatingsCount() {
+        presenter.loadCounts();
+        assertTrue(view.refreshCommentsCountCalled);
+        assertTrue(view.refreshFavoritesCountCalled);
+        assertTrue(view.refreshRatingsCountCalled);
     }
 }
 

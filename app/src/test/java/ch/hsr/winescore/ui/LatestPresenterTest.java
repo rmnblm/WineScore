@@ -8,8 +8,7 @@ import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 import android.view.View;
 import ch.hsr.winescore.WineScoreConstants;
-import ch.hsr.winescore.data.prefs.IPreferences;
-import ch.hsr.winescore.data.prefs.MockPreferences;
+import ch.hsr.winescore.data.prefs.PreferencesMock;
 import ch.hsr.winescore.domain.models.Wine;
 import ch.hsr.winescore.domain.utils.DataLoadState;
 import ch.hsr.winescore.ui.latest.LatestPresenter;
@@ -30,7 +29,7 @@ public class LatestPresenterTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
-    private MockPreferences preferences;
+    private PreferencesMock preferences;
     private LatestViewMock view;
     private LatestPresenter presenter;
     private MockWebServer server;
@@ -41,7 +40,7 @@ public class LatestPresenterTest {
         server.start();
         WineScoreConstants.setRootUrl(server.url("/").toString());
 
-        preferences = new MockPreferences();
+        preferences = new PreferencesMock();
         view = new LatestViewMock();
         presenter = new LatestPresenter(preferences);
         presenter.attachView(view);
@@ -110,64 +109,6 @@ public class LatestPresenterTest {
     @After
     public void tearDown() throws IOException {
         server.shutdown();
-    }
-
-    private class LatestViewMock implements ListView<Wine> {
-
-        boolean showLoadingCalled = false;
-        boolean hideLoadingCalled = false;
-        boolean showErrorCalled = false;
-        boolean navigateToDetailScreenCalled = false;
-        Wine wine = null;
-
-        boolean winesUpdatedCalled = false;
-
-        @Override
-        public void showLoading() {
-            showLoadingCalled = true;
-        }
-
-        @Override
-        public void hideLoading() {
-            hideLoadingCalled = true;
-        }
-
-        @Override
-        public void showEmptyState() {
-
-        }
-
-        @Override
-        public void hideEmptyState() {
-
-        }
-
-        @Override
-        public void showError(String message) {
-            showErrorCalled = true;
-        }
-
-        @Override
-        public void navigateToDetailScreen(View view, Wine wine) {
-            navigateToDetailScreenCalled = true;
-            this.wine = wine;
-        }
-
-        @Override
-        public void winesUpdated(PagedList<Wine> wines) {
-            winesUpdatedCalled = true;
-        }
-    }
-
-    private class LifecycleOwnerMock implements LifecycleOwner {
-
-        final LifecycleRegistry registry = new LifecycleRegistry(this);
-
-        @NonNull
-        @Override
-        public Lifecycle getLifecycle() {
-            return registry;
-        }
     }
 }
 

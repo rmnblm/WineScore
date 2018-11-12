@@ -11,18 +11,18 @@ import com.google.firebase.firestore.SetOptions;
 import ch.hsr.winescore.domain.models.Rating;
 import ch.hsr.winescore.domain.models.Wine;
 
-public class RatingsFirebaseRepository extends FirebaseRepository {
+public class RatingsFirebaseRepository extends FirebaseRepository implements IRatingsRepository {
 
     private static final String COLLECTION = "ratings";
     private static final String FIELD_WINE_ID = "wineId";
 
-    public static void get(Wine wine, IFirebaseCallback<Rating> callback) {
+    public void get(Wine wine, ICallback<Rating> callback) {
         getRatingReference(wine).get()
                 .addOnSuccessListener(result -> callback.onCallback(result.toObject(Rating.class)))
                 .addOnFailureListener(e -> callback.onCallback(null));
     }
 
-    public static void getRatings(Wine wine, IFirebaseCallback<SparseIntArray> callback) {
+    public void getRatings(Wine wine, ICallback<SparseIntArray> callback) {
         SparseIntArray ratings = new SparseIntArray();
         FirebaseFirestore.getInstance().collection(COLLECTION).whereEqualTo(FIELD_WINE_ID, wine.getId()).get()
                 .addOnCompleteListener(task -> {
@@ -36,7 +36,7 @@ public class RatingsFirebaseRepository extends FirebaseRepository {
                 });
     }
 
-    public static void set(Wine wine, int ratingValue, IFirebaseCallback<Rating> callback) {
+    public void set(Wine wine, int ratingValue, ICallback<Rating> callback) {
         WinesFirebaseRepository.add(wine)
                 .addOnSuccessListener(aVoid -> {
                     Rating rating = new Rating(FirebaseAuth.getInstance().getUid(), wine.getId(), ratingValue);
@@ -47,13 +47,13 @@ public class RatingsFirebaseRepository extends FirebaseRepository {
                 .addOnFailureListener(e -> callback.onCallback(null));
     }
 
-    public static void delete(Wine wine, IFirebaseCallback<Rating> callback) {
+    public void delete(Wine wine, ICallback<Rating> callback) {
         getRatingReference(wine).delete()
                 .addOnSuccessListener(result -> callback.onCallback(null))
                 .addOnFailureListener(result -> callback.onCallback(new Rating()));
     }
 
-    public static void getCount(IFirebaseCallback<Integer> callback) {
+    public void getCount(ICallback<Integer> callback) {
         countCollectionItemsByUser(COLLECTION, callback);
     }
 

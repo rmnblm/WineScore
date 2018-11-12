@@ -3,7 +3,7 @@ package ch.hsr.winescore.data.prefs;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MockPreferences implements IPreferences {
+public class PreferencesMock implements IPreferences {
 
     public final Map<String, String> map = new HashMap<>();
 

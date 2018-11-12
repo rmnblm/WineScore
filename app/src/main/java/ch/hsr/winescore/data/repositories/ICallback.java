@@ -1,5 +1,5 @@
 package ch.hsr.winescore.data.repositories;
 
-public interface IFirebaseCallback<T> {
+public interface ICallback<T> {
     void onCallback(T result);
 }

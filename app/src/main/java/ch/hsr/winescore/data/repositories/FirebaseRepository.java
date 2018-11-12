@@ -10,7 +10,7 @@ public abstract class FirebaseRepository {
         throw new IllegalStateException("Static class");
     }
 
-    public static void countCollectionItemsByUser(String collection, IFirebaseCallback<Integer> callback) {
+    public static void countCollectionItemsByUser(String collection, ICallback<Integer> callback) {
         FirebaseFirestore.getInstance().collection(collection)
                 .whereEqualTo(FIELD_USER_ID, FirebaseAuth.getInstance().getUid())
                 .get()
