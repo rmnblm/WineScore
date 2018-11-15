@@ -12,4 +12,4 @@ A project crafted with :heart: and submitted in fulfillment of the requirements 
 * Wines and scores from [GlobalWineScore](https://www.globalwinescore.com)
 
 ## Credits
-* Wine icons made by Freepik from [Flaticon](www.flaticon.com)
+* Wine icons made by Freepik from [Flaticon](https://www.flaticon.com)
