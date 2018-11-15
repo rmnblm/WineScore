@@ -10,3 +10,6 @@ A project crafted with :heart: and submitted in fulfillment of the requirements 
 * REST API Framework with [Retrofit 2](http://square.github.io/retrofit/)
 * Authentication and storage with [Firebase](https://firebase.google.com)
 * Wines and scores from [GlobalWineScore](https://www.globalwinescore.com)
+
+## Credits
+* Wine icons made by Freepik from [Flaticon](www.flaticon.com)
